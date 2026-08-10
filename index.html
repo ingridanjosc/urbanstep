@@ -1,1 +1,1415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <meta name="description"
+        content="UrbanStep - Tênis e streetwear">
+
+  <title>UrbanStep | Seu estilo. Sua pisada.</title>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080808;
+      color: #fff;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      height: 78px;
+      padding: 0 6%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      background: #080808;
+      border-bottom: 1px solid #252525;
+
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      line-height: .85;
+    }
+
+    .logo-small {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #aaa;
+    }
+
+    .logo-big {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #d4af37;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    nav a {
+      color: #ddd;
+      font-size: 14px;
+      transition: .3s;
+    }
+
+    nav a:hover {
+      color: #d4af37;
+    }
+
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .header-buttons button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 19px;
+    }
+
+    .cart-count {
+      background: #d4af37;
+      color: #000;
+      border-radius: 50%;
+      font-size: 10px;
+      padding: 3px 6px;
+      position: relative;
+      top: -10px;
+      left: -7px;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 650px;
+
+      display: flex;
+      align-items: center;
+
+      padding: 70px 8%;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,.96),
+          rgba(0,0,0,.70),
+          rgba(0,0,0,.25)
+        ),
+        url("https://images.unsplash.com/photo-1542291026-7eec264c27ff")
+        center/cover;
+    }
+
+    .hero-content {
+      max-width: 620px;
+    }
+
+    .hero-label {
+      color: #d4af37;
+      font-size: 12px;
+      letter-spacing: 5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: .9;
+      margin-bottom: 28px;
+    }
+
+    .gold {
+      color: #d4af37;
+    }
+
+    .hero-description {
+      color: #ccc;
+      line-height: 1.7;
+      max-width: 500px;
+      margin-bottom: 32px;
+    }
+
+    .main-button {
+      display: inline-block;
+      background: #d4af37;
+      color: #000;
+
+      padding: 16px 30px;
+
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+
+      transition: .3s;
+    }
+
+    .main-button:hover {
+      background: #fff;
+      transform: translateY(-3px);
+    }
+
+    /* =========================
+       BENEFÍCIOS
+    ========================= */
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+
+      padding: 42px 7%;
+
+      border-bottom: 1px solid #222;
+    }
+
+    .benefit {
+      text-align: center;
+      padding: 15px;
+    }
+
+    .benefit-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .benefit h3 {
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .benefit p {
+      color: #888;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       PRODUTOS
+    ========================= */
+
+    .products-section {
+      padding: 90px 7%;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .section-heading p {
+      color: #d4af37;
+      font-size: 11px;
+      letter-spacing: 4px;
+      margin-bottom: 10px;
+    }
+
+    .section-heading h2 {
+      font-size: 40px;
+    }
+
+    .filters {
+      max-width: 1100px;
+      margin: 0 auto 35px;
+
+      display: flex;
+      gap: 12px;
+    }
+
+    .filters input,
+    .filters select {
+      background: #111;
+      border: 1px solid #333;
+      color: white;
+
+      padding: 14px;
+
+      outline: none;
+    }
+
+    .filters input {
+      flex: 1;
+    }
+
+    .filters select {
+      width: 220px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .product {
+      background: #111;
+      border: 1px solid #242424;
+      overflow: hidden;
+
+      transition: .3s;
+    }
+
+    .product:hover {
+      transform: translateY(-6px);
+      border-color: #d4af37;
+    }
+
+    .product-image {
+      height: 260px;
+      background: #eee;
+      overflow: hidden;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+      transition: .4s;
+    }
+
+    .product:hover img {
+      transform: scale(1.07);
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+
+    .category {
+      color: #777;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+
+    .price {
+      color: #d4af37;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .add-button {
+      width: 100%;
+      margin-top: 15px;
+
+      padding: 12px;
+
+      background: transparent;
+      border: 1px solid #d4af37;
+
+      color: #d4af37;
+
+      cursor: pointer;
+
+      font-weight: bold;
+
+      transition: .3s;
+    }
+
+    .add-button:hover {
+      background: #d4af37;
+      color: #000;
+    }
+
+    /* =========================
+       PROMO
+    ========================= */
+
+    .promo {
+      min-height: 420px;
+
+      display: flex;
+      align-items: center;
+
+      padding: 70px 8%;
+
+      background:
+        linear-gradient(
+          90deg,
+          #000 15%,
+          rgba(0,0,0,.65)
+        ),
+        url("https://images.unsplash.com/photo-1552346154-21d32810aba3")
+        center/cover;
+    }
+
+    .promo-content {
+      max-width: 600px;
+    }
+
+    .promo-label {
+      color: #d4af37;
+      letter-spacing: 3px;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+
+    .promo h2 {
+      font-size: 50px;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .promo p {
+      color: #aaa;
+      margin-bottom: 25px;
+    }
+
+    /* =========================
+       SOBRE
+    ========================= */
+
+    .about {
+      padding: 100px 8%;
+    }
+
+    .about-content {
+      max-width: 650px;
+    }
+
+    .about-label {
+      color: #d4af37;
+      letter-spacing: 3px;
+      font-size: 11px;
+      margin-bottom: 15px;
+    }
+
+    .about h2 {
+      font-size: 45px;
+      margin-bottom: 25px;
+    }
+
+    .about p {
+      color: #aaa;
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 50px 7%;
+
+      border-top: 1px solid #222;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      color: #777;
+      font-size: 12px;
+    }
+
+    .footer-logo {
+      font-size: 20px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .footer-logo span {
+      color: #d4af37;
+    }
+
+    .social {
+      display: flex;
+      gap: 20px;
+    }
+
+    .social a:hover {
+      color: #d4af37;
+    }
+
+    /* =========================
+       CARRINHO
+    ========================= */
+
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0,0,0,.75);
+
+      display: none;
+
+      justify-content: flex-end;
+
+      z-index: 3000;
+    }
+
+    .cart-overlay.active {
+      display: flex;
+    }
+
+    .cart {
+      width: 420px;
+      max-width: 90%;
+
+      height: 100%;
+
+      background: #111;
+
+      padding: 30px;
+
+      overflow-y: auto;
+
+      position: relative;
+    }
+
+    .close-cart {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+
+      background: none;
+      border: none;
+
+      color: white;
+
+      font-size: 30px;
+
+      cursor: pointer;
+    }
+
+    .cart h2 {
+      margin-bottom: 30px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 12px;
+
+      padding: 15px 0;
+
+      border-bottom: 1px solid #333;
+    }
+
+    .cart-item img {
+      width: 65px;
+      height: 65px;
+
+      object-fit: cover;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-info h4 {
+      margin-bottom: 6px;
+    }
+
+    .remove {
+      background: none;
+      border: none;
+
+      color: #ff5555;
+
+      cursor: pointer;
+
+      margin-top: 5px;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+
+      padding: 25px 0;
+
+      font-size: 18px;
+    }
+
+    .cart-total strong {
+      color: #d4af37;
+    }
+
+    .checkout {
+      width: 100%;
+
+      padding: 16px;
+
+      border: none;
+
+      background: #d4af37;
+
+      color: #000;
+
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+    /* =========================
+       RESPONSIVO
+    ========================= */
+
+    @media(max-width: 900px) {
+
+      nav {
+        display: none;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .benefits {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+    @media(max-width: 600px) {
+
+      header {
+        padding: 0 5%;
+      }
+
+      .hero {
+        min-height: 570px;
+        padding: 50px 6%;
+      }
+
+      .hero h1 {
+        font-size: 50px;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .benefits {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .filters select {
+        width: 100%;
+      }
+
+      .promo h2 {
+        font-size: 36px;
+      }
+
+      .about h2 {
+        font-size: 35px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <!-- HEADER -->
+
+  <header>
+
+    <a href="#" class="logo">
+
+      <span class="logo-small">
+        URBAN
+      </span>
+
+      <span class="logo-big">
+        STEP
+      </span>
+
+    </a>
+
+    <nav>
+
+      <a href="#inicio">
+        Início
+      </a>
+
+      <a href="#produtos">
+        Tênis
+      </a>
+
+      <a href="#ofertas">
+        Ofertas
+      </a>
+
+      <a href="#sobre">
+        Sobre nós
+      </a>
+
+    </nav>
+
+    <div class="header-buttons">
+
+      <button onclick="abrirCarrinho()">
+        🛒
+        <span class="cart-count" id="cartCount">
+          0
+        </span>
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- HERO -->
+
+  <section class="hero" id="inicio">
+
+    <div class="hero-content">
+
+      <div class="hero-label">
+        URBANSTEP COLLECTION
+      </div>
+
+      <h1>
+
+        SEU ESTILO.<br>
+
+        <span class="gold">
+          SUA PISADA.
+        </span>
+
+      </h1>
+
+      <p class="hero-description">
+
+        Tênis selecionados para quem não abre mão
+        de estilo, conforto e atitude.
+
+      </p>
+
+      <a
+        href="#produtos"
+        class="main-button">
+
+        COMPRAR AGORA
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- BENEFÍCIOS -->
+
+  <section class="benefits">
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        🚚
+      </div>
+
+      <h3>
+        Envio rápido
+      </h3>
+
+      <p>
+        Seu pedido enviado com agilidade.
+      </p>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        🔒
+      </div>
+
+      <h3>
+        Compra segura
+      </h3>
+
+      <p>
+        Segurança durante sua compra.
+      </p>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        ↩️
+      </div>
+
+      <h3>
+        Troca fácil
+      </h3>
+
+      <p>
+        Facilidade para trocar seu produto.
+      </p>
+
+    </div>
+
+
+    <div class="benefit">
+
+      <div class="benefit-icon">
+        ⭐
+      </div>
+
+      <h3>
+        Qualidade
+      </h3>
+
+      <p>
+        Produtos selecionados pela UrbanStep.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- PRODUTOS -->
+
+  <section
+    class="products-section"
+    id="produtos">
+
+    <div class="section-heading">
+
+      <p>
+        NOSSA COLEÇÃO
+      </p>
+
+      <h2>
+        ENCONTRE SEU
+        <span class="gold">
+          TÊNIS
+        </span>
+      </h2>
+
+    </div>
+
+
+    <div class="filters">
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔎 Buscar tênis..."
+        oninput="mostrarProdutos()"
+      >
+
+
+      <select
+        id="categoryFilter"
+        onchange="mostrarProdutos()">
+
+        <option value="todos">
+          Todos
+        </option>
+
+        <option value="running">
+          Running
+        </option>
+
+        <option value="casual">
+          Casual
+        </option>
+
+        <option value="streetwear">
+          Streetwear
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div
+      class="products"
+      id="products">
+
+    </div>
+
+  </section>
+
+
+  <!-- PROMOÇÃO -->
+
+  <section
+    class="promo"
+    id="ofertas">
+
+    <div class="promo-content">
+
+      <div class="promo-label">
+        OFERTA ESPECIAL
+      </div>
+
+      <h2>
+
+        LEVE 2 OU MAIS<br>
+
+        E GANHE
+        <span class="gold">
+          20% OFF
+        </span>
+
+      </h2>
+
+      <p>
+        Aproveite nossa promoção por tempo limitado.
+      </p>
+
+      <a
+        href="#produtos"
+        class="main-button">
+
+        VER OFERTAS
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- SOBRE -->
+
+  <section
+    class="about"
+    id="sobre">
+
+    <div class="about-content">
+
+      <div class="about-label">
+        SOBRE A URBANSTEP
+      </div>
+
+      <h2>
+
+        ESTILO QUE<br>
+
+        <span class="gold">
+          ANDA COM VOCÊ.
+        </span>
+
+      </h2>
+
+      <p>
+
+        A UrbanStep nasceu para trazer tênis
+        que combinam estilo, conforto e
+        personalidade para o seu dia a dia.
+
+      </p>
+
+      <p>
+
+        Nosso objetivo é tornar sua experiência
+        de compra simples, segura e rápida.
+
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-logo">
+
+      URBAN<span>STEP</span>
+
+    </div>
+
+    <p>
+      © 2026 UrbanStep.
+      Todos os direitos reservados.
+    </p>
+
+    <div class="social">
+
+      <a href="#">
+        Instagram
+      </a>
+
+      <a href="#">
+        WhatsApp
+      </a>
+
+    </div>
+
+  </footer>
+
+
+  <!-- CARRINHO -->
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay">
+
+    <div class="cart">
+
+      <button
+        class="close-cart"
+        onclick="fecharCarrinho()">
+
+        ×
+
+      </button>
+
+      <h2>
+        Seu carrinho
+      </h2>
+
+      <div id="cartItems">
+      </div>
+
+      <div class="cart-total">
+
+        <span>
+          Total:
+        </span>
+
+        <strong id="cartTotal">
+          R$ 0,00
+        </strong>
+
+      </div>
+
+      <button
+        class="checkout"
+        onclick="finalizarPedido()">
+
+        FINALIZAR PEDIDO
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    /*
+      PRODUTOS TEMPORÁRIOS
+
+      Depois vamos trocar isso pelo banco
+      de dados e pelo painel administrativo.
+    */
+
+    const produtos = [
+
+      {
+        id: 1,
+        nome: "Urban Runner Black",
+        categoria: "running",
+        preco: 149.90,
+        imagem:
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+      },
+
+      {
+        id: 2,
+        nome: "Street White",
+        categoria: "streetwear",
+        preco: 169.90,
+        imagem:
+          "https://images.unsplash.com/photo-1549298916-b41d501d3772"
+      },
+
+      {
+        id: 3,
+        nome: "Urban Classic",
+        categoria: "casual",
+        preco: 139.90,
+        imagem:
+          "https://images.unsplash.com/photo-1560769629-975ec94e6a86"
+      },
+
+      {
+        id: 4,
+        nome: "Runner Pro",
+        categoria: "running",
+        preco: 189.90,
+        imagem:
+          "https://images.unsplash.com/photo-1552346154-21d32810aba3"
+      }
+
+    ];
+
+
+    let carrinho = [];
+
+
+    function formatarPreco(valor) {
+
+      return valor.toLocaleString(
+        "pt-BR",
+        {
+          style: "currency",
+          currency: "BRL"
+        }
+      );
+
+    }
+
+
+    function mostrarProdutos() {
+
+      const container =
+        document.getElementById("products");
+
+      const busca =
+        document
+          .getElementById("searchInput")
+          .value
+          .toLowerCase();
+
+      const categoria =
+        document
+          .getElementById("categoryFilter")
+          .value;
+
+
+      const filtrados =
+        produtos.filter(produto => {
+
+          const nome =
+            produto.nome.toLowerCase();
+
+          const encontrouBusca =
+            nome.includes(busca);
+
+          const encontrouCategoria =
+            categoria === "todos" ||
+            produto.categoria === categoria;
+
+          return
+            encontrouBusca &&
+            encontrouCategoria;
+
+        });
+
+
+      container.innerHTML = "";
+
+
+      if (filtrados.length === 0) {
+
+        container.innerHTML = `
+
+          <p style="
+            grid-column:1/-1;
+            text-align:center;
+            color:#888;
+            padding:50px;
+          ">
+
+            Nenhum produto encontrado.
+
+          </p>
+
+        `;
+
+        return;
+
+      }
+
+
+      filtrados.forEach(produto => {
+
+        container.innerHTML += `
+
+          <article class="product">
+
+            <div class="product-image">
+
+              <img
+                src="${produto.imagem}"
+                alt="${produto.nome}"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <span class="category">
+
+                ${produto.categoria}
+
+              </span>
+
+              <h3 class="product-name">
+
+                ${produto.nome}
+
+              </h3>
+
+              <div class="price">
+
+                ${formatarPreco(produto.preco)}
+
+              </div>
+
+              <button
+                class="add-button"
+                onclick="adicionarCarrinho(${produto.id})">
+
+                ADICIONAR AO CARRINHO
+
+              </button>
+
+            </div>
+
+          </article>
+
+        `;
+
+      });
+
+    }
+
+
+    function adicionarCarrinho(id) {
+
+      const produto =
+        produtos.find(
+          item => item.id === id
+        );
+
+      carrinho.push(produto);
+
+      atualizarCarrinho();
+
+      abrirCarrinho();
+
+    }
+
+
+    function atualizarCarrinho() {
+
+      document
+        .getElementById("cartCount")
+        .innerText =
+        carrinho.length;
+
+
+      const container =
+        document.getElementById("cartItems");
+
+      container.innerHTML = "";
+
+
+      let total = 0;
+
+
+      carrinho.forEach(
+        (produto, index) => {
+
+          total += produto.preco;
+
+
+          container.innerHTML += `
+
+            <div class="cart-item">
+
+              <img
+                src="${produto.imagem}"
+                alt="${produto.nome}"
+              >
+
+              <div class="cart-item-info">
+
+                <h4>
+                  ${produto.nome}
+                </h4>
+
+                <p>
+                  ${formatarPreco(produto.preco)}
+                </p>
+
+                <button
+                  class="remove"
+                  onclick="removerCarrinho(${index})">
+
+                  Remover
+
+                </button>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+
+      document
+        .getElementById("cartTotal")
+        .innerText =
+        formatarPreco(total);
+
+    }
+
+
+    function removerCarrinho(index) {
+
+      carrinho.splice(index, 1);
+
+      atualizarCarrinho();
+
+    }
+
+
+    function abrirCarrinho() {
+
+      document
+        .getElementById("cartOverlay")
+        .classList
+        .add("active");
+
+    }
+
+
+    function fecharCarrinho() {
+
+      document
+        .getElementById("cartOverlay")
+        .classList
+        .remove("active");
+
+    }
+
+
+    function finalizarPedido() {
+
+      if (carrinho.length === 0) {
+
+        alert(
+          "Seu carrinho está vazio."
+        );
+
+        return;
+
+      }
+
+
+      let mensagem =
+        "Olá! Quero fazer um pedido na UrbanStep:%0A%0A";
+
+
+      carrinho.forEach(produto => {
+
+        mensagem +=
+          `👟 ${produto.nome} - ${formatarPreco(produto.preco)}%0A`;
+
+      });
+
+
+      const total =
+        carrinho.reduce(
+          (soma, produto) =>
+            soma + produto.preco,
+          0
+        );
+
+
+      mensagem +=
+        `%0A💰 Total: ${formatarPreco(total)}`;
+
+
+      /*
+        COLOQUE AQUI O WHATSAPP DA SUA LOJA.
+
+        Exemplo:
+
+        5561999999999
+
+        Não coloque:
+        +
+        espaços
+        parênteses
+        traços
+      */
+
+      const whatsapp =
+        "5561999999999";
+
+
+      window.open(
+        `https://wa.me/${whatsapp}?text=${mensagem}`,
+        "_blank"
+      );
+
+    }
+
+
+    mostrarProdutos();
+
+  </script>
+
+</body>
+
+</html>
