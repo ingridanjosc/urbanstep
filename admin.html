@@ -37,8 +37,6 @@
       display: none !important;
     }
 
-    /* LOGIN */
-
     #loginScreen {
       min-height: 100vh;
       display: flex;
@@ -133,8 +131,6 @@
       margin-top: 16px;
       font-size: 14px;
     }
-
-    /* ADMIN */
 
     header {
       height: 75px;
@@ -268,8 +264,6 @@
       border: 1px solid #333;
     }
 
-    /* PRODUTOS */
-
     .products-header {
       display: flex;
       justify-content: space-between;
@@ -398,8 +392,6 @@
 
 <body>
 
-<!-- LOGIN -->
-
 <section id="loginScreen">
 
   <div class="login-box">
@@ -448,8 +440,6 @@
 
 </section>
 
-
-<!-- PAINEL -->
 
 <section id="adminScreen" class="hidden">
 
@@ -557,7 +547,7 @@
         <label>Características</label>
         <textarea
           id="caracteristicas"
-          placeholder="Ex: Material premium, solado emborrachado, acabamento reforçado..."
+          placeholder="Ex: Material premium, solado emborrachado..."
         ></textarea>
       </div>
 
@@ -675,8 +665,6 @@ let existingMainImage = "";
 let existingImages = [];
 
 
-/* ELEMENTOS */
-
 const loginScreen =
   document.getElementById("loginScreen");
 
@@ -695,8 +683,6 @@ const loginMessage =
 const adminMessage =
   document.getElementById("adminMessage");
 
-
-/* VERIFICAR LOGIN */
 
 async function checkSession() {
 
@@ -775,6 +761,9 @@ loginForm.addEventListener(
       return;
 
     }
+
+    /* AQUI ESTÁ A PARTE NOVA */
+    alert("UID conectado: " + data.user.id);
 
     if (
       !data.user ||
@@ -1429,8 +1418,6 @@ window.deleteProduct =
   };
 
 
-/* CANCELAR EDIÇÃO */
-
 document
   .getElementById("cancelEdit")
   .addEventListener(
@@ -1478,8 +1465,6 @@ function resetForm() {
 }
 
 
-/* UTILIDADES */
-
 function formatMoney(value) {
 
   return Number(value || 0)
@@ -1505,8 +1490,6 @@ function escapeHTML(value) {
 
 }
 
-
-/* INICIAR */
 
 checkSession();
 
