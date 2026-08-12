@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Produto | URBANSTEP.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root {
+    --bg:#07080a;
+    --card:#101216;
+    --text:#f5f5f5;
+    --muted:#858b95;
+    --line:#22262d;
+    --blue:#234f87;
+    --blue-light:#3970b4;
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body {
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Inter",sans-serif;
+}
+
+a {
+    color:inherit;
+    text-decoration:none;
+}
+
+button {
+    font:inherit;
+    cursor:pointer;
+}
+
+/* HEADER */
+
+header {
+    height:76px;
+    padding:0 5%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    border-bottom:1px solid var(--line);
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    background:rgba(7,8,10,.96);
+    backdrop-filter:blur(14px);
+}
+
+.logo {
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:30px;
+    font-weight:900;
+}
+
+.logo span {
+    color:var(--blue-light);
+}
+
+.back {
+    font-size:11px;
+    color:#aaa;
+    transition:.2s;
+}
+
+.back:hover {
+    color:var(--blue-light);
+}
+
+/* CONTAINER */
+
+.product-page {
+    width:min(1250px,92%);
+    margin:60px auto 100px;
+
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+
+    gap:60px;
+}
+
+/* GALERIA */
+
+.gallery {
+    display:grid;
+    grid-template-columns:100px 1fr;
+    gap:15px;
+}
+
+.thumbs {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.thumb {
+    width:100%;
+    aspect-ratio:1/1;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    border:1px solid var(--line);
+
+    opacity:.65;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.thumb:hover,
+.thumb.active {
+    opacity:1;
+    border-color:var(--blue-light);
+}
+
+.main-image {
+    width:100%;
+    aspect-ratio:9/11;
+
+    object-fit:cover;
+
+    background:#111;
+
+    border-radius:18px;
+}
+
+/* INFO */
+
+.info {
+    padding-top:10px;
+}
+
+.brand {
+    color:var(--blue-light);
+
+    font-size:11px;
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    margin-bottom:10px;
+}
+
+h1 {
+    font-family:"Barlow Condensed",sans-serif;
+
+    font-size:clamp(48px,6vw,78px);
+
+    line-height:.9;
+
+    text-transform:uppercase;
+
+    margin-bottom:25px;
+}
+
+.price {
+    font-size:25px;
+    font-weight:800;
+
+    margin-bottom:6px;
+}
+
+.old-price {
+    color:#666;
+
+    font-size:14px;
+
+    text-decoration:line-through;
+
+    margin-right:9px;
+}
+
+.discount {
+    display:inline-block;
+
+    margin-left:8px;
+
+    padding:5px 9px;
+
+    border-radius:999px;
+
+    border:1px solid rgba(57,112,180,.45);
+
+    color:var(--blue-light);
+
+    font-size:10px;
+    font-weight:700;
+}
+
+.installments {
+    color:#8c929b;
+
+    font-size:12px;
+
+    margin-bottom:30px;
+}
+
+/* TAMANHO */
+
+.size-title {
+    font-size:11px;
+    letter-spacing:1.5px;
+
+    margin-bottom:12px;
+}
+
+.sizes {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+
+    margin-bottom:30px;
+}
+
+.size {
+    min-width:49px;
+    height:45px;
+
+    border-radius:12px;
+
+    border:1px solid #2b3038;
+
+    background:#101216;
+
+    color:white;
+
+    transition:.2s;
+}
+
+.size:hover {
+    border-color:var(--blue-light);
+}
+
+.size.selected {
+    background:var(--blue);
+    border-color:var(--blue);
+}
+
+/* BOTÕES */
+
+.buttons {
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+}
+
+.btn {
+    width:100%;
+
+    min-height:54px;
+
+    border-radius:999px;
+
+    border:none;
+
+    font-size:11px;
+    font-weight:800;
+
+    letter-spacing:1px;
+
+    transition:.25s;
+}
+
+.btn-cart {
+    background:#171a20;
+
+    border:1px solid #30353d;
+
+    color:white;
+}
+
+.btn-cart:hover {
+    border-color:var(--blue-light);
+}
+
+.btn-checkout {
+    background:white;
+    color:#08090b;
+}
+
+.btn-checkout:hover {
+    background:var(--blue);
+    color:white;
+}
+
+.btn-whatsapp {
+    background:#1fa855;
+    color:white;
+}
+
+.btn-whatsapp:hover {
+    filter:brightness(1.1);
+}
+
+/* INFO BOX */
+
+.product-details {
+    width:min(1250px,92%);
+
+    margin:0 auto 100px;
+}
+
+.detail-box {
+    border-top:1px solid var(--line);
+
+    padding:35px 0;
+}
+
+.detail-box h2 {
+    font-family:"Barlow Condensed",sans-serif;
+
+    font-size:29px;
+
+    text-transform:uppercase;
+
+    margin-bottom:15px;
+}
+
+.detail-box p {
+    color:#9399a2;
+
+    line-height:1.8;
+
+    font-size:13px;
+
+    white-space:pre-line;
+}
+
+/* SACOLA */
+
+.cart-overlay {
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.6);
+
+    display:none;
+
+    justify-content:flex-end;
+
+    z-index:1000;
+}
+
+.cart-overlay.active {
+    display:flex;
+}
+
+.cart {
+    width:420px;
+    max-width:92%;
+
+    height:100%;
+
+    background:#0c0e11;
+
+    padding:28px;
+
+    overflow:auto;
+}
+
+.cart-top {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.cart-top h2 {
+    font-family:"Barlow Condensed",sans-serif;
+
+    font-size:32px;
+}
+
+.close {
+    background:none;
+    border:none;
+
+    color:white;
+
+    font-size:28px;
+}
+
+.cart-item {
+    display:flex;
+    gap:12px;
+
+    border-bottom:1px solid var(--line);
+
+    padding:15px 0;
+}
+
+.cart-item img {
+    width:70px;
+    height:85px;
+
+    object-fit:cover;
+
+    border-radius:9px;
+}
+
+.cart-item h3 {
+    font-size:13px;
+
+    margin-bottom:5px;
+}
+
+.cart-item p {
+    color:#aaa;
+
+    font-size:11px;
+
+    margin-bottom:5px;
+}
+
+.cart-total {
+    display:flex;
+    justify-content:space-between;
+
+    margin:25px 0;
+
+    font-weight:800;
+}
+
+/* SACOLA HEADER */
+
+.cart-button {
+    border:none;
+    background:transparent;
+
+    color:white;
+
+    position:relative;
+}
+
+.cart-button svg {
+    width:22px;
+    height:22px;
+
+    stroke:currentColor;
+}
+
+.cart-count {
+    position:absolute;
+
+    right:-8px;
+    top:-8px;
+
+    width:17px;
+    height:17px;
+
+    border-radius:50%;
+
+    background:var(--blue-light);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:9px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px) {
+
+    .product-page {
+        grid-template-columns:1fr;
+
+        gap:35px;
+
+        margin-top:30px;
+    }
+
+    .gallery {
+        grid-template-columns:1fr;
+    }
+
+    .thumbs {
+        order:2;
+
+        flex-direction:row;
+
+        overflow-x:auto;
+    }
+
+    .thumb {
+        width:75px;
+        min-width:75px;
+    }
+
+    .main-image {
+        aspect-ratio:9/11;
+    }
+
+}
+
+@media(max-width:500px) {
+
+    header {
+        height:65px;
+    }
+
+    .logo {
+        font-size:24px;
+    }
+
+    h1 {
+        font-size:52px;
+    }
+
+    .product-page {
+        width:94%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="index.html" class="logo">
+        URBANSTEP<span>.</span>
+    </a>
+
+    <div style="display:flex;align-items:center;gap:25px;">
+
+        <a href="index.html#catalogo" class="back">
+            ← VOLTAR AO CATÁLOGO
+        </a>
+
+        <button class="cart-button" onclick="abrirSacola()">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7">
+
+                <path d="M5 8h14l-1 12H6L5 8Z"></path>
+
+                <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
+
+            </svg>
+
+            <span class="cart-count" id="cartCount">
+                0
+            </span>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<main id="productContainer">
+
+    <div style="padding:100px;text-align:center;color:#777;">
+        Carregando produto...
+    </div>
+
+</main>
+
+
+<section class="product-details" id="productDetails" style="display:none;">
+
+    <div class="detail-box">
+
+        <h2>Descrição</h2>
+
+        <p id="description"></p>
+
+    </div>
+
+
+    <div class="detail-box">
+
+        <h2>Características</h2>
+
+        <p id="features"></p>
+
+    </div>
+
+
+    <div class="detail-box">
+
+        <h2>Trocas e devoluções</h2>
+
+        <p>
+Você pode solicitar troca ou devolução em até 7 dias após o recebimento do produto.
+
+Entre em contato com nosso atendimento informando o número do pedido para iniciar a solicitação.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- SACOLA -->
+
+<div class="cart-overlay" id="cartOverlay">
+
+    <div class="cart">
+
+        <div class="cart-top">
+
+            <h2>SUA SACOLA</h2>
+
+            <button class="close" onclick="fecharSacola()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="cartItems"></div>
+
+        <div class="cart-total">
+
+            <span>Subtotal</span>
+
+            <span id="cartTotal">
+                R$ 0,00
+            </span>
+
+        </div>
+
+        <button class="btn btn-checkout" onclick="checkoutSacola()">
+            IR PARA CHECKOUT
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* SUPABASE */
+
+const SUPABASE_URL =
+    "https://gpovidqzqgttitsgelzm.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
+
+const { createClient } = supabase;
+
+const db =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+const whatsapp =
+    "5561996223295";
+
+
+let produtoAtual = null;
+
+let tamanhoSelecionado = null;
+
+
+/* PEGA ID */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const productId =
+    params.get("id");
+
+
+/* PREÇO */
+
+function money(value) {
+
+    return Number(value || 0)
+        .toLocaleString(
+            "pt-BR",
+            {
+                style:"currency",
+                currency:"BRL"
+            }
+        );
+
+}
+
+
+/* CARREGAR */
+
+async function carregarProduto() {
+
+    if (!productId) {
+
+        document.getElementById(
+            "productContainer"
+        ).innerHTML =
+            "<div style='padding:100px;text-align:center'>Produto não encontrado.</div>";
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } = await db
+        .from("produtos")
+        .select("*")
+        .eq("id", productId)
+        .eq("ativo", true)
+        .single();
+
+
+    if (error || !data) {
+
+        console.error(error);
+
+        document.getElementById(
+            "productContainer"
+        ).innerHTML =
+            "<div style='padding:100px;text-align:center'>Produto não encontrado.</div>";
+
+        return;
+
+    }
+
+
+    produtoAtual = data;
+
+    renderProduto();
+
+}
+
+
+/* IMAGENS */
+
+function getImages() {
+
+    let outras = [];
+
+    try {
+
+        outras =
+            produtoAtual.imagens
+                ? JSON.parse(produtoAtual.imagens)
+                : [];
+
+    } catch {
+
+        outras = [];
+
+    }
+
+
+    return [
+
+        produtoAtual.imagem_principal,
+
+        ...outras
+
+    ].filter(Boolean);
+
+}
+
+
+/* RENDER */
+
+function renderProduto() {
+
+    const imagens =
+        getImages();
+
+
+    const preco =
+        Number(produtoAtual.preco || 0);
+
+
+    const promo =
+        produtoAtual.preco_promocional
+            ? Number(produtoAtual.preco_promocional)
+            : null;
+
+
+    const final =
+        promo || preco;
+
+
+    const tamanhos =
+        String(produtoAtual.tamanhos || "")
+            .split(",")
+            .map(t => t.trim())
+            .filter(Boolean);
+
+
+    let priceHTML;
+
+
+    if (
+        promo &&
+        promo < preco
+    ) {
+
+        priceHTML = `
+
+            <span class="old-price">
+                ${money(preco)}
+            </span>
+
+            ${money(promo)}
+
+            ${
+                produtoAtual.desconto
+                    ? `<span class="discount">${produtoAtual.desconto}% OFF</span>`
+                    : ""
+            }
+
+        `;
+
+    } else {
+
+        priceHTML =
+            money(final);
+
+    }
+
+
+    document.getElementById(
+        "productContainer"
+    ).innerHTML = `
+
+        <section class="product-page">
+
+            <div class="gallery">
+
+                <div class="thumbs">
+
+                    ${imagens.map(
+                        (img,index) => `
+
+                        <img
+                            class="thumb ${index === 0 ? "active" : ""}"
+                            src="${img}"
+                            onclick="trocarImagem(this)"
+                        >
+
+                    `).join("")}
+
+                </div>
+
+
+                <img
+                    class="main-image"
+                    id="mainImage"
+                    src="${imagens[0]}"
+                    alt="${produtoAtual.nome}"
+                >
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="brand">
+
+                    ${produtoAtual.marca || ""}
+
+                </div>
+
+
+                <h1>
+
+                    ${produtoAtual.nome || ""}
+
+                </h1>
+
+
+                <div class="price">
+
+                    ${priceHTML}
+
+                </div>
+
+
+                ${
+                    produtoAtual.parcelamento
+                    ? `
+
+                    <div class="installments">
+
+                        ${produtoAtual.parcelamento}
+
+                    </div>
+
+                    `
+                    : ""
+                }
+
+
+                ${
+                    tamanhos.length
+                    ? `
+
+                    <div class="size-title">
+
+                        ESCOLHA O TAMANHO
+
+                    </div>
+
+
+                    <div class="sizes">
+
+                        ${tamanhos.map(
+                            t => `
+
+                            <button
+                                class="size"
+                                onclick="selecionarTamanho(this,'${t}')"
+                            >
+
+                                ${t}
+
+                            </button>
+
+                        `).join("")}
+
+                    </div>
+
+                    `
+                    : ""
+                }
+
+
+                <div class="buttons">
+
+                    <button
+                        class="btn btn-cart"
+                        onclick="adicionarSacola()"
+                    >
+
+                        ADICIONAR À SACOLA
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-checkout"
+                        onclick="comprarAgora()"
+                    >
+
+                        COMPRAR AGORA →
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-whatsapp"
+                        onclick="comprarWhatsApp()"
+                    >
+
+                        COMPRAR PELO WHATSAPP
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    `;
+
+
+    document.getElementById(
+        "description"
+    ).textContent =
+        produtoAtual.descricao ||
+        "Consulte as informações deste produto com nosso atendimento.";
+
+
+    document.getElementById(
+        "features"
+    ).textContent =
+        produtoAtual.caracteristicas ||
+        "Produto selecionado pela UrbanStep.";
+
+
+    document.getElementById(
+        "productDetails"
+    ).style.display =
+        "block";
+
+
+    atualizarSacola();
+
+}
+
+
+/* TROCAR IMAGEM */
+
+function trocarImagem(el) {
+
+    document.getElementById(
+        "mainImage"
+    ).src =
+        el.src;
+
+
+    document
+        .querySelectorAll(".thumb")
+        .forEach(
+            thumb =>
+                thumb.classList.remove(
+                    "active"
+                )
+        );
+
+
+    el.classList.add(
+        "active"
+    );
+
+}
+
+
+/* TAMANHO */
+
+function selecionarTamanho(
+    botao,
+    tamanho
+) {
+
+    tamanhoSelecionado =
+        tamanho;
+
+
+    document
+        .querySelectorAll(".size")
+        .forEach(
+            item =>
+                item.classList.remove(
+                    "selected"
+                )
+        );
+
+
+    botao.classList.add(
+        "selected"
+    );
+
+}
+
+
+/* VERIFICAR TAMANHO */
+
+function validarTamanho() {
+
+    const possuiTamanhos =
+        String(
+            produtoAtual.tamanhos ||
+            ""
+        )
+        .trim();
+
+
+    if (
+        possuiTamanhos &&
+        !tamanhoSelecionado
+    ) {
+
+        alert(
+            "Escolha um tamanho antes de continuar."
+        );
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* SACOLA */
+
+function getCart() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "urbanstep_cart"
+            )
+        ) || [];
+
+    } catch {
+
+        return [];
+
+    }
+
+}
+
+
+function saveCart(cart) {
+
+    localStorage.setItem(
+        "urbanstep_cart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+function adicionarSacola() {
+
+    if (!validarTamanho()) {
+        return;
+    }
+
+
+    const cart =
+        getCart();
+
+
+    const preco =
+        produtoAtual.preco_promocional ||
+        produtoAtual.preco;
+
+
+    cart.push({
+
+        id:
+            produtoAtual.id,
+
+        nome:
+            produtoAtual.nome,
+
+        marca:
+            produtoAtual.marca,
+
+        imagem:
+            produtoAtual.imagem_principal,
+
+        preco:
+            Number(preco),
+
+        tamanho:
+            tamanhoSelecionado,
+
+        quantidade:
+            1
+
+    });
+
+
+    saveCart(cart);
+
+    atualizarSacola();
+
+    abrirSacola();
+
+}
+
+
+/* ATUALIZAR SACOLA */
+
+function atualizarSacola() {
+
+    const cart =
+        getCart();
+
+
+    document.getElementById(
+        "cartCount"
+    ).textContent =
+        cart.length;
+
+
+    const box =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    if (!cart.length) {
+
+        box.innerHTML = `
+
+            <p style="color:#777;font-size:13px;">
+
+                Sua sacola está vazia.
+
+            </p>
+
+        `;
+
+        document.getElementById(
+            "cartTotal"
+        ).textContent =
+            money(0);
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    box.innerHTML =
+        cart.map(
+            (item,index) => {
+
+                total +=
+                    Number(
+                        item.preco
+                    );
+
+
+                return `
+
+                <div class="cart-item">
+
+                    <img src="${item.imagem}">
+
+
+                    <div style="flex:1;">
+
+                        <h3>
+                            ${item.nome}
+                        </h3>
+
+                        <p>
+                            ${item.marca}
+                        </p>
+
+                        <p>
+                            Tamanho:
+                            ${item.tamanho || "-"}
+                        </p>
+
+                        <strong>
+                            ${money(item.preco)}
+                        </strong>
+
+
+                        <button
+                            onclick="removerSacola(${index})"
+                            style="
+                                display:block;
+                                margin-top:7px;
+                                border:none;
+                                background:none;
+                                color:#ff7777;
+                                font-size:10px;
+                            "
+                        >
+
+                            REMOVER
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+
+    document.getElementById(
+        "cartTotal"
+    ).textContent =
+        money(total);
+
+}
+
+
+/* REMOVER */
+
+function removerSacola(index) {
+
+    const cart =
+        getCart();
+
+
+    cart.splice(
+        index,
+        1
+    );
+
+
+    saveCart(cart);
+
+    atualizarSacola();
+
+}
+
+
+/* ABRIR SACOLA */
+
+function abrirSacola() {
+
+    document.getElementById(
+        "cartOverlay"
+    ).classList.add(
+        "active"
+    );
+
+}
+
+
+function fecharSacola() {
+
+    document.getElementById(
+        "cartOverlay"
+    ).classList.remove(
+        "active"
+    );
+
+}
+
+
+/* WHATSAPP */
+
+function comprarWhatsApp() {
+
+    if (!validarTamanho()) {
+        return;
+    }
+
+
+    const preco =
+        produtoAtual.preco_promocional ||
+        produtoAtual.preco;
+
+
+    const mensagem =
+        encodeURIComponent(
+
+            `Olá! Tenho interesse neste produto da UrbanStep:
+
+${produtoAtual.marca} ${produtoAtual.nome}
+
+Tamanho: ${tamanhoSelecionado || "Não informado"}
+
+Preço: ${money(preco)}`
+
+        );
+
+
+    window.open(
+        `https://wa.me/${whatsapp}?text=${mensagem}`,
+        "_blank"
+    );
+
+}
+
+
+/* ===================================
+   CHECKOUT INFINITEPAY
+=================================== */
+
+async function comprarAgora() {
+
+    if (!validarTamanho()) {
+        return;
+    }
+
+
+    /*
+      Na próxima etapa criaremos
+      esta Edge Function no Supabase.
+    */
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${SUPABASE_URL}/functions/v1/criar-checkout`,
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+
+                        "Content-Type":
+                            "application/json",
+
+                        "apikey":
+                            SUPABASE_KEY
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            produto_id:
+                                produtoAtual.id,
+
+                            tamanho:
+                                tamanhoSelecionado,
+
+                            quantidade:
+                                1
+
+                        })
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Não foi possível gerar o checkout."
+            );
+
+        }
+
+
+        if (!data.url) {
+
+            throw new Error(
+                "A InfinitePay não retornou o link de pagamento."
+            );
+
+        }
+
+
+        window.location.href =
+            data.url;
+
+
+    } catch(error) {
+
+        console.error(error);
+
+
+        alert(
+
+            "O checkout ainda está sendo configurado. " +
+            "Você pode finalizar pelo WhatsApp enquanto isso."
+
+        );
+
+    }
+
+}
+
+
+/* CHECKOUT DA SACOLA */
+
+async function checkoutSacola() {
+
+    const cart =
+        getCart();
+
+
+    if (!cart.length) {
+
+        alert(
+            "Sua sacola está vazia."
+        );
+
+        return;
+
+    }
+
+
+    /*
+      Vamos conectar esta parte à
+      InfinitePay logo depois.
+    */
+
+    alert(
+        "Agora vamos conectar sua sacola ao checkout da InfinitePay."
+    );
+
+}
+
+
+/* INICIAR */
+
+carregarProduto();
+
+atualizarSacola();
+
+</script>
+
+</body>
+</html>
