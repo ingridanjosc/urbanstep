@@ -37,6 +37,8 @@
       display: none !important;
     }
 
+    /* LOGIN */
+
     #loginScreen {
       min-height: 100vh;
       display: flex;
@@ -131,6 +133,8 @@
       margin-top: 16px;
       font-size: 14px;
     }
+
+    /* ADMIN */
 
     header {
       height: 75px;
@@ -264,6 +268,8 @@
       border: 1px solid #333;
     }
 
+    /* PRODUTOS */
+
     .products-header {
       display: flex;
       justify-content: space-between;
@@ -343,6 +349,7 @@
     .status {
       display: inline-block;
       margin-top: 8px;
+      margin-right: 5px;
       padding: 5px 8px;
       border-radius: 999px;
       background: #161616;
@@ -392,6 +399,8 @@
 
 <body>
 
+<!-- LOGIN -->
+
 <section id="loginScreen">
 
   <div class="login-box">
@@ -440,6 +449,8 @@
 
 </section>
 
+
+<!-- ADMIN -->
 
 <section id="adminScreen" class="hidden">
 
@@ -547,7 +558,7 @@
         <label>Características</label>
         <textarea
           id="caracteristicas"
-          placeholder="Ex: Material premium, solado emborrachado..."
+          placeholder="Ex: Material premium, solado emborrachado, acabamento reforçado..."
         ></textarea>
       </div>
 
@@ -642,6 +653,10 @@
 
 <script>
 
+/* =========================
+   SUPABASE
+========================= */
+
 const SUPABASE_URL =
   "https://gpovidqzqgttitsgelzm.supabase.co";
 
@@ -655,8 +670,13 @@ const db = createClient(
   SUPABASE_KEY
 );
 
+
+/*
+  UID CORRETO DA CONTA ADMIN
+*/
+
 const ADMIN_UID =
-  "5b833b0a-b41b-4a5f-af70-5937ad298ab2";
+  "5b83bb0a-b41b-4a5f-af70-5937ad298ab2";
 
 
 let editingId = null;
@@ -664,6 +684,10 @@ let editingId = null;
 let existingMainImage = "";
 let existingImages = [];
 
+
+/* =========================
+   ELEMENTOS
+========================= */
 
 const loginScreen =
   document.getElementById("loginScreen");
@@ -684,6 +708,10 @@ const adminMessage =
   document.getElementById("adminMessage");
 
 
+/* =========================
+   SESSÃO
+========================= */
+
 async function checkSession() {
 
   const {
@@ -692,6 +720,7 @@ async function checkSession() {
 
   if (
     session &&
+    session.user &&
     session.user.id === ADMIN_UID
   ) {
 
@@ -705,24 +734,30 @@ async function checkSession() {
 
 }
 
+
 function showAdmin() {
 
   loginScreen.classList.add("hidden");
+
   adminScreen.classList.remove("hidden");
 
   loadProducts();
 
 }
 
+
 function showLogin() {
 
   adminScreen.classList.add("hidden");
+
   loginScreen.classList.remove("hidden");
 
 }
 
 
-/* LOGIN */
+/* =========================
+   LOGIN
+========================= */
 
 loginForm.addEventListener(
   "submit",
@@ -736,11 +771,19 @@ loginForm.addEventListener(
     loginMessage.style.color =
       "#aaa";
 
+
     const email =
-      document.getElementById("email").value.trim();
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
 
     const password =
-      document.getElementById("password").value;
+      document
+        .getElementById("password")
+        .value;
+
 
     const {
       data,
@@ -750,7 +793,10 @@ loginForm.addEventListener(
       password
     });
 
+
     if (error) {
+
+      console.error(error);
 
       loginMessage.textContent =
         "E-mail ou senha incorretos.";
@@ -762,8 +808,6 @@ loginForm.addEventListener(
 
     }
 
-    /* AQUI ESTÁ A PARTE NOVA */
-    alert("UID conectado: " + data.user.id);
 
     if (
       !data.user ||
@@ -782,6 +826,7 @@ loginForm.addEventListener(
 
     }
 
+
     loginMessage.textContent = "";
 
     showAdmin();
@@ -790,7 +835,9 @@ loginForm.addEventListener(
 );
 
 
-/* LOGOUT */
+/* =========================
+   LOGOUT
+========================= */
 
 document
   .getElementById("logoutBtn")
@@ -806,7 +853,9 @@ document
   );
 
 
-/* PREVIEW */
+/* =========================
+   PREVIEW PRINCIPAL
+========================= */
 
 document
   .getElementById("imagemPrincipal")
@@ -815,23 +864,33 @@ document
     function () {
 
       const preview =
-        document.getElementById("principalPreview");
+        document.getElementById(
+          "principalPreview"
+        );
 
       preview.innerHTML = "";
 
-      if (!this.files[0]) return;
+      if (!this.files[0]) {
+        return;
+      }
 
       const img =
         document.createElement("img");
 
       img.src =
-        URL.createObjectURL(this.files[0]);
+        URL.createObjectURL(
+          this.files[0]
+        );
 
       preview.appendChild(img);
 
     }
   );
 
+
+/* =========================
+   PREVIEW OUTRAS
+========================= */
 
 document
   .getElementById("outrasImagens")
@@ -840,35 +899,45 @@ document
     function () {
 
       const preview =
-        document.getElementById("outrasPreview");
+        document.getElementById(
+          "outrasPreview"
+        );
 
       preview.innerHTML = "";
 
-      [...this.files].forEach(file => {
+      [...this.files]
+        .forEach(file => {
 
-        const img =
-          document.createElement("img");
+          const img =
+            document.createElement("img");
 
-        img.src =
-          URL.createObjectURL(file);
+          img.src =
+            URL.createObjectURL(file);
 
-        preview.appendChild(img);
+          preview.appendChild(img);
 
-      });
+        });
 
     }
   );
 
 
-/* UPLOAD */
+/* =========================
+   UPLOAD DE IMAGEM
+========================= */
 
 async function uploadImage(file) {
 
   const extension =
-    file.name.split(".").pop();
+    file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
 
   const fileName =
     `${Date.now()}-${crypto.randomUUID()}.${extension}`;
+
 
   const {
     error
@@ -883,9 +952,11 @@ async function uploadImage(file) {
       }
     );
 
+
   if (error) {
     throw error;
   }
+
 
   const {
     data
@@ -893,12 +964,15 @@ async function uploadImage(file) {
     .from("produtos")
     .getPublicUrl(fileName);
 
+
   return data.publicUrl;
 
 }
 
 
-/* CADASTRAR / EDITAR */
+/* =========================
+   CADASTRAR / EDITAR
+========================= */
 
 productForm.addEventListener(
   "submit",
@@ -906,133 +980,189 @@ productForm.addEventListener(
 
     e.preventDefault();
 
+
     const saveBtn =
-      document.getElementById("saveBtn");
+      document.getElementById(
+        "saveBtn"
+      );
+
 
     saveBtn.disabled = true;
+
 
     adminMessage.style.color =
       "#aaa";
 
+
     adminMessage.textContent =
       "Salvando produto...";
+
 
     try {
 
       const mainFile =
-        document.getElementById(
-          "imagemPrincipal"
-        ).files[0];
+        document
+          .getElementById(
+            "imagemPrincipal"
+          )
+          .files[0];
+
 
       const extraFiles =
         [
-          ...document.getElementById(
-            "outrasImagens"
-          ).files
+          ...document
+            .getElementById(
+              "outrasImagens"
+            )
+            .files
         ];
+
 
       let mainImage =
         existingMainImage;
 
+
       if (mainFile) {
+
         mainImage =
-          await uploadImage(mainFile);
+          await uploadImage(
+            mainFile
+          );
+
       }
 
+
       if (!mainImage) {
+
         throw new Error(
           "Escolha uma imagem principal."
         );
+
       }
+
 
       let extraImages =
         [...existingImages];
 
-      for (const file of extraFiles) {
+
+      for (
+        const file of extraFiles
+      ) {
 
         const url =
-          await uploadImage(file);
+          await uploadImage(
+            file
+          );
 
         extraImages.push(url);
 
       }
 
+
       const product = {
 
         nome:
-          document.getElementById(
-            "nome"
-          ).value.trim(),
+          document
+            .getElementById("nome")
+            .value
+            .trim(),
 
         marca:
-          document.getElementById(
-            "marca"
-          ).value.trim(),
+          document
+            .getElementById("marca")
+            .value
+            .trim(),
 
         preco:
           Number(
-            document.getElementById(
-              "preco"
-            ).value
+            document
+              .getElementById("preco")
+              .value
           ),
 
         preco_promocional:
-          document.getElementById(
-            "precoPromocional"
-          ).value
+          document
+            .getElementById(
+              "precoPromocional"
+            )
+            .value
             ? Number(
-                document.getElementById(
-                  "precoPromocional"
-                ).value
+                document
+                  .getElementById(
+                    "precoPromocional"
+                  )
+                  .value
               )
             : null,
 
         desconto:
-          document.getElementById(
-            "desconto"
-          ).value
+          document
+            .getElementById(
+              "desconto"
+            )
+            .value
             ? Number(
-                document.getElementById(
-                  "desconto"
-                ).value
+                document
+                  .getElementById(
+                    "desconto"
+                  )
+                  .value
               )
             : null,
 
         parcelamento:
-          document.getElementById(
-            "parcelamento"
-          ).value.trim(),
+          document
+            .getElementById(
+              "parcelamento"
+            )
+            .value
+            .trim(),
 
         descricao:
-          document.getElementById(
-            "descricao"
-          ).value.trim(),
+          document
+            .getElementById(
+              "descricao"
+            )
+            .value
+            .trim(),
 
         caracteristicas:
-          document.getElementById(
-            "caracteristicas"
-          ).value.trim(),
+          document
+            .getElementById(
+              "caracteristicas"
+            )
+            .value
+            .trim(),
 
         tamanhos:
-          document.getElementById(
-            "tamanhos"
-          ).value.trim(),
+          document
+            .getElementById(
+              "tamanhos"
+            )
+            .value
+            .trim(),
 
         imagem_principal:
           mainImage,
 
         imagens:
-          JSON.stringify(extraImages),
+          JSON.stringify(
+            extraImages
+          ),
 
         lancamento:
-          document.getElementById(
-            "lancamento"
-          ).checked,
+          document
+            .getElementById(
+              "lancamento"
+            )
+            .checked,
 
         ativo:
-          document.getElementById(
-            "ativo"
-          ).checked
+          document
+            .getElementById(
+              "ativo"
+            )
+            .checked
 
       };
 
@@ -1045,7 +1175,10 @@ productForm.addEventListener(
         result = await db
           .from("produtos")
           .update(product)
-          .eq("id", editingId);
+          .eq(
+            "id",
+            editingId
+          );
 
       } else {
 
@@ -1057,12 +1190,15 @@ productForm.addEventListener(
 
 
       if (result.error) {
+
         throw result.error;
+
       }
 
 
       adminMessage.style.color =
         "#6ee7a8";
+
 
       adminMessage.textContent =
         editingId
@@ -1079,11 +1215,15 @@ productForm.addEventListener(
 
       console.error(error);
 
+
       adminMessage.style.color =
         "#ff6868";
 
+
       adminMessage.textContent =
-        "Erro: " + error.message;
+        "Erro: " +
+        error.message;
+
 
     } finally {
 
@@ -1095,12 +1235,17 @@ productForm.addEventListener(
 );
 
 
-/* CARREGAR PRODUTOS */
+/* =========================
+   CARREGAR PRODUTOS
+========================= */
 
 async function loadProducts() {
 
   const productsBox =
-    document.getElementById("products");
+    document.getElementById(
+      "products"
+    );
+
 
   productsBox.innerHTML =
     "Carregando...";
@@ -1114,32 +1259,40 @@ async function loadProducts() {
     .select("*")
     .order(
       "created_at",
-      { ascending: false }
+      {
+        ascending: false
+      }
     );
 
 
   if (error) {
 
+    console.error(error);
+
     productsBox.innerHTML =
       "Não foi possível carregar os produtos.";
-
-    console.error(error);
 
     return;
 
   }
 
 
-  document.getElementById(
-    "productCount"
-  ).textContent =
-    `${data.length} produto(s)`;
+  document
+    .getElementById(
+      "productCount"
+    )
+    .textContent =
+      `${data.length} produto(s)`;
 
 
   if (!data.length) {
 
     productsBox.innerHTML =
-      "<p style='color:#777'>Nenhum produto cadastrado ainda.</p>";
+      `
+        <p style="color:#777">
+          Nenhum produto cadastrado ainda.
+        </p>
+      `;
 
     return;
 
@@ -1149,89 +1302,118 @@ async function loadProducts() {
   productsBox.innerHTML = "";
 
 
-  data.forEach(product => {
+  data.forEach(
+    product => {
 
-    const card =
-      document.createElement("article");
-
-    card.className =
-      "product";
-
-
-    const price =
-      product.preco_promocional ||
-      product.preco;
+      const card =
+        document.createElement(
+          "article"
+        );
 
 
-    card.innerHTML = `
+      card.className =
+        "product";
 
-      <div class="product-image">
 
-        <img
-          src="${escapeHTML(product.imagem_principal || "")}"
-          alt=""
-        >
+      const price =
+        product.preco_promocional ||
+        product.preco;
 
-      </div>
 
-      <div class="product-info">
+      card.innerHTML = `
 
-        <div class="brand">
-          ${escapeHTML(product.marca || "")}
-        </div>
+        <div class="product-image">
 
-        <h3>
-          ${escapeHTML(product.nome || "")}
-        </h3>
-
-        <div class="price">
-          ${formatMoney(price)}
-        </div>
-
-        ${
-          product.lancamento
-            ? `<span class="status">LANÇAMENTO</span>`
-            : ""
-        }
-
-        ${
-          !product.ativo
-            ? `<span class="status">INATIVO</span>`
-            : ""
-        }
-
-        <div
-          class="product-buttons"
-          style="margin-top:15px;"
-        >
-
-          <button
-            onclick="editProduct(${product.id})"
+          <img
+            src="${escapeHTML(
+              product.imagem_principal ||
+              ""
+            )}"
+            alt="${escapeHTML(
+              product.nome ||
+              ""
+            )}"
           >
-            Editar
-          </button>
-
-          <button
-            class="delete"
-            onclick="deleteProduct(${product.id})"
-          >
-            Excluir
-          </button>
 
         </div>
 
-      </div>
+        <div class="product-info">
 
-    `;
+          <div class="brand">
+            ${escapeHTML(
+              product.marca ||
+              ""
+            )}
+          </div>
 
-    productsBox.appendChild(card);
+          <h3>
+            ${escapeHTML(
+              product.nome ||
+              ""
+            )}
+          </h3>
 
-  });
+          <div class="price">
+            ${formatMoney(price)}
+          </div>
+
+          ${
+            product.lancamento
+              ? `
+                <span class="status">
+                  LANÇAMENTO
+                </span>
+              `
+              : ""
+          }
+
+          ${
+            !product.ativo
+              ? `
+                <span class="status">
+                  INATIVO
+                </span>
+              `
+              : ""
+          }
+
+          <div
+            class="product-buttons"
+            style="margin-top:15px;"
+          >
+
+            <button
+              onclick="editProduct(${product.id})"
+            >
+              Editar
+            </button>
+
+            <button
+              class="delete"
+              onclick="deleteProduct(${product.id})"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      productsBox
+        .appendChild(card);
+
+    }
+  );
 
 }
 
 
-/* EDITAR */
+/* =========================
+   EDITAR PRODUTO
+========================= */
 
 window.editProduct =
   async function (id) {
@@ -1248,6 +1430,8 @@ window.editProduct =
 
     if (error) {
 
+      console.error(error);
+
       alert(
         "Não foi possível carregar o produto."
       );
@@ -1257,16 +1441,22 @@ window.editProduct =
     }
 
 
-    editingId = data.id;
+    editingId =
+      data.id;
+
 
     existingMainImage =
-      data.imagem_principal || "";
+      data.imagem_principal ||
+      "";
+
 
     try {
 
       existingImages =
         data.imagens
-          ? JSON.parse(data.imagens)
+          ? JSON.parse(
+              data.imagens
+            )
           : [];
 
     } catch {
@@ -1276,60 +1466,91 @@ window.editProduct =
     }
 
 
-    document.getElementById(
-      "nome"
-    ).value =
-      data.nome || "";
+    document
+      .getElementById("nome")
+      .value =
+        data.nome || "";
 
-    document.getElementById(
-      "marca"
-    ).value =
-      data.marca || "";
 
-    document.getElementById(
-      "preco"
-    ).value =
-      data.preco ?? "";
+    document
+      .getElementById("marca")
+      .value =
+        data.marca || "";
 
-    document.getElementById(
-      "precoPromocional"
-    ).value =
-      data.preco_promocional ?? "";
 
-    document.getElementById(
-      "desconto"
-    ).value =
-      data.desconto ?? "";
+    document
+      .getElementById("preco")
+      .value =
+        data.preco ?? "";
 
-    document.getElementById(
-      "parcelamento"
-    ).value =
-      data.parcelamento || "";
 
-    document.getElementById(
-      "descricao"
-    ).value =
-      data.descricao || "";
+    document
+      .getElementById(
+        "precoPromocional"
+      )
+      .value =
+        data.preco_promocional ??
+        "";
 
-    document.getElementById(
-      "caracteristicas"
-    ).value =
-      data.caracteristicas || "";
 
-    document.getElementById(
-      "tamanhos"
-    ).value =
-      data.tamanhos || "";
+    document
+      .getElementById(
+        "desconto"
+      )
+      .value =
+        data.desconto ?? "";
 
-    document.getElementById(
-      "lancamento"
-    ).checked =
-      !!data.lancamento;
 
-    document.getElementById(
-      "ativo"
-    ).checked =
-      !!data.ativo;
+    document
+      .getElementById(
+        "parcelamento"
+      )
+      .value =
+        data.parcelamento ||
+        "";
+
+
+    document
+      .getElementById(
+        "descricao"
+      )
+      .value =
+        data.descricao ||
+        "";
+
+
+    document
+      .getElementById(
+        "caracteristicas"
+      )
+      .value =
+        data.caracteristicas ||
+        "";
+
+
+    document
+      .getElementById(
+        "tamanhos"
+      )
+      .value =
+        data.tamanhos ||
+        "";
+
+
+    document
+      .getElementById(
+        "lancamento"
+      )
+      .checked =
+        !!data.lancamento;
+
+
+    document
+      .getElementById(
+        "ativo"
+      )
+      .checked =
+        !!data.ativo;
 
 
     const principalPreview =
@@ -1337,9 +1558,16 @@ window.editProduct =
         "principalPreview"
       );
 
+
     principalPreview.innerHTML =
       existingMainImage
-        ? `<img src="${escapeHTML(existingMainImage)}">`
+        ? `
+          <img
+            src="${escapeHTML(
+              existingMainImage
+            )}"
+          >
+        `
         : "";
 
 
@@ -1348,28 +1576,44 @@ window.editProduct =
         "outrasPreview"
       );
 
+
     outrasPreview.innerHTML =
       existingImages
         .map(
           url =>
-            `<img src="${escapeHTML(url)}">`
+            `
+              <img
+                src="${escapeHTML(
+                  url
+                )}"
+              >
+            `
         )
         .join("");
 
 
-    document.getElementById(
-      "formTitle"
-    ).textContent =
-      "Editar produto";
+    document
+      .getElementById(
+        "formTitle"
+      )
+      .textContent =
+        "Editar produto";
 
-    document.getElementById(
-      "saveBtn"
-    ).textContent =
-      "SALVAR ALTERAÇÕES";
 
-    document.getElementById(
-      "cancelEdit"
-    ).classList.remove("hidden");
+    document
+      .getElementById(
+        "saveBtn"
+      )
+      .textContent =
+        "SALVAR ALTERAÇÕES";
+
+
+    document
+      .getElementById(
+        "cancelEdit"
+      )
+      .classList
+      .remove("hidden");
 
 
     window.scrollTo({
@@ -1380,7 +1624,9 @@ window.editProduct =
   };
 
 
-/* EXCLUIR */
+/* =========================
+   EXCLUIR PRODUTO
+========================= */
 
 window.deleteProduct =
   async function (id) {
@@ -1390,7 +1636,10 @@ window.deleteProduct =
         "Tem certeza que deseja excluir este produto?"
       );
 
-    if (!confirmation) return;
+
+    if (!confirmation) {
+      return;
+    }
 
 
     const {
@@ -1398,10 +1647,15 @@ window.deleteProduct =
     } = await db
       .from("produtos")
       .delete()
-      .eq("id", id);
+      .eq(
+        "id",
+        id
+      );
 
 
     if (error) {
+
+      console.error(error);
 
       alert(
         "Erro ao excluir: " +
@@ -1418,8 +1672,14 @@ window.deleteProduct =
   };
 
 
+/* =========================
+   CANCELAR EDIÇÃO
+========================= */
+
 document
-  .getElementById("cancelEdit")
+  .getElementById(
+    "cancelEdit"
+  )
   .addEventListener(
     "click",
     resetForm
@@ -1430,17 +1690,27 @@ function resetForm() {
 
   productForm.reset();
 
-  document.getElementById(
-    "ativo"
-  ).checked = true;
 
-  document.getElementById(
-    "principalPreview"
-  ).innerHTML = "";
+  document
+    .getElementById(
+      "ativo"
+    )
+    .checked = true;
 
-  document.getElementById(
-    "outrasPreview"
-  ).innerHTML = "";
+
+  document
+    .getElementById(
+      "principalPreview"
+    )
+    .innerHTML = "";
+
+
+  document
+    .getElementById(
+      "outrasPreview"
+    )
+    .innerHTML = "";
+
 
   editingId = null;
 
@@ -1448,36 +1718,55 @@ function resetForm() {
 
   existingImages = [];
 
-  document.getElementById(
-    "formTitle"
-  ).textContent =
-    "Cadastrar produto";
 
-  document.getElementById(
-    "saveBtn"
-  ).textContent =
-    "CADASTRAR PRODUTO";
+  document
+    .getElementById(
+      "formTitle"
+    )
+    .textContent =
+      "Cadastrar produto";
 
-  document.getElementById(
-    "cancelEdit"
-  ).classList.add("hidden");
+
+  document
+    .getElementById(
+      "saveBtn"
+    )
+    .textContent =
+      "CADASTRAR PRODUTO";
+
+
+  document
+    .getElementById(
+      "cancelEdit"
+    )
+    .classList
+    .add("hidden");
 
 }
 
+
+/* =========================
+   FORMATAR PREÇO
+========================= */
 
 function formatMoney(value) {
 
-  return Number(value || 0)
-    .toLocaleString(
-      "pt-BR",
-      {
-        style: "currency",
-        currency: "BRL"
-      }
-    );
+  return Number(
+    value || 0
+  ).toLocaleString(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL"
+    }
+  );
 
 }
 
+
+/* =========================
+   SEGURANÇA HTML
+========================= */
 
 function escapeHTML(value) {
 
@@ -1490,6 +1779,10 @@ function escapeHTML(value) {
 
 }
 
+
+/* =========================
+   INICIAR
+========================= */
 
 checkSession();
 
