@@ -4,22 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="UrbanStep — tênis premium e exclusivos.">
+
 <title>URBANSTEP.</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 :root {
-    --bg: #08090b;
-    --bg-soft: #101216;
-    --card: #111318;
-    --text: #f5f5f5;
-    --muted: #8d929b;
+    --bg: #07080a;
+    --bg-soft: #0d0f13;
+    --card: #101216;
+    --text: #f4f4f4;
+    --muted: #898e97;
     --line: #20242b;
-    --blue: #315b91;
-    --blue-light: #4b78b4;
+
+    /* AZUL URBANSTEP */
+    --blue: #234f87;
+    --blue-light: #3970b4;
+
     --white: #ffffff;
 }
 
@@ -40,6 +50,11 @@ body {
     overflow-x: hidden;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 button,
 input {
     font: inherit;
@@ -49,53 +64,63 @@ button {
     cursor: pointer;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-/* =========================
+/* ===================================
    HEADER
-========================= */
+=================================== */
 
 .header {
     width: 100%;
-    height: 82px;
+    height: 78px;
+
     padding: 0 5%;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    background: rgba(8,9,11,.94);
+
+    background: rgba(7,8,10,.96);
+
+    border-bottom: 1px solid rgba(255,255,255,.07);
+
     position: sticky;
     top: 0;
+
     z-index: 1000;
-    backdrop-filter: blur(16px);
+
+    backdrop-filter: blur(15px);
 }
 
 .logo {
     font-family: "Barlow Condensed", sans-serif;
+
     font-size: 30px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+    font-weight: 900;
+
+    letter-spacing: .5px;
+
+    color: white;
 }
 
-.logo .blue {
+.logo span {
     color: var(--blue-light);
 }
 
 .nav {
-    display: flex;
-    gap: 34px;
     margin-left: auto;
-    margin-right: 38px;
+    margin-right: 35px;
+
+    display: flex;
+    gap: 32px;
 }
 
 .nav a {
-    font-size: 12px;
+    color: #c5c8ce;
+
+    font-size: 11px;
     font-weight: 600;
+
     letter-spacing: 1.2px;
-    color: #bfc3ca;
+
     transition: .25s;
 }
 
@@ -106,283 +131,440 @@ a {
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 14px;
+
+    gap: 8px;
 }
 
 .icon-button {
-    width: 40px;
-    height: 40px;
-    border: 0;
-    background: transparent;
-    color: #e9e9e9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
     border-radius: 50%;
+
+    background: transparent;
+    color: #eee;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     transition: .25s;
 }
 
 .icon-button:hover {
     color: var(--blue-light);
-    background: rgba(49,91,145,.12);
+
+    background: rgba(35,79,135,.13);
 }
 
 .icon-button svg {
     width: 20px;
     height: 20px;
+
     stroke: currentColor;
 }
 
-/* SEARCH */
+
+/* ===================================
+   BUSCA
+=================================== */
 
 .search-area {
     position: relative;
+
+    /*
+      IMPORTANTE:
+      essa área engloba a lupa E a caixa.
+      Assim a busca não some quando
+      você move o mouse.
+    */
+
+    padding-bottom: 12px;
+    margin-bottom: -12px;
 }
 
 .search-box {
     position: absolute;
-    top: 48px;
+
+    top: 46px;
     right: 0;
-    width: 0;
+
+    width: 300px;
+
     opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-7px);
+
+    transition:
+        opacity .22s ease,
+        transform .22s ease,
+        visibility .22s;
+
     pointer-events: none;
-    transition: .3s ease;
-    overflow: hidden;
+
+    padding-top: 6px;
 }
 
 .search-area:hover .search-box,
-.search-box:hover,
-.search-box:focus-within {
-    width: 280px;
+.search-area:focus-within .search-box,
+.search-area.open .search-box {
     opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+
     pointer-events: auto;
 }
 
-.search-box-inner {
-    height: 48px;
-    border-radius: 30px;
-    background: #171a20;
-    border: 1px solid #292e37;
+.search-inner {
+    width: 100%;
+
+    background: #15181e;
+
+    border: 1px solid #292e36;
+
+    border-radius: 999px;
+
     display: flex;
     align-items: center;
+
     padding: 0 17px;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.45);
 }
 
-.search-box input {
+.search-inner svg {
+    width: 17px;
+    height: 17px;
+
+    stroke: var(--blue-light);
+
+    flex-shrink: 0;
+}
+
+.search-inner input {
     width: 100%;
-    border: 0;
-    outline: 0;
+
+    height: 49px;
+
+    margin-left: 10px;
+
     background: transparent;
+
+    border: none;
+    outline: none;
+
     color: white;
+
     font-size: 13px;
 }
 
-.search-box input::placeholder {
-    color: #707680;
+.search-inner input::placeholder {
+    color: #757a83;
 }
 
-/* =========================
+
+/* ===================================
    HERO
-========================= */
+=================================== */
 
 .hero {
-    min-height: 680px;
-    padding: 110px 7% 100px;
+    min-height: 650px;
+
+    padding: 90px 7%;
+
     display: flex;
     align-items: center;
+
     position: relative;
+
     overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(5,6,8,.98) 0%,
+            rgba(5,6,8,.84) 42%,
+            rgba(5,6,8,.3) 100%
+        ),
+        url("https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1800&q=90")
+        center / cover no-repeat;
 }
 
 .hero-content {
-    max-width: 700px;
+    max-width: 710px;
+
     position: relative;
+
     z-index: 2;
 }
 
 .hero-label {
-    color: var(--blue-light);
-    font-size: 11px;
+    color: #777d87;
+
+    font-size: 10px;
     font-weight: 700;
+
     letter-spacing: 3px;
+
     margin-bottom: 18px;
 }
 
 .hero h1 {
     font-family: "Barlow Condensed", sans-serif;
-    font-size: clamp(72px, 9vw, 145px);
-    line-height: .82;
+
+    font-size: clamp(70px, 8vw, 125px);
+
     font-weight: 900;
-    letter-spacing: -3px;
+
+    line-height: .83;
+
+    letter-spacing: -2px;
+
     text-transform: uppercase;
 }
 
-.hero h1 .blue-word {
+.hero h1 .blue {
     color: var(--blue-light);
 }
 
 .hero-description {
-    color: #a5a9b0;
-    max-width: 480px;
-    line-height: 1.7;
-    font-size: 15px;
+    max-width: 500px;
+
     margin: 30px 0;
+
+    color: #a5a9b0;
+
+    font-size: 14px;
+
+    line-height: 1.7;
 }
 
-.hero-button {
+.main-button {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
+
+    gap: 12px;
+
     padding: 15px 25px;
-    border-radius: 40px;
+
+    border-radius: 999px;
+
     background: white;
+
     color: #08090b;
-    font-size: 12px;
+
+    font-size: 11px;
     font-weight: 800;
+
     letter-spacing: 1px;
-    transition: .3s;
+
+    transition: .25s;
 }
 
-.hero-button:hover {
-    background: var(--blue-light);
+.main-button:hover {
+    background: var(--blue);
+
     color: white;
+
     transform: translateY(-2px);
 }
 
-.hero-button svg {
-    width: 17px;
-}
 
-/* =========================
-   BENEFITS
-========================= */
+/* ===================================
+   BENEFÍCIOS
+=================================== */
 
 .benefits {
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    display: flex;
+
     overflow: hidden;
 }
 
 .benefit-track {
     display: flex;
-    min-width: 100%;
-    justify-content: space-around;
+
+    width: 100%;
 }
 
 .benefit {
-    min-width: 240px;
-    padding: 28px 20px;
+    flex: 1;
+
+    min-width: 230px;
+
+    padding: 29px 25px;
+
     display: flex;
     align-items: center;
-    gap: 14px;
+
+    gap: 15px;
+
+    border-right: 1px solid var(--line);
 }
 
-.benefit-icon {
-    color: var(--blue-light);
+.benefit:last-child {
+    border-right: none;
 }
 
-.benefit-icon svg {
-    width: 25px;
-    height: 25px;
-    stroke: currentColor;
+.benefit svg {
+    width: 27px;
+    height: 27px;
+
+    stroke: var(--blue-light);
+
+    flex-shrink: 0;
 }
 
 .benefit strong {
     display: block;
+
     font-size: 11px;
-    letter-spacing: 1.3px;
+
+    letter-spacing: 1px;
+
     margin-bottom: 5px;
 }
 
 .benefit span {
-    font-size: 11px;
     color: var(--muted);
+
+    font-size: 10px;
 }
 
-/* =========================
-   BRANDS MARQUEE
-========================= */
 
-.brands-bar {
+/* ===================================
+   MARCAS
+=================================== */
+
+.brands {
     width: 100%;
+
     overflow: hidden;
+
     background: var(--blue);
+
     color: white;
+
     white-space: nowrap;
 }
 
 .brands-track {
-    width: max-content;
     display: flex;
-    animation: brandsMove 28s linear infinite;
+
+    width: max-content;
+
+    animation:
+        moveBrands 27s linear infinite;
 }
 
-.brands-list {
+.brand-list {
     display: flex;
     align-items: center;
-    gap: 30px;
-    padding: 17px 0;
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: 17px;
+
+    gap: 28px;
+
+    padding: 15px 14px;
+
+    font-family:
+        "Barlow Condensed",
+        sans-serif;
+
+    font-size: 16px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+
+    letter-spacing: 1.2px;
 }
 
-.brand-dot {
-    opacity: .65;
+.brand-separator {
+    opacity: .55;
 }
 
-@keyframes brandsMove {
+@keyframes moveBrands {
+
     from {
         transform: translateX(0);
     }
+
     to {
         transform: translateX(-50%);
     }
+
 }
 
-/* =========================
-   SECTIONS
-========================= */
+
+/* ===================================
+   SEÇÕES
+=================================== */
 
 .section {
-    padding: 95px 5%;
+    padding: 85px 5%;
 }
 
 .section-heading {
     display: flex;
-    justify-content: space-between;
+
     align-items: end;
-    margin-bottom: 40px;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 35px;
 }
 
 .section-label {
     color: var(--blue-light);
-    font-size: 11px;
+
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 3px;
+
+    letter-spacing: 2.5px;
+
+    text-transform: uppercase;
+
     margin-bottom: 8px;
 }
 
 .section-title {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: clamp(52px, 6vw, 90px);
-    line-height: .85;
-    text-transform: uppercase;
+    font-family:
+        "Barlow Condensed",
+        sans-serif;
+
+    font-size:
+        clamp(48px, 6vw, 78px);
+
+    line-height: .9;
+
     font-weight: 900;
+
+    text-transform: uppercase;
 }
 
 .view-all {
+    border: none;
+
+    background: transparent;
+
+    color: #ddd;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
     display: flex;
     align-items: center;
+
     gap: 9px;
-    color: #d6d8dc;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.4px;
+
+    padding: 8px;
+
     transition: .25s;
-    padding-bottom: 5px;
 }
 
 .view-all:hover {
@@ -391,16 +573,22 @@ a {
 
 .view-all svg {
     width: 16px;
+
+    stroke: currentColor;
 }
 
-/* =========================
-   PRODUCTS
-========================= */
+
+/* ===================================
+   PRODUTOS
+=================================== */
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
+
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
+
+    gap: 20px;
 }
 
 .product {
@@ -409,193 +597,338 @@ a {
 
 .product-image {
     position: relative;
+
+    width: 100%;
+
     aspect-ratio: 9 / 14;
-    background: #12151a;
+
+    background: #111318;
+
     overflow: hidden;
+
+    border-radius: 5px;
+}
+
+.catalog-grid .product-image {
+    aspect-ratio: 1 / 1;
 }
 
 .product-image img {
     width: 100%;
     height: 100%;
-    display: block;
+
     object-fit: cover;
-    transition: transform .6s ease;
+
+    display: block;
+
+    transition: .5s ease;
 }
 
 .product:hover .product-image img {
-    transform: scale(1.04);
+    transform: scale(1.045);
 }
 
-.buy-button {
+.buy-now {
     position: absolute;
+
     left: 14px;
     right: 14px;
     bottom: 14px;
-    height: 48px;
-    border: 0;
-    border-radius: 28px;
-    background: white;
-    color: #08090b;
-    font-size: 11px;
+
+    height: 46px;
+
+    border: 1px solid rgba(255,255,255,.7);
+
+    border-radius: 999px;
+
+    background: rgba(7,8,10,.87);
+
+    backdrop-filter: blur(10px);
+
+    color: white;
+
+    font-size: 10px;
     font-weight: 800;
+
     letter-spacing: 1px;
+
     opacity: 0;
-    transform: translateY(12px);
-    transition: .3s ease;
+
+    transform: translateY(10px);
+
+    transition: .27s ease;
 }
 
-.product:hover .buy-button {
+.product:hover .buy-now {
     opacity: 1;
+
     transform: translateY(0);
 }
 
 .product-info {
-    padding: 15px 2px 0;
+    padding: 14px 2px 0;
 }
 
 .product-brand {
+    color: #737984;
+
     font-size: 9px;
-    color: var(--blue-light);
-    font-weight: 700;
-    letter-spacing: 1.5px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+
     margin-bottom: 5px;
 }
 
 .product-name {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: 21px;
+    font-family:
+        "Barlow Condensed",
+        sans-serif;
+
+    color: #f0f0f0;
+
+    font-size: 19px;
+
     font-weight: 700;
+
     text-transform: uppercase;
+
+    line-height: 1.05;
 }
 
 .product-price {
     margin-top: 8px;
+
     font-size: 14px;
+
     font-weight: 700;
 }
 
 .old-price {
-    color: #666b73;
+    color: #61666e;
+
     text-decoration: line-through;
-    margin-right: 7px;
+
     font-weight: 500;
+
+    margin-right: 7px;
 }
 
 .discount {
     display: inline-block;
-    margin-left: 8px;
-    font-size: 9px;
+
+    margin-left: 7px;
+
+    padding: 3px 7px;
+
+    border-radius: 999px;
+
+    border:
+        1px solid rgba(57,112,180,.4);
+
     color: var(--blue-light);
-    border: 1px solid rgba(75,120,180,.45);
-    border-radius: 20px;
-    padding: 4px 7px;
+
+    font-size: 8px;
+
+    font-weight: 700;
 }
 
-/* =========================
-   OFFER
-========================= */
+.product-installments {
+    margin-top: 5px;
+
+    color: #777d86;
+
+    font-size: 10px;
+}
+
+.empty {
+    grid-column: 1 / -1;
+
+    padding: 60px 0;
+
+    text-align: center;
+
+    color: #747983;
+
+    font-size: 13px;
+}
+
+
+/* ===================================
+   OFERTA
+=================================== */
 
 .offer {
-    margin: 10px 5% 100px;
-    padding: 55px 60px;
-    border-radius: 25px;
-    background: #11151b;
-    border: 1px solid #252b34;
+    margin: 15px 5% 90px;
+
+    padding: 50px 55px;
+
+    border: 1px solid #262b34;
+
+    border-radius: 23px;
+
+    background:
+        radial-gradient(
+            circle at 75% 50%,
+            rgba(35,79,135,.22),
+            transparent 36%
+        ),
+        #101217;
+
     display: flex;
-    justify-content: space-between;
     align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
 }
 
 .offer-label {
     color: var(--blue-light);
-    font-size: 11px;
+
+    font-size: 10px;
+
     font-weight: 700;
-    letter-spacing: 3px;
+
+    letter-spacing: 2.5px;
+
     margin-bottom: 10px;
 }
 
 .offer h2 {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: clamp(45px, 5vw, 70px);
-    line-height: .85;
+    font-family:
+        "Barlow Condensed",
+        sans-serif;
+
+    font-size:
+        clamp(43px,5vw,68px);
+
+    line-height: .9;
+
     text-transform: uppercase;
 }
 
 .offer-discount {
-    margin-top: 12px;
-    color: #d2d5da;
-    font-size: 14px;
-    font-weight: 600;
+    margin-top: 9px;
+
+    font-family:
+        "Barlow Condensed",
+        sans-serif;
+
+    font-size: 30px;
+
+    font-weight: 800;
 }
 
 .offer-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    border: 0;
-    border-radius: 35px;
-    background: var(--blue);
-    color: white;
-    padding: 16px 24px;
+    min-width: 165px;
+
+    padding: 16px 23px;
+
+    border-radius: 999px;
+
+    border: none;
+
+    background: white;
+
+    color: #111;
+
     font-size: 11px;
+
     font-weight: 800;
-    letter-spacing: 1px;
-    transition: .3s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    transition: .25s;
 }
 
 .offer-button:hover {
-    background: var(--blue-light);
+    background: var(--blue);
+
+    color: white;
+
     transform: translateX(3px);
 }
 
-/* =========================
+
+/* ===================================
    FOOTER
-========================= */
+=================================== */
 
 footer {
     border-top: 1px solid var(--line);
-    padding: 75px 5% 30px;
+
+    padding: 70px 5% 28px;
 }
 
-.footer-main {
+.footer-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 60px;
-    padding-bottom: 60px;
+
+    grid-template-columns:
+        1.4fr 1fr 1fr;
+
+    gap: 55px;
+
+    padding-bottom: 55px;
 }
 
 .footer-logo {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 18px;
+    font-family:
+        "Barlow Condensed",
+        sans-serif;
+
+    font-size: 30px;
+
+    font-weight: 900;
+
+    margin-bottom: 15px;
+}
+
+.footer-logo span {
+    color: var(--blue-light);
 }
 
 .footer-description {
-    max-width: 350px;
-    color: var(--muted);
-    font-size: 13px;
+    max-width: 360px;
+
+    color: #858a93;
+
+    font-size: 12px;
+
     line-height: 1.7;
 }
 
 .footer-title {
-    color: white;
-    font-size: 11px;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+
+    font-size: 10px;
+
     font-weight: 700;
+
+    letter-spacing: 2px;
 }
 
 .footer-links {
     display: flex;
+
     flex-direction: column;
-    gap: 12px;
+
+    gap: 11px;
 }
 
 .footer-links a {
-    color: #8e939c;
-    font-size: 12px;
-    transition: .25s;
+    color: #858a93;
+
+    font-size: 11px;
+
+    transition: .2s;
 }
 
 .footer-links a:hover {
@@ -604,784 +937,698 @@ footer {
 
 .footer-bottom {
     border-top: 1px solid var(--line);
-    padding-top: 25px;
+
+    padding-top: 23px;
+
     display: flex;
+
     justify-content: space-between;
+
     gap: 20px;
-    color: #666b73;
-    font-size: 10px;
+
+    color: #656a72;
+
+    font-size: 9px;
 }
 
 .footer-bottom-links {
     display: flex;
-    gap: 20px;
+
+    gap: 18px;
 }
 
-/* =========================
+
+/* ===================================
    WHATSAPP
-========================= */
+=================================== */
 
 .whatsapp-wrap {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 2000;
+
+    right: 23px;
+    bottom: 22px;
+
+    z-index: 2500;
+
     display: flex;
     align-items: center;
-    gap: 12px;
+
+    gap: 11px;
 }
 
 .whatsapp-message {
+    padding: 12px 17px;
+
     background: white;
+
     color: #111;
-    padding: 13px 18px;
-    border-radius: 25px;
-    font-size: 12px;
+
+    border-radius: 19px;
+
+    font-size: 11px;
+
     font-weight: 600;
-    box-shadow: 0 10px 35px rgba(0,0,0,.3);
-    animation: messageIn .5s ease;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35);
 }
 
-.whatsapp-button {
+.whatsapp {
     width: 56px;
     height: 56px;
+
     border-radius: 50%;
-    border: 0;
-    background: #1fa855;
+
+    border: none;
+
+    background: #21b65f;
+
     color: white;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 30px rgba(0,0,0,.35);
-    transition: .25s;
+
+    box-shadow:
+        0 9px 30px rgba(0,0,0,.35);
 }
 
-.whatsapp-button:hover {
-    transform: scale(1.08);
-}
+.whatsapp svg {
+    width: 28px;
 
-.whatsapp-button svg {
-    width: 27px;
-    height: 27px;
     fill: currentColor;
 }
 
-@keyframes messageIn {
-    from {
-        opacity: 0;
-        transform: translateX(15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
 
-/* =========================
-   MODAL
-========================= */
-
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.78);
-    backdrop-filter: blur(8px);
-    z-index: 3000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-box {
-    width: min(600px, 100%);
-    max-height: 85vh;
-    overflow-y: auto;
-    background: #111318;
-    border: 1px solid #272c34;
-    border-radius: 25px;
-    padding: 35px;
-}
-
-.modal-close {
-    float: right;
-    border: 0;
-    background: transparent;
-    color: white;
-    font-size: 25px;
-}
-
-.modal-box h2 {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: 42px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-
-.modal-box p {
-    color: #a5a9b0;
-    line-height: 1.8;
-    font-size: 13px;
-    margin-bottom: 18px;
-}
-
-/* =========================
+/* ===================================
    MOBILE
-========================= */
+=================================== */
 
-@media (max-width: 900px) {
-
-    .header {
-        height: 70px;
-        padding: 0 5%;
-    }
-
-    .logo {
-        font-size: 26px;
-    }
+@media(max-width:900px) {
 
     .nav {
         display: none;
     }
 
-    .header-actions {
-        gap: 3px;
-    }
-
-    .search-area:hover .search-box,
-    .search-box:hover,
-    .search-box:focus-within {
-        width: 230px;
-    }
-
-    .hero {
-        min-height: 600px;
-        padding: 90px 7% 80px;
-    }
-
-    .hero h1 {
-        font-size: clamp(62px, 18vw, 100px);
+    .products-grid {
+        grid-template-columns:
+            repeat(2,1fr);
     }
 
     .benefit-track {
         width: max-content;
-        justify-content: flex-start;
-        animation: benefitsMove 18s linear infinite;
+
+        animation:
+            benefitsMobile 20s linear infinite;
     }
 
-    .benefit {
-        min-width: 230px;
-    }
+    @keyframes benefitsMobile {
 
-    @keyframes benefitsMove {
         from {
             transform: translateX(0);
         }
+
         to {
             transform: translateX(-50%);
         }
+
+    }
+
+    .search-box {
+        right: -88px;
+
+        width: min(
+            82vw,
+            320px
+        );
+    }
+
+    .buy-now {
+        opacity: 1;
+
+        transform: none;
+    }
+
+}
+
+
+@media(max-width:600px) {
+
+    .header {
+        height: 68px;
+
+        padding: 0 4%;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .icon-button {
+        width: 37px;
+        height: 37px;
+    }
+
+    .hero {
+        min-height: 570px;
+
+        padding:
+            75px 6% 65px;
+    }
+
+    .hero h1 {
+        font-size:
+            clamp(58px,18vw,88px);
+    }
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+    .main-button {
+        width: 100%;
+
+        justify-content: center;
     }
 
     .section {
-        padding: 70px 5%;
-    }
-
-    .section-heading {
-        align-items: end;
+        padding:
+            65px 5%;
     }
 
     .section-title {
-        font-size: 58px;
+        font-size: 50px;
+    }
+
+    .view-all {
+        font-size: 9px;
+
+        white-space: nowrap;
     }
 
     .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px 10px;
+        gap: 18px 10px;
     }
 
     .product-name {
-        font-size: 18px;
+        font-size: 16px;
     }
 
-    .buy-button {
-        opacity: 1;
-        transform: none;
-        height: 42px;
-        bottom: 9px;
-        left: 9px;
-        right: 9px;
+    .product-price {
+        font-size: 12px;
+    }
+
+    .product-installments {
+        font-size: 9px;
+    }
+
+    .buy-now {
+        height: 38px;
+
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+
+        font-size: 8px;
     }
 
     .offer {
-        margin: 0 5% 70px;
-        padding: 35px 25px;
-        gap: 30px;
+        margin:
+            0 5% 65px;
+
+        padding: 33px 25px;
+
         flex-direction: column;
+
         align-items: flex-start;
     }
 
+    .offer h2 {
+        font-size: 45px;
+    }
+
     .offer-button {
-        align-self: flex-end;
+        width: 100%;
     }
 
-    .footer-main {
-        grid-template-columns: 1fr 1fr;
-        gap: 45px 25px;
-    }
+    .footer-grid {
+        grid-template-columns: 1fr;
 
-    .footer-main > div:first-child {
-        grid-column: 1 / -1;
+        gap: 38px;
     }
 
     .footer-bottom {
         flex-direction: column;
     }
 
-    .whatsapp-wrap {
-        right: 16px;
-        bottom: 16px;
-    }
-
-    .whatsapp-message {
-        font-size: 11px;
-        padding: 11px 14px;
-    }
-
-    .whatsapp-button {
-        width: 52px;
-        height: 52px;
-    }
-}
-
-@media (max-width: 500px) {
-
-    .hero-description {
-        font-size: 13px;
-    }
-
-    .hero-button {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .section-title {
-        font-size: 52px;
-    }
-
-    .view-all {
-        font-size: 9px;
-    }
-
-    .offer h2 {
-        font-size: 48px;
-    }
-
-    .footer-main {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-main > div:first-child {
-        grid-column: auto;
-    }
-
     .footer-bottom-links {
         flex-wrap: wrap;
     }
+
+    .whatsapp-wrap {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .whatsapp-message {
+        max-width: 180px;
+    }
+
 }
+
 </style>
 </head>
 
+
 <body>
 
-<!-- HEADER -->
+
+<!-- ===================================
+     HEADER
+=================================== -->
+
 <header class="header">
 
-    <a href="#" class="logo">
-        URBANSTEP<span class="blue">.</span>
+<a href="#inicio" class="logo">
+    URBANSTEP<span>.</span>
+</a>
+
+
+<nav class="nav">
+
+    <a href="#inicio">
+        INÍCIO
     </a>
 
-    <nav class="nav">
-        <a href="#inicio">INÍCIO</a>
-        <a href="#lancamentos">LANÇAMENTOS</a>
-        <a href="#catalogo">TÊNIS</a>
-        <a href="#oferta">OFERTAS</a>
-    </nav>
+    <a href="#lancamentos">
+        LANÇAMENTOS
+    </a>
 
-    <div class="header-actions">
+    <a href="#catalogo">
+        TÊNIS
+    </a>
 
-        <div class="search-area">
+    <a href="#oferta">
+        OFERTAS
+    </a>
 
-            <button class="icon-button" aria-label="Pesquisar">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7">
-                    <circle cx="11" cy="11" r="6.5"></circle>
-                    <path d="m16 16 5 5"></path>
+</nav>
+
+
+<div class="header-actions">
+
+
+    <!-- BUSCA -->
+
+    <div
+        class="search-area"
+        id="searchArea"
+    >
+
+        <button
+            class="icon-button"
+            id="searchButton"
+            aria-label="Pesquisar"
+        >
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="1.7"
+            >
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="6.5"
+                ></circle>
+
+                <path
+                    d="m16 16 5 5"
+                ></path>
+            </svg>
+
+        </button>
+
+
+        <div class="search-box">
+
+            <div class="search-inner">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke-width="1.7"
+                >
+                    <circle
+                        cx="11"
+                        cy="11"
+                        r="6.5"
+                    ></circle>
+
+                    <path
+                        d="m16 16 5 5"
+                    ></path>
                 </svg>
-            </button>
 
-            <div class="search-box">
-                <div class="search-box-inner">
-                    <input id="searchInput" type="text" placeholder="Buscar tênis...">
-                </div>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar tênis..."
+                    autocomplete="off"
+                >
+
             </div>
 
         </div>
 
-        <button class="icon-button" aria-label="Minha conta" onclick="openModal('account')">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7">
-                <circle cx="12" cy="8" r="3.5"></circle>
-                <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>
-            </svg>
-        </button>
-
-        <button class="icon-button" aria-label="Sacola" onclick="openModal('bag')">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7">
-                <path d="M5 8h14l-1 12H6L5 8Z"></path>
-                <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
-            </svg>
-        </button>
-
     </div>
+
+
+    <!-- CONTA -->
+
+    <a
+        class="icon-button"
+        href="javascript:void(0)"
+        aria-label="Conta"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1.7"
+        >
+
+            <circle
+                cx="12"
+                cy="8"
+                r="3.5"
+            ></circle>
+
+            <path
+                d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"
+            ></path>
+
+        </svg>
+
+    </a>
+
+
+    <!-- SACOLA -->
+
+    <a
+        class="icon-button"
+        href="javascript:void(0)"
+        aria-label="Sacola"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="1.7"
+        >
+
+            <path
+                d="M5 8h14l-1 12H6L5 8Z"
+            ></path>
+
+            <path
+                d="M9 8V6a3 3 0 0 1 6 0v2"
+            ></path>
+
+        </svg>
+
+    </a>
+
+
+</div>
+
 </header>
 
 
-<!-- HERO -->
-<section class="hero" id="inicio">
+<!-- ===================================
+     HERO
+=================================== -->
 
-    <div class="hero-content">
+<section
+    class="hero"
+    id="inicio"
+>
 
-        <div class="hero-label">URBANSTEP / PREMIUM SNEAKERS</div>
+<div class="hero-content">
 
-        <h1>
-            ESTILO QUE<br>
-            MARCA <span class="blue-word">PRESENÇA.</span>
-        </h1>
-
-        <p class="hero-description">
-            Tênis selecionados para quem busca exclusividade,
-            qualidade e personalidade.
-        </p>
-
-        <a href="#catalogo" class="hero-button">
-            VER CATÁLOGO
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h13"></path>
-                <path d="m13 6 6 6-6 6"></path>
-            </svg>
-        </a>
-
+    <div class="hero-label">
+        URBANSTEP / PREMIUM SNEAKERS
     </div>
 
-</section>
+    <h1>
+
+        ESTILO QUE<br>
+
+        MARCA
+        <span class="blue">
+            PRESENÇA.
+        </span>
+
+    </h1>
 
 
-<!-- BENEFÍCIOS -->
-<section class="benefits">
+    <p class="hero-description">
 
-    <div class="benefit-track">
+        Tênis selecionados para quem busca
+        exclusividade, qualidade e personalidade.
 
-        <div class="benefit">
-            <div class="benefit-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-                    <path d="M3 7h11v10H3z"></path>
-                    <path d="M14 10h4l3 3v4h-7z"></path>
-                    <circle cx="7" cy="19" r="2"></circle>
-                    <circle cx="18" cy="19" r="2"></circle>
-                </svg>
-            </div>
-            <div>
-                <strong>ENVIO RÁPIDO</strong>
-                <span>Pedido enviado com agilidade.</span>
-            </div>
-        </div>
-
-        <div class="benefit">
-            <div class="benefit-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-                    <path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3Z"></path>
-                    <path d="m8.5 12 2.2 2.2 4.8-5"></path>
-                </svg>
-            </div>
-            <div>
-                <strong>COMPRA SEGURA</strong>
-                <span>Seus dados protegidos.</span>
-            </div>
-        </div>
-
-        <div class="benefit">
-            <div class="benefit-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-                    <path d="M4 7h13"></path>
-                    <path d="m13 3 4 4-4 4"></path>
-                    <path d="M20 17H7"></path>
-                    <path d="m11 13-4 4 4 4"></path>
-                </svg>
-            </div>
-            <div>
-                <strong>TROCA FÁCIL</strong>
-                <span>Processo simples e transparente.</span>
-            </div>
-        </div>
-
-        <div class="benefit">
-            <div class="benefit-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-                    <path d="m12 3 2.7 5.5L21 9.4l-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.4l6.3-.9L12 3Z"></path>
-                </svg>
-            </div>
-            <div>
-                <strong>QUALIDADE</strong>
-                <span>Produtos selecionados.</span>
-            </div>
-        </div>
-
-    </div>
-
-</section>
+    </p>
 
 
-<!-- MARCAS -->
-<section class="brands-bar">
+    <a
+        href="#catalogo"
+        class="main-button"
+    >
 
-    <div class="brands-track">
+        VER CATÁLOGO
 
-        <div class="brands-list">
-            ADIDAS <span class="brand-dot">•</span>
-            NIKE <span class="brand-dot">•</span>
-            REEBOK <span class="brand-dot">•</span>
-            NEW BALANCE <span class="brand-dot">•</span>
-            ASICS <span class="brand-dot">•</span>
-            JORDAN <span class="brand-dot">•</span>
-            PUMA <span class="brand-dot">•</span>
-            FILA <span class="brand-dot">•</span>
-            MIZUNO <span class="brand-dot">•</span>
-            OLYMPIKUS <span class="brand-dot">•</span>
-        </div>
+        <span>→</span>
 
-        <div class="brands-list" aria-hidden="true">
-            ADIDAS <span class="brand-dot">•</span>
-            NIKE <span class="brand-dot">•</span>
-            REEBOK <span class="brand-dot">•</span>
-            NEW BALANCE <span class="brand-dot">•</span>
-            ASICS <span class="brand-dot">•</span>
-            JORDAN <span class="brand-dot">•</span>
-            PUMA <span class="brand-dot">•</span>
-            FILA <span class="brand-dot">•</span>
-            MIZUNO <span class="brand-dot">•</span>
-            OLYMPIKUS <span class="brand-dot">•</span>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- LANÇAMENTOS -->
-<section class="section" id="lancamentos">
-
-    <div class="section-heading">
-
-        <div>
-            <div class="section-label">EM DESTAQUE</div>
-            <h2 class="section-title">LANÇAMENTOS</h2>
-        </div>
-
-        <a href="#catalogo" class="view-all">
-            VER TODOS
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14"></path>
-                <path d="m13 6 6 6-6 6"></path>
-            </svg>
-        </a>
-
-    </div>
-
-
-    <div class="products-grid" id="launchGrid">
-
-        <!-- PRODUTO 1 -->
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=90" alt="Tênis Nike vermelho">
-                <button class="buy-button" onclick="buyProduct('Nike Air Max')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">NIKE</div>
-                <div class="product-name">AIR MAX</div>
-                <div class="product-price">R$ 699,90</div>
-            </div>
-        </article>
-
-
-        <!-- PRODUTO 2 -->
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?w=900&q=90" alt="Tênis esportivo">
-                <button class="buy-button" onclick="buyProduct('Sneaker Urban')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">ADIDAS</div>
-                <div class="product-name">URBAN RUN</div>
-                <div class="product-price">
-                    <span class="old-price">R$ 799,90</span>
-                    R$ 649,90
-                    <span class="discount">19% OFF</span>
-                </div>
-            </div>
-        </article>
-
-
-        <!-- PRODUTO 3 -->
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=900&q=90" alt="Tênis New Balance">
-                <button class="buy-button" onclick="buyProduct('New Balance Street')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">NEW BALANCE</div>
-                <div class="product-name">STREET 530</div>
-                <div class="product-price">R$ 599,90</div>
-            </div>
-        </article>
-
-
-        <!-- PRODUTO 4 -->
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=900&q=90" alt="Tênis premium">
-                <button class="buy-button" onclick="buyProduct('Premium Runner')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">ASICS</div>
-                <div class="product-name">PREMIUM RUN</div>
-                <div class="product-price">R$ 749,90</div>
-            </div>
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- CATÁLOGO -->
-<section class="section" id="catalogo">
-
-    <div class="section-heading">
-
-        <div>
-            <div class="section-label">CATÁLOGO</div>
-            <h2 class="section-title">TODOS OS TÊNIS</h2>
-        </div>
-
-        <a href="#catalogo" class="view-all">
-            VER TODOS
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14"></path>
-                <path d="m13 6 6 6-6 6"></path>
-            </svg>
-        </a>
-
-    </div>
-
-
-    <div class="products-grid" id="catalogGrid">
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=90" alt="Nike Air Max">
-                <button class="buy-button" onclick="buyProduct('Nike Air Max')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">NIKE</div>
-                <div class="product-name">AIR MAX</div>
-                <div class="product-price">R$ 699,90</div>
-            </div>
-        </article>
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?w=900&q=90" alt="Adidas Urban">
-                <button class="buy-button" onclick="buyProduct('Adidas Urban')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">ADIDAS</div>
-                <div class="product-name">URBAN RUN</div>
-                <div class="product-price">
-                    <span class="old-price">R$ 799,90</span>
-                    R$ 649,90
-                    <span class="discount">19% OFF</span>
-                </div>
-            </div>
-        </article>
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=900&q=90" alt="New Balance Street">
-                <button class="buy-button" onclick="buyProduct('New Balance Street')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">NEW BALANCE</div>
-                <div class="product-name">STREET 530</div>
-                <div class="product-price">R$ 599,90</div>
-            </div>
-        </article>
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=900&q=90" alt="Asics Premium">
-                <button class="buy-button" onclick="buyProduct('Asics Premium')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">ASICS</div>
-                <div class="product-name">PREMIUM RUN</div>
-                <div class="product-price">R$ 749,90</div>
-            </div>
-        </article>
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?w=900&q=90" alt="Jordan sneaker">
-                <button class="buy-button" onclick="buyProduct('Jordan Classic')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">JORDAN</div>
-                <div class="product-name">CLASSIC</div>
-                <div class="product-price">R$ 899,90</div>
-            </div>
-        </article>
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=900&q=90" alt="Sneaker lifestyle">
-                <button class="buy-button" onclick="buyProduct('Lifestyle Pro')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">REEBOK</div>
-                <div class="product-name">LIFESTYLE PRO</div>
-                <div class="product-price">R$ 549,90</div>
-            </div>
-        </article>
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?w=900&q=90" alt="Sneaker Puma">
-                <button class="buy-button" onclick="buyProduct('Puma Street')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">PUMA</div>
-                <div class="product-name">STREET</div>
-                <div class="product-price">R$ 499,90</div>
-            </div>
-        </article>
-
-        <article class="product">
-            <div class="product-image">
-                <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=900&q=90" alt="Sneaker premium">
-                <button class="buy-button" onclick="buyProduct('Premium Sport')">COMPRAR AGORA</button>
-            </div>
-            <div class="product-info">
-                <div class="product-brand">FILA</div>
-                <div class="product-name">PREMIUM SPORT</div>
-                <div class="product-price">R$ 459,90</div>
-            </div>
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- OFERTA -->
-<section class="offer" id="oferta">
-
-    <div>
-        <div class="offer-label">OFERTA ESPECIAL</div>
-        <h2>LEVE 2 E PAGUE MENOS</h2>
-        <div class="offer-discount">20% DE DESCONTO</div>
-    </div>
-
-    <a href="#catalogo" class="offer-button">
-        APROVEITAR
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14"></path>
-            <path d="m13 6 6 6-6 6"></path>
-        </svg>
     </a>
 
+</div>
+
 </section>
 
 
-<!-- FOOTER -->
-<footer>
+<!-- ===================================
+     BENEFÍCIOS
+=================================== -->
 
-    <div class="footer-main">
+<section class="benefits">
 
-        <div>
-            <div class="footer-logo">
-                URBANSTEP<span class="blue">.</span>
-            </div>
+<div class="benefit-track">
 
-            <p class="footer-description">
-                Os melhores tênis esportivos e lifestyle.
-                Frete rápido para todo o Brasil.
-            </p>
-        </div>
 
-        <div>
-            <div class="footer-title">MARCAS</div>
+<div class="benefit">
 
-            <div class="footer-links">
-                <a href="#catalogo">Nike</a>
-                <a href="#catalogo">Adidas</a>
-                <a href="#catalogo">New Balance</a>
-                <a href="#catalogo">Jordan</a>
-                <a href="#catalogo">Asics</a>
-            </div>
-        </div>
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="1.5"
+    >
 
-        <div>
-            <div class="footer-title">SUPORTE</div>
+        <path d="M3 7h11v10H3z"></path>
+        <path d="M14 10h4l3 3v4h-7z"></path>
 
-            <div class="footer-links">
-                <a href="#" onclick="openModal('tracking'); return false;">Rastrear Pedido</a>
-                <a href="#" onclick="openModal('returns'); return false;">Trocas e Devoluções</a>
-                <a href="#" onclick="openModal('sizes'); return false;">Guia de Tamanhos</a>
-                <a href="#" onclick="openWhatsApp(); return false;">Contato</a>
-                <a href="#" onclick="openModal('faq'); return false;">FAQ</a>
-            </div>
-        </div>
+        <circle
+            cx="7"
+            cy="19"
+            r="2"
+        ></circle>
 
-    </div>
+        <circle
+            cx="18"
+            cy="19"
+            r="2"
+        ></circle>
 
-    <div class="footer-bottom">
+    </svg>
 
-        <span>© 2026 URBANSTEP. Todos os direitos reservados.</span>
 
-        <div class="footer-bottom-links">
-            <a href="#" onclick="openModal('privacy'); return false;">Privacidade</a>
-            <a href="#" onclick="openModal('terms'); return false;">Termos</a>
-            <a href="#" onclick="openModal('cookies'); return false;">Cookies</a>
-        </div>
+    <div>
+
+        <strong>
+            ENVIO RÁPIDO
+        </strong>
+
+        <span>
+            Pedido enviado com agilidade.
+        </span>
 
     </div>
 
-</footer>
+</div>
 
 
-<!-- WHATSAPP -->
-<div class="whatsapp-wrap" id="whatsappWrap">
+<div class="benefit">
 
-    <div class="whatsapp-message" id="whatsappMessage">
-        Olá, Precisa de ajuda?
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="1.5"
+    >
+
+        <path
+            d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3Z"
+        ></path>
+
+        <path
+            d="m8.5 12 2.2 2.2 4.8-5"
+        ></path>
+
+    </svg>
+
+
+    <div>
+
+        <strong>
+            COMPRA SEGURA
+        </strong>
+
+        <span>
+            Seus dados protegidos.
+        </span>
+
     </div>
 
-    <button class="whatsapp-button" onclick="openWhatsApp()" aria-label="WhatsApp">
+</div>
 
-        <svg viewBox="0 0 24 24">
-            <path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.9-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17.2a7.7 7.7 0 0 1-3.9-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A7.7 7.7 0 1 1 12 19.7Zm4.2-5.7c-.2-.1-1.3-.7-1.5-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.7.9-.1.2-.3.2-.5.1-1.2-.6-2-1.1-2.8-2.5-.2-.3.2-.3.5-1 .1-.2 0-.4 0-.5s-.6-1.5-.8-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.4.5.6.2 1.2.2 1.6.1.5-.1 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.3-.2-.5-.3Z"></path>
+
+<div class="benefit">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="1.5"
+    >
+
+        <path d="M4 7h13"></path>
+        <path d="m13 3 4 4-4 4"></path>
+        <path d="M20 17H7"></path>
+        <path d="m11 13-4 4 4 4"></path>
+
+    </svg>
+
+
+    <div>
+
+        <strong>
+            TROCA FÁCIL
+        </strong>
+
+        <span>
+            Processo simples e transparente.
+        </span>
+
+    </div>
+
+</div>
+
+
+<div class="benefit">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="1.5"
+    >
+
+        <path
+            d="m12 3 2.7 5.5L21 9.4l-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.4l6.3-.9L12 3Z"
+        ></path>
+
+    </svg>
+
+
+    <div>
+
+        <strong>
+            QUALIDADE
+        </strong>
+
+        <span>
+            Produtos selecionados.
+        </span>
+
+    </div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- ===================================
+     MARCAS
+=================================== -->
+
+<section class="brands">
+
+<div
+    class="brands-track"
+    id="brandsTrack"
+>
+
+</div>
+
+</section>
+
+
+<!-- ===================================
+     LANÇAMENTOS
+=================================== -->
+
+<section
+    class="section"
+    id="lancamentos"
+>
+
+<div class="section-heading">
+
+    <div>
+
+        <div class="section-label">
+            EM DESTAQUE
+        </div>
+
+        <h2 class="section-title">
+            LANÇAMENTOS
+        </h2>
+
+    </div>
+
+
+    <button
+        class="view-all"
+        id="showAllLaunches"
+    >
+
+        VER TODOS
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+        >
+
+            <path
+                d="M5 12h14"
+            ></path>
+
+            <path
+                d="m13 6 6 6-6 6"
+            ></path>
+
         </svg>
 
     </button>
@@ -1389,232 +1636,1103 @@ footer {
 </div>
 
 
-<!-- MODAL -->
-<div class="modal" id="modal">
+<div
+    class="products-grid"
+    id="launchGrid"
+>
 
-    <div class="modal-box">
+    <div class="empty">
+        Carregando lançamentos...
+    </div>
 
-        <button class="modal-close" onclick="closeModal()">×</button>
+</div>
 
-        <div id="modalContent"></div>
+</section>
+
+
+<!-- ===================================
+     CATÁLOGO
+=================================== -->
+
+<section
+    class="section"
+    id="catalogo"
+>
+
+<div class="section-heading">
+
+    <div>
+
+        <div class="section-label">
+            CATÁLOGO
+        </div>
+
+        <h2 class="section-title">
+            TODOS OS TÊNIS
+        </h2>
+
+    </div>
+
+
+    <button
+        class="view-all"
+        id="showAllCatalog"
+    >
+
+        VER TODOS
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+        >
+
+            <path
+                d="M5 12h14"
+            ></path>
+
+            <path
+                d="m13 6 6 6-6 6"
+            ></path>
+
+        </svg>
+
+    </button>
+
+</div>
+
+
+<div
+    class="products-grid catalog-grid"
+    id="catalogGrid"
+>
+
+    <div class="empty">
+        Carregando produtos...
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ===================================
+     OFERTA
+=================================== -->
+
+<section
+    class="offer"
+    id="oferta"
+>
+
+<div>
+
+    <div class="offer-label">
+        OFERTA ESPECIAL
+    </div>
+
+    <h2>
+        LEVE 2 E PAGUE MENOS
+    </h2>
+
+    <div class="offer-discount">
+        20% DE DESCONTO
+    </div>
+
+</div>
+
+
+<a
+    href="#catalogo"
+    class="offer-button"
+>
+
+    APROVEITAR
+
+    <span>→</span>
+
+</a>
+
+</section>
+
+
+<!-- ===================================
+     FOOTER
+=================================== -->
+
+<footer>
+
+<div class="footer-grid">
+
+
+<div>
+
+    <div class="footer-logo">
+        URBANSTEP<span>.</span>
+    </div>
+
+    <p class="footer-description">
+
+        Os melhores tênis esportivos e lifestyle.
+        Frete rápido para todo o Brasil.
+
+        <br><br>
+
+        Tênis premium e exclusivos.
+
+    </p>
+
+</div>
+
+
+<div>
+
+    <div class="footer-title">
+        MARCAS
+    </div>
+
+    <div
+        class="footer-links"
+        id="footerBrands"
+    >
+
+        <a href="#catalogo">
+            Nike
+        </a>
+
+        <a href="#catalogo">
+            Adidas
+        </a>
+
+        <a href="#catalogo">
+            New Balance
+        </a>
+
+        <a href="#catalogo">
+            Jordan
+        </a>
+
+        <a href="#catalogo">
+            Asics
+        </a>
 
     </div>
 
 </div>
 
 
+<div>
+
+    <div class="footer-title">
+        SUPORTE
+    </div>
+
+    <div class="footer-links">
+
+        <a href="#">
+            Rastrear Pedido
+        </a>
+
+        <a href="#">
+            Trocas e Devoluções
+        </a>
+
+        <a href="#">
+            Guia de Tamanhos
+        </a>
+
+        <a
+            href="https://wa.me/5561996223295"
+            target="_blank"
+        >
+            Contato
+        </a>
+
+        <a href="#">
+            FAQ
+        </a>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<div class="footer-bottom">
+
+    <span>
+        © 2026 URBANSTEP.
+        Todos os direitos reservados.
+    </span>
+
+
+    <div class="footer-bottom-links">
+
+        <a href="#">
+            Privacidade
+        </a>
+
+        <a href="#">
+            Termos
+        </a>
+
+        <a href="#">
+            Cookies
+        </a>
+
+    </div>
+
+</div>
+
+</footer>
+
+
+<!-- ===================================
+     WHATSAPP
+=================================== -->
+
+<div class="whatsapp-wrap">
+
+<div
+    class="whatsapp-message"
+    id="whatsappMessage"
+>
+
+    Olá, Precisa de ajuda?
+
+</div>
+
+
+<button
+    class="whatsapp"
+    onclick="openWhatsApp()"
+    aria-label="WhatsApp"
+>
+
+    <svg viewBox="0 0 24 24">
+
+        <path
+            d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.9-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17.2a7.7 7.7 0 0 1-3.9-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A7.7 7.7 0 1 1 12 19.7Zm4.2-5.7c-.2-.1-1.3-.7-1.5-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.7.9-.1.2-.3.2-.5.1-1.2-.6-2-1.1-2.8-2.5-.2-.3.2-.3.5-1 .1-.2 0-.4 0-.5s-.6-1.5-.8-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.4.5.6.2 1.2.2 1.6.1.5-.1 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.3-.2-.5-.3Z"
+        ></path>
+
+    </svg>
+
+</button>
+
+</div>
+
+
 <script>
 
-/* =========================
-   WHATSAPP
-========================= */
+/* ===================================
+   SUPABASE
+=================================== */
 
-const whatsappNumber = "5561996223295";
+const SUPABASE_URL =
+    "https://gpovidqzqgttitsgelzm.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
+
+
+const {
+    createClient
+} = supabase;
+
+
+const db =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ===================================
+   VARIÁVEIS
+=================================== */
+
+let produtos = [];
+
+let mostrarTodosLancamentos = false;
+
+let mostrarTodoCatalogo = false;
+
+
+/* ===================================
+   CARREGAR PRODUTOS
+=================================== */
+
+async function carregarProdutos() {
+
+    const {
+        data,
+        error
+    } = await db
+        .from("produtos")
+        .select("*")
+        .eq("ativo", true)
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Erro Supabase:",
+            error
+        );
+
+
+        document
+            .getElementById(
+                "catalogGrid"
+            )
+            .innerHTML = `
+
+            <div class="empty">
+
+                Não foi possível carregar
+                os produtos.
+
+            </div>
+
+        `;
+
+
+        document
+            .getElementById(
+                "launchGrid"
+            )
+            .innerHTML = `
+
+            <div class="empty">
+
+                Não foi possível carregar
+                os lançamentos.
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    produtos =
+        data || [];
+
+
+    montarMarcas();
+
+    renderizarProdutos();
+
+}
+
+
+/* ===================================
+   PREÇO
+=================================== */
+
+function formatarPreco(valor) {
+
+    return Number(
+        valor || 0
+    )
+    .toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+
+}
+
+
+/* ===================================
+   CARD PRODUTO
+=================================== */
+
+function criarProdutoHTML(
+    produto
+) {
+
+    const precoNormal =
+        Number(
+            produto.preco || 0
+        );
+
+
+    const precoPromocional =
+        produto.preco_promocional
+            ? Number(
+                produto.preco_promocional
+            )
+            : null;
+
+
+    const precoFinal =
+        precoPromocional ||
+        precoNormal;
+
+
+    let precoHTML = "";
+
+
+    if (
+        precoPromocional &&
+        precoPromocional <
+        precoNormal
+    ) {
+
+        precoHTML = `
+
+            <span class="old-price">
+
+                ${formatarPreco(
+                    precoNormal
+                )}
+
+            </span>
+
+            ${formatarPreco(
+                precoPromocional
+            )}
+
+            ${
+                produto.desconto
+                    ? `
+                        <span class="discount">
+
+                            ${produto.desconto}% OFF
+
+                        </span>
+                    `
+                    : ""
+            }
+
+        `;
+
+    } else {
+
+        precoHTML =
+            formatarPreco(
+                precoFinal
+            );
+
+    }
+
+
+    return `
+
+        <article
+            class="product"
+            data-name="${escapeHTML(
+                (
+                    produto.nome +
+                    " " +
+                    produto.marca
+                )
+                .toLowerCase()
+            )}"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="${escapeHTML(
+                        produto.imagem_principal ||
+                        ""
+                    )}"
+                    alt="${escapeHTML(
+                        produto.nome ||
+                        "Tênis UrbanStep"
+                    )}"
+                    loading="lazy"
+                >
+
+
+                <button
+                    class="buy-now"
+                    onclick="abrirProduto(${produto.id})"
+                >
+
+                    COMPRAR AGORA
+
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <div class="product-brand">
+
+                    ${escapeHTML(
+                        produto.marca ||
+                        ""
+                    )}
+
+                </div>
+
+
+                <div class="product-name">
+
+                    ${escapeHTML(
+                        produto.nome ||
+                        ""
+                    )}
+
+                </div>
+
+
+                <div class="product-price">
+
+                    ${precoHTML}
+
+                </div>
+
+
+                ${
+                    produto.parcelamento
+                        ? `
+                            <div
+                                class="product-installments"
+                            >
+
+                                ${escapeHTML(
+                                    produto.parcelamento
+                                )}
+
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* ===================================
+   RENDERIZAR
+=================================== */
+
+function renderizarProdutos() {
+
+    const busca =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const filtrados =
+        produtos.filter(
+            produto => {
+
+                const texto =
+                    (
+                        (produto.nome || "") +
+                        " " +
+                        (produto.marca || "")
+                    )
+                    .toLowerCase();
+
+
+                return texto.includes(
+                    busca
+                );
+
+            }
+        );
+
+
+    const lancamentos =
+        filtrados.filter(
+            produto =>
+                produto.lancamento === true
+        );
+
+
+    const lancamentosVisiveis =
+        mostrarTodosLancamentos
+            ? lancamentos
+            : lancamentos.slice(
+                0,
+                4
+            );
+
+
+    const catalogoVisivel =
+        mostrarTodoCatalogo
+            ? filtrados
+            : filtrados.slice(
+                0,
+                8
+            );
+
+
+    const launchGrid =
+        document.getElementById(
+            "launchGrid"
+        );
+
+
+    const catalogGrid =
+        document.getElementById(
+            "catalogGrid"
+        );
+
+
+    if (
+        lancamentosVisiveis.length
+    ) {
+
+        launchGrid.innerHTML =
+            lancamentosVisiveis
+                .map(
+                    criarProdutoHTML
+                )
+                .join("");
+
+    } else {
+
+        launchGrid.innerHTML = `
+
+            <div class="empty">
+
+                Nenhum lançamento
+                encontrado.
+
+            </div>
+
+        `;
+
+    }
+
+
+    if (
+        catalogoVisivel.length
+    ) {
+
+        catalogGrid.innerHTML =
+            catalogoVisivel
+                .map(
+                    criarProdutoHTML
+                )
+                .join("");
+
+    } else {
+
+        catalogGrid.innerHTML = `
+
+            <div class="empty">
+
+                Nenhum tênis
+                encontrado.
+
+            </div>
+
+        `;
+
+    }
+
+
+    document
+        .getElementById(
+            "showAllLaunches"
+        )
+        .style.display =
+            lancamentos.length > 4
+                ? "flex"
+                : "none";
+
+
+    document
+        .getElementById(
+            "showAllCatalog"
+        )
+        .style.display =
+            filtrados.length > 8
+                ? "flex"
+                : "none";
+
+}
+
+
+/* ===================================
+   VER TODOS
+=================================== */
+
+document
+    .getElementById(
+        "showAllLaunches"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+            mostrarTodosLancamentos =
+                !mostrarTodosLancamentos;
+
+
+            this.childNodes[0]
+                .textContent =
+                    mostrarTodosLancamentos
+                        ? "VER MENOS "
+                        : "VER TODOS ";
+
+
+            renderizarProdutos();
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "showAllCatalog"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+            mostrarTodoCatalogo =
+                !mostrarTodoCatalogo;
+
+
+            this.childNodes[0]
+                .textContent =
+                    mostrarTodoCatalogo
+                        ? "VER MENOS "
+                        : "VER TODOS ";
+
+
+            renderizarProdutos();
+
+        }
+    );
+
+
+/* ===================================
+   ABRIR PRODUTO
+=================================== */
+
+function abrirProduto(id) {
+
+    window.location.href =
+        "produto.html?id=" +
+        encodeURIComponent(id);
+
+}
+
+
+/* ===================================
+   MARCAS AUTOMÁTICAS
+=================================== */
+
+function montarMarcas() {
+
+    let marcas =
+        [
+            ...new Set(
+                produtos
+                    .map(
+                        produto =>
+                            (
+                                produto.marca ||
+                                ""
+                            )
+                            .trim()
+                            .toUpperCase()
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+    /*
+      Se ainda houver poucos produtos,
+      mostramos marcas iniciais também.
+    */
+
+    const iniciais = [
+
+        "ADIDAS",
+        "NIKE",
+        "REEBOK",
+        "NEW BALANCE",
+        "ASICS",
+        "JORDAN",
+        "PUMA",
+        "FILA",
+        "MIZUNO",
+        "OLYMPIKUS",
+        "VANS",
+        "CONVERSE"
+
+    ];
+
+
+    marcas = [
+
+        ...new Set(
+            [
+                ...marcas,
+                ...iniciais
+            ]
+        )
+
+    ];
+
+
+    const listaHTML =
+        marcas
+            .map(
+                marca => `
+
+                    <span>
+                        ${escapeHTML(marca)}
+                    </span>
+
+                    <span
+                        class="brand-separator"
+                    >
+                        •
+                    </span>
+
+                `
+            )
+            .join("");
+
+
+    document
+        .getElementById(
+            "brandsTrack"
+        )
+        .innerHTML = `
+
+            <div class="brand-list">
+                ${listaHTML}
+            </div>
+
+            <div
+                class="brand-list"
+                aria-hidden="true"
+            >
+                ${listaHTML}
+            </div>
+
+        `;
+
+}
+
+
+/* ===================================
+   BUSCA CORRIGIDA
+=================================== */
+
+const searchArea =
+    document.getElementById(
+        "searchArea"
+    );
+
+
+const searchButton =
+    document.getElementById(
+        "searchButton"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+/*
+  Celular:
+  toque na lupa abre/fecha.
+
+  Notebook:
+  hover abre.
+  focus mantém aberta.
+*/
+
+searchButton.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+        searchArea.classList.toggle(
+            "open"
+        );
+
+
+        if (
+            searchArea.classList.contains(
+                "open"
+            )
+        ) {
+
+            setTimeout(
+                () =>
+                    searchInput.focus(),
+                50
+            );
+
+        }
+
+    }
+);
+
+
+searchInput.addEventListener(
+    "input",
+    renderizarProdutos
+);
+
+
+/*
+  Quando clicar fora,
+  fecha a busca.
+*/
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            !searchArea.contains(
+                event.target
+            )
+        ) {
+
+            searchArea.classList.remove(
+                "open"
+            );
+
+        }
+
+    }
+);
+
+
+/*
+  Evita fechar enquanto
+  está clicando na pesquisa.
+*/
+
+searchArea.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+    }
+);
+
+
+/* ===================================
+   WHATSAPP
+=================================== */
 
 function openWhatsApp() {
-    const message = encodeURIComponent(
-        "Olá! Vim pelo site da UrbanStep e gostaria de ajuda."
-    );
+
+    const numero =
+        "5561996223295";
+
+
+    const mensagem =
+        encodeURIComponent(
+            "Olá! Vim pelo site da UrbanStep e preciso de ajuda."
+        );
+
 
     window.open(
-        "https://wa.me/" + whatsappNumber + "?text=" + message,
+        `https://wa.me/${numero}?text=${mensagem}`,
         "_blank"
     );
+
 }
 
 
-/* =========================
-   PRODUTO
-========================= */
+setTimeout(
+    () => {
 
-function buyProduct(productName) {
+        const mensagem =
+            document.getElementById(
+                "whatsappMessage"
+            );
 
-    const message = encodeURIComponent(
-        "Olá! Tenho interesse no produto: " + productName
+
+        if (mensagem) {
+
+            mensagem.style.display =
+                "none";
+
+        }
+
+    },
+    6000
+);
+
+
+/* ===================================
+   PROTEÇÃO DE TEXTO
+=================================== */
+
+function escapeHTML(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
     );
 
-    window.open(
-        "https://wa.me/" + whatsappNumber + "?text=" + message,
-        "_blank"
-    );
 }
 
 
-/* =========================
-   WHATSAPP MENSAGEM
-========================= */
+/* ===================================
+   INICIAR
+=================================== */
 
-setTimeout(() => {
-
-    const message = document.getElementById("whatsappMessage");
-
-    if (message) {
-        message.style.display = "none";
-    }
-
-}, 6000);
-
-
-/* =========================
-   MODAIS
-========================= */
-
-const modalData = {
-
-    account: {
-        title: "Minha Conta",
-        text: `
-            <p>Em breve você poderá criar sua conta UrbanStep,
-            acompanhar pedidos e salvar seus produtos favoritos.</p>
-        `
-    },
-
-    bag: {
-        title: "Sua Sacola",
-        text: `
-            <p>Sua sacola está pronta para receber seus produtos.</p>
-            <p>O sistema de carrinho e checkout será conectado
-            na próxima etapa da loja.</p>
-        `
-    },
-
-    tracking: {
-        title: "Rastrear Pedido",
-        text: `
-            <p>Assim que seu pedido for enviado, você receberá
-            o código de rastreamento.</p>
-
-            <p>Use o código recebido para acompanhar a entrega
-            do seu pedido.</p>
-        `
-    },
-
-    returns: {
-        title: "Trocas e Devoluções",
-        text: `
-            <p>Você pode solicitar a troca em até
-            <strong>7 dias após o recebimento</strong> do produto.</p>
-
-            <p>Para iniciar o processo, entre em contato com
-            nosso atendimento informando o número do pedido.</p>
-        `
-    },
-
-    sizes: {
-        title: "Guia de Tamanhos",
-        text: `
-            <p>Consulte a tabela de tamanhos disponível
-            na página de cada produto antes de finalizar sua compra.</p>
-
-            <p>Em caso de dúvida, fale com nosso atendimento.</p>
-        `
-    },
-
-    faq: {
-        title: "Perguntas Frequentes",
-        text: `
-            <p><strong>Qual o prazo de entrega?</strong><br>
-            O prazo varia de acordo com a região e será informado
-            durante a compra.</p>
-
-            <p><strong>Como funciona a troca?</strong><br>
-            A solicitação pode ser feita em até 7 dias após
-            o recebimento.</p>
-
-            <p><strong>Como acompanho meu pedido?</strong><br>
-            Você receberá o código de rastreamento após o envio.</p>
-
-            <p><strong>Como escolher meu tamanho?</strong><br>
-            Consulte o guia de tamanhos ou fale conosco.</p>
-        `
-    },
-
-    privacy: {
-        title: "Privacidade",
-        text: `
-            <p>A UrbanStep valoriza sua privacidade e busca
-            proteger as informações fornecidas durante sua navegação
-            e compra.</p>
-        `
-    },
-
-    terms: {
-        title: "Termos",
-        text: `
-            <p>Ao utilizar a UrbanStep, você concorda com as
-            condições de uso e políticas aplicáveis à loja.</p>
-        `
-    },
-
-    cookies: {
-        title: "Cookies",
-        text: `
-            <p>Utilizamos cookies e tecnologias semelhantes para
-            melhorar sua experiência de navegação e funcionamento
-            do site.</p>
-        `
-    }
-
-};
-
-function openModal(type) {
-
-    const data = modalData[type];
-
-    if (!data) return;
-
-    document.getElementById("modalContent").innerHTML =
-        "<h2>" + data.title + "</h2>" + data.text;
-
-    document.getElementById("modal").classList.add("active");
-}
-
-function closeModal() {
-    document.getElementById("modal").classList.remove("active");
-}
-
-document.getElementById("modal").addEventListener("click", function(e) {
-
-    if (e.target === this) {
-        closeModal();
-    }
-
-});
-
-
-/* =========================
-   BUSCA
-========================= */
-
-document.getElementById("searchInput").addEventListener("input", function() {
-
-    const search = this.value.toLowerCase().trim();
-
-    const products = document.querySelectorAll(".product");
-
-    products.forEach(product => {
-
-        const content = product.innerText.toLowerCase();
-
-        product.style.display =
-            content.includes(search) ? "" : "none";
-
-    });
-
-});
-
-
-/* =========================
-   FECHAR MODAL ESC
-========================= */
-
-document.addEventListener("keydown", function(e) {
-
-    if (e.key === "Escape") {
-        closeModal();
-    }
-
-});
+carregarProdutos();
 
 </script>
 
