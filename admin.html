@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin | URBANSTEP</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080808;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* LOGIN */
+
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 430px;
+      background: #101010;
+      border: 1px solid #222;
+      border-radius: 24px;
+      padding: 40px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 35px;
+    }
+
+    .logo span {
+      color: #165dff;
+    }
+
+    .login-box h1 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .login-box p {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: #151515;
+      color: white;
+      border: 1px solid #292929;
+      border-radius: 12px;
+      padding: 14px 16px;
+      outline: none;
+      transition: .2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #165dff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .btn-primary {
+      border: 0;
+      width: 100%;
+      padding: 15px;
+      border-radius: 999px;
+      background: #165dff;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+    }
+
+    #loginMessage {
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    /* ADMIN */
+
+    header {
+      height: 75px;
+      border-bottom: 1px solid #1d1d1d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      position: sticky;
+      top: 0;
+      background: rgba(8, 8, 8, .96);
+      backdrop-filter: blur(15px);
+      z-index: 20;
+    }
+
+    .logout {
+      background: #161616;
+      color: white;
+      border: 1px solid #292929;
+      border-radius: 999px;
+      padding: 10px 18px;
+    }
+
+    main {
+      width: min(1200px, 92%);
+      margin: 45px auto 100px;
+    }
+
+    .title-small {
+      color: #165dff;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    h2 {
+      margin-top: 7px;
+      font-size: clamp(28px, 5vw, 45px);
+    }
+
+    .subtitle {
+      color: #777;
+      margin-top: 8px;
+      margin-bottom: 35px;
+    }
+
+    .panel {
+      background: #0e0e0e;
+      border: 1px solid #202020;
+      border-radius: 22px;
+      padding: 28px;
+      margin-bottom: 45px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .check-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      margin: 10px 0 25px;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ccc;
+    }
+
+    .check input {
+      width: auto;
+      accent-color: #165dff;
+    }
+
+    .upload-area {
+      border: 1px dashed #333;
+      padding: 25px;
+      border-radius: 16px;
+    }
+
+    .upload-area input {
+      margin-top: 10px;
+    }
+
+    .preview {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .preview img {
+      width: 90px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #222;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .actions button {
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-weight: 700;
+    }
+
+    .save {
+      background: #165dff;
+      color: white;
+      border: none;
+    }
+
+    .cancel {
+      background: #171717;
+      color: white;
+      border: 1px solid #333;
+    }
+
+    /* PRODUTOS */
+
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+
+    .products-count {
+      color: #777;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .product {
+      border: 1px solid #202020;
+      background: #0e0e0e;
+      border-radius: 17px;
+      overflow: hidden;
+    }
+
+    .product-image {
+      aspect-ratio: 9 / 11;
+      background: #151515;
+      overflow: hidden;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 17px;
+    }
+
+    .brand {
+      color: #777;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .product h3 {
+      font-size: 16px;
+      margin: 7px 0;
+    }
+
+    .price {
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .product-buttons {
+      display: flex;
+      gap: 7px;
+    }
+
+    .product-buttons button {
+      flex: 1;
+      padding: 9px;
+      border-radius: 9px;
+      border: 1px solid #292929;
+      background: #161616;
+      color: white;
+      font-size: 12px;
+    }
+
+    .product-buttons .delete {
+      color: #ff6868;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #161616;
+      color: #aaa;
+      font-size: 10px;
+    }
+
+    #adminMessage {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    @media(max-width: 900px) {
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width: 650px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .products {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      header {
+        padding: 0 20px;
+      }
+
+      .product-info {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<section id="loginScreen">
+
+  <div class="login-box">
+
+    <div class="logo">
+      URBANSTEP<span>.</span>
+    </div>
+
+    <h1>Painel administrativo</h1>
+
+    <p>
+      Entre com sua conta administrativa para gerenciar os produtos.
+    </p>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label>E-mail</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Senha</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <button class="btn-primary" type="submit">
+        ENTRAR
+      </button>
+
+      <div id="loginMessage"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- PAINEL -->
+
+<section id="adminScreen" class="hidden">
+
+<header>
+
+  <div class="logo" style="margin:0;">
+    URBANSTEP<span>.</span>
+  </div>
+
+  <button id="logoutBtn" class="logout">
+    Sair
+  </button>
+
+</header>
+
+<main>
+
+  <div class="title-small">
+    Administração
+  </div>
+
+  <h2 id="formTitle">
+    Cadastrar produto
+  </h2>
+
+  <p class="subtitle">
+    Cadastre e gerencie os produtos exibidos na UrbanStep.
+  </p>
+
+  <form id="productForm" class="panel">
+
+    <div class="grid">
+
+      <div class="field">
+        <label>Nome do produto *</label>
+        <input id="nome" required>
+      </div>
+
+      <div class="field">
+        <label>Marca *</label>
+        <input
+          id="marca"
+          placeholder="Ex: Adidas"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Preço *</label>
+        <input
+          id="preco"
+          type="number"
+          step="0.01"
+          min="0"
+          placeholder="199.90"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Preço promocional</label>
+        <input
+          id="precoPromocional"
+          type="number"
+          step="0.01"
+          min="0"
+        >
+      </div>
+
+      <div class="field">
+        <label>Desconto (%)</label>
+        <input
+          id="desconto"
+          type="number"
+          min="0"
+          max="100"
+        >
+      </div>
+
+      <div class="field">
+        <label>Parcelamento</label>
+        <input
+          id="parcelamento"
+          placeholder="Ex: 4x de R$ 49,98"
+        >
+      </div>
+
+      <div class="field full">
+        <label>Tamanhos</label>
+        <input
+          id="tamanhos"
+          placeholder="Ex: 34, 35, 36, 37, 38, 39"
+        >
+      </div>
+
+      <div class="field full">
+        <label>Descrição</label>
+        <textarea
+          id="descricao"
+          placeholder="Descrição completa do produto..."
+        ></textarea>
+      </div>
+
+      <div class="field full">
+        <label>Características</label>
+        <textarea
+          id="caracteristicas"
+          placeholder="Ex: Material premium, solado emborrachado, acabamento reforçado..."
+        ></textarea>
+      </div>
+
+      <div class="field full upload-area">
+
+        <label>Imagem principal *</label>
+
+        <input
+          id="imagemPrincipal"
+          type="file"
+          accept="image/*"
+        >
+
+        <div id="principalPreview" class="preview"></div>
+
+      </div>
+
+      <div class="field full upload-area">
+
+        <label>Outras imagens</label>
+
+        <input
+          id="outrasImagens"
+          type="file"
+          accept="image/*"
+          multiple
+        >
+
+        <div id="outrasPreview" class="preview"></div>
+
+      </div>
+
+    </div>
+
+    <div class="check-row">
+
+      <label class="check">
+        <input id="lancamento" type="checkbox">
+        Mostrar em Lançamentos
+      </label>
+
+      <label class="check">
+        <input id="ativo" type="checkbox" checked>
+        Produto ativo
+      </label>
+
+    </div>
+
+    <div class="actions">
+
+      <button class="save" id="saveBtn" type="submit">
+        CADASTRAR PRODUTO
+      </button>
+
+      <button
+        class="cancel hidden"
+        id="cancelEdit"
+        type="button"
+      >
+        CANCELAR EDIÇÃO
+      </button>
+
+    </div>
+
+    <div id="adminMessage"></div>
+
+  </form>
+
+
+  <div class="products-header">
+
+    <div>
+      <div class="title-small">
+        Catálogo
+      </div>
+
+      <h2 style="font-size:28px;">
+        Produtos cadastrados
+      </h2>
+    </div>
+
+    <span id="productCount" class="products-count"></span>
+
+  </div>
+
+  <div id="products" class="products"></div>
+
+</main>
+
+</section>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://gpovidqzqgttitsgelzm.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
+
+const { createClient } = supabase;
+
+const db = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const ADMIN_UID =
+  "5b833b0a-b41b-4a5f-af70-5937ad298ab2";
+
+
+let editingId = null;
+
+let existingMainImage = "";
+let existingImages = [];
+
+
+/* ELEMENTOS */
+
+const loginScreen =
+  document.getElementById("loginScreen");
+
+const adminScreen =
+  document.getElementById("adminScreen");
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const productForm =
+  document.getElementById("productForm");
+
+const loginMessage =
+  document.getElementById("loginMessage");
+
+const adminMessage =
+  document.getElementById("adminMessage");
+
+
+/* VERIFICAR LOGIN */
+
+async function checkSession() {
+
+  const {
+    data: { session }
+  } = await db.auth.getSession();
+
+  if (
+    session &&
+    session.user.id === ADMIN_UID
+  ) {
+
+    showAdmin();
+
+  } else {
+
+    showLogin();
+
+  }
+
+}
+
+function showAdmin() {
+
+  loginScreen.classList.add("hidden");
+  adminScreen.classList.remove("hidden");
+
+  loadProducts();
+
+}
+
+function showLogin() {
+
+  adminScreen.classList.add("hidden");
+  loginScreen.classList.remove("hidden");
+
+}
+
+
+/* LOGIN */
+
+loginForm.addEventListener(
+  "submit",
+  async (e) => {
+
+    e.preventDefault();
+
+    loginMessage.textContent =
+      "Entrando...";
+
+    loginMessage.style.color =
+      "#aaa";
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    const {
+      data,
+      error
+    } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+
+      loginMessage.textContent =
+        "E-mail ou senha incorretos.";
+
+      loginMessage.style.color =
+        "#ff6868";
+
+      return;
+
+    }
+
+    if (
+      !data.user ||
+      data.user.id !== ADMIN_UID
+    ) {
+
+      await db.auth.signOut();
+
+      loginMessage.textContent =
+        "Esta conta não possui acesso administrativo.";
+
+      loginMessage.style.color =
+        "#ff6868";
+
+      return;
+
+    }
+
+    loginMessage.textContent = "";
+
+    showAdmin();
+
+  }
+);
+
+
+/* LOGOUT */
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      await db.auth.signOut();
+
+      showLogin();
+
+    }
+  );
+
+
+/* PREVIEW */
+
+document
+  .getElementById("imagemPrincipal")
+  .addEventListener(
+    "change",
+    function () {
+
+      const preview =
+        document.getElementById("principalPreview");
+
+      preview.innerHTML = "";
+
+      if (!this.files[0]) return;
+
+      const img =
+        document.createElement("img");
+
+      img.src =
+        URL.createObjectURL(this.files[0]);
+
+      preview.appendChild(img);
+
+    }
+  );
+
+
+document
+  .getElementById("outrasImagens")
+  .addEventListener(
+    "change",
+    function () {
+
+      const preview =
+        document.getElementById("outrasPreview");
+
+      preview.innerHTML = "";
+
+      [...this.files].forEach(file => {
+
+        const img =
+          document.createElement("img");
+
+        img.src =
+          URL.createObjectURL(file);
+
+        preview.appendChild(img);
+
+      });
+
+    }
+  );
+
+
+/* UPLOAD */
+
+async function uploadImage(file) {
+
+  const extension =
+    file.name.split(".").pop();
+
+  const fileName =
+    `${Date.now()}-${crypto.randomUUID()}.${extension}`;
+
+  const {
+    error
+  } = await db.storage
+    .from("produtos")
+    .upload(
+      fileName,
+      file,
+      {
+        cacheControl: "3600",
+        upsert: false
+      }
+    );
+
+  if (error) {
+    throw error;
+  }
+
+  const {
+    data
+  } = db.storage
+    .from("produtos")
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
+
+}
+
+
+/* CADASTRAR / EDITAR */
+
+productForm.addEventListener(
+  "submit",
+  async (e) => {
+
+    e.preventDefault();
+
+    const saveBtn =
+      document.getElementById("saveBtn");
+
+    saveBtn.disabled = true;
+
+    adminMessage.style.color =
+      "#aaa";
+
+    adminMessage.textContent =
+      "Salvando produto...";
+
+    try {
+
+      const mainFile =
+        document.getElementById(
+          "imagemPrincipal"
+        ).files[0];
+
+      const extraFiles =
+        [
+          ...document.getElementById(
+            "outrasImagens"
+          ).files
+        ];
+
+      let mainImage =
+        existingMainImage;
+
+      if (mainFile) {
+        mainImage =
+          await uploadImage(mainFile);
+      }
+
+      if (!mainImage) {
+        throw new Error(
+          "Escolha uma imagem principal."
+        );
+      }
+
+      let extraImages =
+        [...existingImages];
+
+      for (const file of extraFiles) {
+
+        const url =
+          await uploadImage(file);
+
+        extraImages.push(url);
+
+      }
+
+      const product = {
+
+        nome:
+          document.getElementById(
+            "nome"
+          ).value.trim(),
+
+        marca:
+          document.getElementById(
+            "marca"
+          ).value.trim(),
+
+        preco:
+          Number(
+            document.getElementById(
+              "preco"
+            ).value
+          ),
+
+        preco_promocional:
+          document.getElementById(
+            "precoPromocional"
+          ).value
+            ? Number(
+                document.getElementById(
+                  "precoPromocional"
+                ).value
+              )
+            : null,
+
+        desconto:
+          document.getElementById(
+            "desconto"
+          ).value
+            ? Number(
+                document.getElementById(
+                  "desconto"
+                ).value
+              )
+            : null,
+
+        parcelamento:
+          document.getElementById(
+            "parcelamento"
+          ).value.trim(),
+
+        descricao:
+          document.getElementById(
+            "descricao"
+          ).value.trim(),
+
+        caracteristicas:
+          document.getElementById(
+            "caracteristicas"
+          ).value.trim(),
+
+        tamanhos:
+          document.getElementById(
+            "tamanhos"
+          ).value.trim(),
+
+        imagem_principal:
+          mainImage,
+
+        imagens:
+          JSON.stringify(extraImages),
+
+        lancamento:
+          document.getElementById(
+            "lancamento"
+          ).checked,
+
+        ativo:
+          document.getElementById(
+            "ativo"
+          ).checked
+
+      };
+
+
+      let result;
+
+
+      if (editingId) {
+
+        result = await db
+          .from("produtos")
+          .update(product)
+          .eq("id", editingId);
+
+      } else {
+
+        result = await db
+          .from("produtos")
+          .insert(product);
+
+      }
+
+
+      if (result.error) {
+        throw result.error;
+      }
+
+
+      adminMessage.style.color =
+        "#6ee7a8";
+
+      adminMessage.textContent =
+        editingId
+          ? "Produto atualizado com sucesso!"
+          : "Produto cadastrado com sucesso!";
+
+
+      resetForm();
+
+      await loadProducts();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      adminMessage.style.color =
+        "#ff6868";
+
+      adminMessage.textContent =
+        "Erro: " + error.message;
+
+    } finally {
+
+      saveBtn.disabled = false;
+
+    }
+
+  }
+);
+
+
+/* CARREGAR PRODUTOS */
+
+async function loadProducts() {
+
+  const productsBox =
+    document.getElementById("products");
+
+  productsBox.innerHTML =
+    "Carregando...";
+
+
+  const {
+    data,
+    error
+  } = await db
+    .from("produtos")
+    .select("*")
+    .order(
+      "created_at",
+      { ascending: false }
+    );
+
+
+  if (error) {
+
+    productsBox.innerHTML =
+      "Não foi possível carregar os produtos.";
+
+    console.error(error);
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "productCount"
+  ).textContent =
+    `${data.length} produto(s)`;
+
+
+  if (!data.length) {
+
+    productsBox.innerHTML =
+      "<p style='color:#777'>Nenhum produto cadastrado ainda.</p>";
+
+    return;
+
+  }
+
+
+  productsBox.innerHTML = "";
+
+
+  data.forEach(product => {
+
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "product";
+
+
+    const price =
+      product.preco_promocional ||
+      product.preco;
+
+
+    card.innerHTML = `
+
+      <div class="product-image">
+
+        <img
+          src="${escapeHTML(product.imagem_principal || "")}"
+          alt=""
+        >
+
+      </div>
+
+      <div class="product-info">
+
+        <div class="brand">
+          ${escapeHTML(product.marca || "")}
+        </div>
+
+        <h3>
+          ${escapeHTML(product.nome || "")}
+        </h3>
+
+        <div class="price">
+          ${formatMoney(price)}
+        </div>
+
+        ${
+          product.lancamento
+            ? `<span class="status">LANÇAMENTO</span>`
+            : ""
+        }
+
+        ${
+          !product.ativo
+            ? `<span class="status">INATIVO</span>`
+            : ""
+        }
+
+        <div
+          class="product-buttons"
+          style="margin-top:15px;"
+        >
+
+          <button
+            onclick="editProduct(${product.id})"
+          >
+            Editar
+          </button>
+
+          <button
+            class="delete"
+            onclick="deleteProduct(${product.id})"
+          >
+            Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+    productsBox.appendChild(card);
+
+  });
+
+}
+
+
+/* EDITAR */
+
+window.editProduct =
+  async function (id) {
+
+    const {
+      data,
+      error
+    } = await db
+      .from("produtos")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+
+    if (error) {
+
+      alert(
+        "Não foi possível carregar o produto."
+      );
+
+      return;
+
+    }
+
+
+    editingId = data.id;
+
+    existingMainImage =
+      data.imagem_principal || "";
+
+    try {
+
+      existingImages =
+        data.imagens
+          ? JSON.parse(data.imagens)
+          : [];
+
+    } catch {
+
+      existingImages = [];
+
+    }
+
+
+    document.getElementById(
+      "nome"
+    ).value =
+      data.nome || "";
+
+    document.getElementById(
+      "marca"
+    ).value =
+      data.marca || "";
+
+    document.getElementById(
+      "preco"
+    ).value =
+      data.preco ?? "";
+
+    document.getElementById(
+      "precoPromocional"
+    ).value =
+      data.preco_promocional ?? "";
+
+    document.getElementById(
+      "desconto"
+    ).value =
+      data.desconto ?? "";
+
+    document.getElementById(
+      "parcelamento"
+    ).value =
+      data.parcelamento || "";
+
+    document.getElementById(
+      "descricao"
+    ).value =
+      data.descricao || "";
+
+    document.getElementById(
+      "caracteristicas"
+    ).value =
+      data.caracteristicas || "";
+
+    document.getElementById(
+      "tamanhos"
+    ).value =
+      data.tamanhos || "";
+
+    document.getElementById(
+      "lancamento"
+    ).checked =
+      !!data.lancamento;
+
+    document.getElementById(
+      "ativo"
+    ).checked =
+      !!data.ativo;
+
+
+    const principalPreview =
+      document.getElementById(
+        "principalPreview"
+      );
+
+    principalPreview.innerHTML =
+      existingMainImage
+        ? `<img src="${escapeHTML(existingMainImage)}">`
+        : "";
+
+
+    const outrasPreview =
+      document.getElementById(
+        "outrasPreview"
+      );
+
+    outrasPreview.innerHTML =
+      existingImages
+        .map(
+          url =>
+            `<img src="${escapeHTML(url)}">`
+        )
+        .join("");
+
+
+    document.getElementById(
+      "formTitle"
+    ).textContent =
+      "Editar produto";
+
+    document.getElementById(
+      "saveBtn"
+    ).textContent =
+      "SALVAR ALTERAÇÕES";
+
+    document.getElementById(
+      "cancelEdit"
+    ).classList.remove("hidden");
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  };
+
+
+/* EXCLUIR */
+
+window.deleteProduct =
+  async function (id) {
+
+    const confirmation =
+      confirm(
+        "Tem certeza que deseja excluir este produto?"
+      );
+
+    if (!confirmation) return;
+
+
+    const {
+      error
+    } = await db
+      .from("produtos")
+      .delete()
+      .eq("id", id);
+
+
+    if (error) {
+
+      alert(
+        "Erro ao excluir: " +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    await loadProducts();
+
+  };
+
+
+/* CANCELAR EDIÇÃO */
+
+document
+  .getElementById("cancelEdit")
+  .addEventListener(
+    "click",
+    resetForm
+  );
+
+
+function resetForm() {
+
+  productForm.reset();
+
+  document.getElementById(
+    "ativo"
+  ).checked = true;
+
+  document.getElementById(
+    "principalPreview"
+  ).innerHTML = "";
+
+  document.getElementById(
+    "outrasPreview"
+  ).innerHTML = "";
+
+  editingId = null;
+
+  existingMainImage = "";
+
+  existingImages = [];
+
+  document.getElementById(
+    "formTitle"
+  ).textContent =
+    "Cadastrar produto";
+
+  document.getElementById(
+    "saveBtn"
+  ).textContent =
+    "CADASTRAR PRODUTO";
+
+  document.getElementById(
+    "cancelEdit"
+  ).classList.add("hidden");
+
+}
+
+
+/* UTILIDADES */
+
+function formatMoney(value) {
+
+  return Number(value || 0)
+    .toLocaleString(
+      "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL"
+      }
+    );
+
+}
+
+
+function escapeHTML(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* INICIAR */
+
+checkSession();
+
+</script>
+
+</body>
+</html>
