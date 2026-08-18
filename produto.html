@@ -70,7 +70,8 @@ text-decoration:none;
 }
 
 button,
-input{
+input,
+select{
 font:inherit;
 }
 
@@ -368,6 +369,81 @@ font-size:13px;
 font-weight:800;
 }
 
+/* ===============================
+DADOS PARA ENTREGA
+=============================== */
+
+.delivery-box{
+padding:22px;
+border:1px solid #252a31;
+background:#0d0f13;
+border-radius:17px;
+margin-bottom:28px;
+}
+
+.delivery-title{
+font-size:11px;
+font-weight:800;
+letter-spacing:1.5px;
+margin-bottom:6px;
+}
+
+.delivery-subtitle{
+font-size:10px;
+color:#858b95;
+line-height:1.6;
+margin-bottom:18px;
+}
+
+.delivery-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.delivery-field.full{
+grid-column:1/-1;
+}
+
+.delivery-field label{
+display:block;
+font-size:9px;
+font-weight:700;
+letter-spacing:.8px;
+text-transform:uppercase;
+color:#9a9fa7;
+margin-bottom:7px;
+}
+
+.delivery-field input,
+.delivery-field select{
+width:100%;
+height:46px;
+border-radius:11px;
+border:1px solid #292e36;
+background:#15181e;
+color:white;
+padding:0 13px;
+outline:none;
+}
+
+.delivery-field input:focus,
+.delivery-field select:focus{
+border-color:var(--blue-light);
+}
+
+.delivery-field input[readonly]{
+color:#9aa0a9;
+background:#111319;
+}
+
+.delivery-note{
+font-size:9px;
+color:#6f757e;
+margin-top:12px;
+line-height:1.5;
+}
+
 .summary{
 border-top:1px solid #23272d;
 padding-top:18px;
@@ -605,6 +681,14 @@ align-items:flex-start;
 
 .shipping-price-box{
 min-width:65px;
+}
+
+.delivery-grid{
+grid-template-columns:1fr;
+}
+
+.delivery-field.full{
+grid-column:auto;
 }
 
 }
@@ -1081,6 +1165,136 @@ class="shipping-options"
 </div>
 
 
+<div
+class="delivery-box"
+id="deliveryBox"
+style="display:none;"
+>
+
+<div class="delivery-title">
+DADOS PARA ENTREGA
+</div>
+
+<div class="delivery-subtitle">
+Preencha os dados de quem vai receber o pedido. O CEP abaixo é o mesmo usado no cálculo do frete.
+</div>
+
+<div class="delivery-grid">
+
+<div class="delivery-field full">
+<label>Nome completo *</label>
+<input
+id="clienteNome"
+type="text"
+autocomplete="name"
+placeholder="Nome de quem vai receber"
+>
+</div>
+
+<div class="delivery-field">
+<label>E-mail *</label>
+<input
+id="clienteEmail"
+type="email"
+autocomplete="email"
+placeholder="seuemail@exemplo.com"
+>
+</div>
+
+<div class="delivery-field">
+<label>Telefone / WhatsApp *</label>
+<input
+id="clienteTelefone"
+type="tel"
+autocomplete="tel"
+maxlength="15"
+placeholder="(61) 99999-9999"
+>
+</div>
+
+<div class="delivery-field">
+<label>CEP *</label>
+<input
+id="deliveryCep"
+type="text"
+readonly
+>
+</div>
+
+<div class="delivery-field">
+<label>Número *</label>
+<input
+id="numeroCliente"
+type="text"
+autocomplete="address-line2"
+placeholder="Ex: 123"
+>
+</div>
+
+<div class="delivery-field full">
+<label>Rua / Avenida *</label>
+<input
+id="ruaCliente"
+type="text"
+autocomplete="address-line1"
+placeholder="Rua, avenida, quadra..."
+>
+</div>
+
+<div class="delivery-field">
+<label>Bairro *</label>
+<input
+id="bairroCliente"
+type="text"
+autocomplete="address-level3"
+placeholder="Seu bairro"
+>
+</div>
+
+<div class="delivery-field">
+<label>Complemento</label>
+<input
+id="complementoCliente"
+type="text"
+placeholder="Apto, bloco, casa..."
+>
+</div>
+
+<div class="delivery-field">
+<label>Cidade *</label>
+<input
+id="cidadeCliente"
+type="text"
+autocomplete="address-level2"
+placeholder="Sua cidade"
+>
+</div>
+
+<div class="delivery-field">
+<label>Estado *</label>
+<select id="estadoCliente" autocomplete="address-level1">
+<option value="">Selecione</option>
+<option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+<option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+<option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+<option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+<option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+<option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+<option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+<option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+<option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+</select>
+</div>
+
+</div>
+
+<div class="delivery-note">
+Confira os dados antes de continuar. Eles serão usados no pedido e no envio.
+</div>
+
+</div>
+
+
 <div class="summary">
 
 <div class="summary-row">
@@ -1249,6 +1463,26 @@ document
 if(message){
 message.textContent =
 "Informe seu CEP para consultar as opções de entrega.";
+}
+
+const deliveryBox =
+document.getElementById(
+"deliveryBox"
+);
+
+if(deliveryBox){
+deliveryBox.style.display =
+"none";
+}
+
+const deliveryCep =
+document.getElementById(
+"deliveryCep"
+);
+
+if(deliveryCep){
+deliveryCep.value =
+"";
 }
 
 atualizarTotal();
@@ -1462,6 +1696,8 @@ message.textContent =
 renderOpcoesFrete();
 
 atualizarResumoFrete();
+
+mostrarFormularioEntrega(cep);
 
 }catch(error){
 
@@ -1750,6 +1986,203 @@ total
 }
 
 
+function formatarCepEntrega(cep){
+
+const numeros =
+String(cep || "")
+.replace(/\D/g, "")
+.slice(0,8);
+
+if(numeros.length !== 8){
+return numeros;
+}
+
+return numeros.slice(0,5) + "-" + numeros.slice(5);
+
+}
+
+
+function mostrarFormularioEntrega(cep){
+
+const box =
+document.getElementById(
+"deliveryBox"
+);
+
+const campoCep =
+document.getElementById(
+"deliveryCep"
+);
+
+if(box){
+box.style.display =
+"block";
+}
+
+if(campoCep){
+campoCep.value =
+formatarCepEntrega(cep);
+}
+
+const telefone =
+document.getElementById(
+"clienteTelefone"
+);
+
+if(telefone && !telefone.dataset.maskReady){
+telefone.dataset.maskReady = "true";
+
+telefone.addEventListener(
+"input",
+e=>{
+
+let v =
+e.target.value
+.replace(/\D/g, "")
+.slice(0,11);
+
+if(v.length <= 2){
+e.target.value = v;
+return;
+}
+
+if(v.length <= 6){
+e.target.value =
+`(${v.slice(0,2)}) ${v.slice(2)}`;
+return;
+}
+
+if(v.length <= 10){
+e.target.value =
+`(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+return;
+}
+
+e.target.value =
+`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+
+}
+);
+}
+
+}
+
+
+function obterDadosEntrega(){
+
+return {
+
+cliente_nome:
+document.getElementById(
+"clienteNome"
+)?.value.trim() || "",
+
+cliente_email:
+document.getElementById(
+"clienteEmail"
+)?.value.trim() || "",
+
+cliente_telefone:
+document.getElementById(
+"clienteTelefone"
+)?.value.trim() || "",
+
+cep_cliente:
+cepCalculado,
+
+rua_cliente:
+document.getElementById(
+"ruaCliente"
+)?.value.trim() || "",
+
+numero_cliente:
+document.getElementById(
+"numeroCliente"
+)?.value.trim() || "",
+
+complemento_cliente:
+document.getElementById(
+"complementoCliente"
+)?.value.trim() || "",
+
+bairro_cliente:
+document.getElementById(
+"bairroCliente"
+)?.value.trim() || "",
+
+cidade_cliente:
+document.getElementById(
+"cidadeCliente"
+)?.value.trim() || "",
+
+estado_cliente:
+document.getElementById(
+"estadoCliente"
+)?.value || ""
+
+};
+
+}
+
+
+function validarDadosEntrega(){
+
+const dados =
+obterDadosEntrega();
+
+if(dados.cliente_nome.length < 3){
+alert("Informe o nome completo de quem vai receber o pedido.");
+return false;
+}
+
+const emailValido =
+/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+dados.cliente_email
+);
+
+if(!emailValido){
+alert("Informe um e-mail válido.");
+return false;
+}
+
+const telefoneNumeros =
+dados.cliente_telefone.replace(/\D/g, "");
+
+if(telefoneNumeros.length < 10){
+alert("Informe um telefone ou WhatsApp válido.");
+return false;
+}
+
+if(!dados.rua_cliente){
+alert("Informe a rua ou avenida para entrega.");
+return false;
+}
+
+if(!dados.numero_cliente){
+alert("Informe o número do endereço.");
+return false;
+}
+
+if(!dados.bairro_cliente){
+alert("Informe o bairro.");
+return false;
+}
+
+if(!dados.cidade_cliente){
+alert("Informe a cidade.");
+return false;
+}
+
+if(!dados.estado_cliente){
+alert("Selecione o estado.");
+return false;
+}
+
+return true;
+
+}
+
+
 function validarCompra(){
 
 const possuiTamanho =
@@ -1791,6 +2224,14 @@ if(
 alert(
 "Escolha uma forma de entrega."
 );
+
+return false;
+
+}
+
+if(
+!validarDadosEntrega()
+){
 
 return false;
 
@@ -1839,6 +2280,9 @@ true;
 botao.textContent =
 "PROCESSANDO...";
 
+const dadosEntrega =
+obterDadosEntrega();
+
 try{
 
 const response =
@@ -1876,7 +2320,34 @@ cep:
 cepCalculado,
 
 servico_frete:
-freteSelecionado.codigo
+freteSelecionado.codigo,
+
+cliente_nome:
+dadosEntrega.cliente_nome,
+
+cliente_email:
+dadosEntrega.cliente_email,
+
+cliente_telefone:
+dadosEntrega.cliente_telefone,
+
+rua_cliente:
+dadosEntrega.rua_cliente,
+
+numero_cliente:
+dadosEntrega.numero_cliente,
+
+complemento_cliente:
+dadosEntrega.complemento_cliente,
+
+bairro_cliente:
+dadosEntrega.bairro_cliente,
+
+cidade_cliente:
+dadosEntrega.cidade_cliente,
+
+estado_cliente:
+dadosEntrega.estado_cliente
 
 })
 
