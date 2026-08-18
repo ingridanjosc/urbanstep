@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Pagamento | URBANSTEP
+</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+rel="stylesheet"
+>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+min-height:100vh;
+
+background:#07080a;
+
+color:#fff;
+
+font-family:
+"Inter",
+sans-serif;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:25px;
+
+}
+
+.card{
+
+width:100%;
+
+max-width:560px;
+
+background:#0e1014;
+
+border:
+1px solid #22262d;
+
+border-radius:24px;
+
+padding:45px 35px;
+
+text-align:center;
+
+}
+
+.logo{
+
+font-family:
+"Barlow Condensed",
+sans-serif;
+
+font-size:29px;
+
+font-weight:900;
+
+margin-bottom:40px;
+
+}
+
+.logo span{
+
+color:#3970b4;
+
+}
+
+.icon{
+
+width:75px;
+
+height:75px;
+
+margin:
+0 auto 25px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:32px;
+
+background:
+rgba(57,112,180,.12);
+
+border:
+1px solid
+rgba(57,112,180,.4);
+
+}
+
+h1{
+
+font-family:
+"Barlow Condensed",
+sans-serif;
+
+font-size:42px;
+
+text-transform:uppercase;
+
+margin-bottom:12px;
+
+}
+
+.message{
+
+font-size:13px;
+
+color:#949aa4;
+
+line-height:1.7;
+
+margin-bottom:25px;
+
+}
+
+.order{
+
+display:none;
+
+padding:17px;
+
+background:#15181e;
+
+border:
+1px solid #292e36;
+
+border-radius:14px;
+
+margin-bottom:25px;
+
+text-align:left;
+
+}
+
+.order-row{
+
+display:flex;
+
+justify-content:space-between;
+
+gap:15px;
+
+font-size:12px;
+
+padding:7px 0;
+
+}
+
+.order-row span:first-child{
+
+color:#858b95;
+
+}
+
+.status{
+
+font-weight:800;
+
+}
+
+.status.paid{
+
+color:#56db90;
+
+}
+
+.btn{
+
+display:block;
+
+width:100%;
+
+padding:16px;
+
+border-radius:999px;
+
+background:#fff;
+
+color:#08090b;
+
+font-size:11px;
+
+font-weight:800;
+
+text-decoration:none;
+
+margin-top:10px;
+
+}
+
+.btn-secondary{
+
+background:#171a20;
+
+color:white;
+
+border:
+1px solid #30353d;
+
+}
+
+.loading{
+
+width:28px;
+
+height:28px;
+
+margin:
+0 auto 25px;
+
+border:
+3px solid #333;
+
+border-top-color:#3970b4;
+
+border-radius:50%;
+
+animation:
+spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+to{
+transform:
+rotate(360deg);
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="card">
+
+
+<div class="logo">
+
+URBANSTEP<span>.</span>
+
+</div>
+
+
+<div id="content">
+
+
+<div class="loading"></div>
+
+
+<h1>
+
+Confirmando pagamento
+
+</h1>
+
+
+<p class="message">
+
+Estamos verificando seu pagamento com segurança.
+
+</p>
+
+
+</div>
+
+
+<div
+class="order"
+id="orderBox"
+>
+
+
+<div class="order-row">
+
+<span>
+Pedido
+</span>
+
+<strong id="orderNumber">
+—
+</strong>
+
+</div>
+
+
+<div class="order-row">
+
+<span>
+Status
+</span>
+
+<strong
+id="orderStatus"
+class="status"
+>
+—
+</strong>
+
+</div>
+
+
+<div class="order-row">
+
+<span>
+Total
+</span>
+
+<strong id="orderTotal">
+—
+</strong>
+
+</div>
+
+
+</div>
+
+
+<a
+href="index.html"
+class="btn"
+>
+
+VOLTAR PARA A LOJA
+
+</a>
+
+
+<a
+href="#"
+id="receiptButton"
+class="btn btn-secondary"
+target="_blank"
+style="display:none;"
+>
+
+VER COMPROVANTE
+
+</a>
+
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://gpovidqzqgttitsgelzm.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
+
+
+function money(value){
+
+return Number(
+value || 0
+)
+.toLocaleString(
+"pt-BR",
+{
+style:"currency",
+currency:"BRL"
+}
+);
+
+}
+
+
+async function confirmarPagamento(){
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+
+const orderNsu =
+params.get(
+"order_nsu"
+) || "";
+
+
+const transactionNsu =
+params.get(
+"transaction_nsu"
+) || "";
+
+
+const slug =
+params.get(
+"slug"
+) || "";
+
+
+const receiptUrl =
+params.get(
+"receipt_url"
+) || "";
+
+
+const content =
+document.getElementById(
+"content"
+);
+
+
+if(
+!orderNsu ||
+!transactionNsu ||
+!slug
+){
+
+content.innerHTML = `
+
+<div class="icon">
+!
+</div>
+
+<h1>
+Não foi possível confirmar
+</h1>
+
+<p class="message">
+
+Os dados do pagamento não foram encontrados.
+
+Se você realizou o pagamento, entre em contato com nosso atendimento.
+
+</p>
+
+`;
+
+return;
+
+}
+
+
+try{
+
+
+const response =
+await fetch(
+
+`${SUPABASE_URL}/functions/v1/confirmar-pagamento`,
+
+{
+
+method:
+"POST",
+
+headers:{
+
+"Content-Type":
+"application/json",
+
+"apikey":
+SUPABASE_KEY
+
+},
+
+body:
+JSON.stringify({
+
+order_nsu:
+orderNsu,
+
+transaction_nsu:
+transactionNsu,
+
+slug:
+slug,
+
+receipt_url:
+receiptUrl
+
+})
+
+}
+
+);
+
+
+const data =
+await response.json();
+
+
+if(
+!response.ok
+){
+
+throw new Error(
+data.error ||
+"Não foi possível confirmar o pagamento."
+);
+
+}
+
+
+if(
+data.paid === true
+){
+
+content.innerHTML = `
+
+<div class="icon">
+✓
+</div>
+
+<h1>
+Pagamento confirmado
+</h1>
+
+<p class="message">
+
+Recebemos seu pagamento com sucesso.
+
+Seu pedido agora será preparado para envio.
+
+</p>
+
+`;
+
+
+const box =
+document
+.getElementById(
+"orderBox"
+);
+
+
+box.style.display =
+"block";
+
+
+document
+.getElementById(
+"orderNumber"
+)
+.textContent =
+data.order_nsu;
+
+
+const status =
+document
+.getElementById(
+"orderStatus"
+);
+
+
+status.textContent =
+"Pago";
+
+
+status.classList
+.add(
+"paid"
+);
+
+
+document
+.getElementById(
+"orderTotal"
+)
+.textContent =
+money(
+data.total
+);
+
+
+if(
+data.receipt_url
+){
+
+const button =
+document
+.getElementById(
+"receiptButton"
+);
+
+
+button.href =
+data.receipt_url;
+
+
+button.style.display =
+"block";
+
+}
+
+
+return;
+
+}
+
+
+content.innerHTML = `
+
+<div class="icon">
+⌛
+</div>
+
+<h1>
+Pagamento em processamento
+</h1>
+
+<p class="message">
+
+Seu pagamento ainda não foi confirmado.
+
+Se você acabou de pagar, aguarde alguns instantes.
+
+</p>
+
+`;
+
+
+}catch(error){
+
+console.error(
+error
+);
+
+
+content.innerHTML = `
+
+<div class="icon">
+!
+</div>
+
+<h1>
+Não foi possível confirmar
+</h1>
+
+<p class="message">
+
+${error.message}
+
+</p>
+
+`;
+
+}
+
+}
+
+
+confirmarPagamento();
+
+</script>
+
+
+</body>
+
+</html>
