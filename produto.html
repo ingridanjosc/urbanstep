@@ -2,721 +2,1208 @@
 <html lang="pt-BR">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Produto | URBANSTEP.</title>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>
+Produto | URBANSTEP.
+</title>
+
+
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin
+>
 
 <link
 href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
-rel="stylesheet">
+rel="stylesheet"
+>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
 
 <style>
 
 :root{
-    --bg:#07080a;
-    --text:#f5f5f5;
-    --muted:#858b95;
-    --line:#22262d;
-    --blue:#234f87;
-    --blue-light:#3970b4;
-    --green:#25b866;
+
+--bg:#07080a;
+
+--card:#101216;
+
+--text:#f5f5f5;
+
+--muted:#858b95;
+
+--line:#22262d;
+
+--blue:#234f87;
+
+--blue-light:#3970b4;
+
+--green:#25b866;
+
 }
+
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
 }
+
+
+html{
+
+scroll-behavior:smooth;
+
+}
+
 
 body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:"Inter",sans-serif;
-    overflow-x:hidden;
+
+background:var(--bg);
+
+color:var(--text);
+
+font-family:"Inter",sans-serif;
+
+overflow-x:hidden;
+
 }
 
+
 a{
-    color:inherit;
-    text-decoration:none;
+
+color:inherit;
+
+text-decoration:none;
+
 }
+
 
 button,
 input{
-    font:inherit;
+
+font:inherit;
+
 }
+
 
 button{
-    cursor:pointer;
+
+cursor:pointer;
+
 }
 
-/* =========================
+
+/* ===============================
 HEADER
-========================= */
+=============================== */
 
 header{
-    height:76px;
-    padding:0 5%;
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+height:76px;
 
-    border-bottom:1px solid var(--line);
+padding:0 5%;
 
-    position:sticky;
-    top:0;
-    z-index:100;
+display:flex;
 
-    background:rgba(7,8,10,.96);
-    backdrop-filter:blur(14px);
+justify-content:space-between;
+
+align-items:center;
+
+border-bottom:
+1px solid var(--line);
+
+position:sticky;
+
+top:0;
+
+z-index:100;
+
+background:
+rgba(7,8,10,.96);
+
+backdrop-filter:
+blur(14px);
+
 }
+
 
 .logo{
-    font-family:"Barlow Condensed",sans-serif;
-    font-size:30px;
-    font-weight:900;
+
+font-family:
+"Barlow Condensed",
+sans-serif;
+
+font-size:30px;
+
+font-weight:900;
+
 }
+
 
 .logo span{
-    color:var(--blue-light);
+
+color:
+var(--blue-light);
+
 }
+
 
 .back{
-    color:#aaa;
-    font-size:11px;
+
+color:#aaa;
+
+font-size:11px;
+
 }
 
-/* =========================
+
+/* ===============================
 PRODUTO
-========================= */
+=============================== */
 
 .product-page{
-    width:min(1250px,92%);
-    margin:60px auto 80px;
 
-    display:grid;
-    grid-template-columns:1.15fr .85fr;
-    gap:60px;
+width:
+min(1250px,92%);
+
+margin:
+60px auto 80px;
+
+display:grid;
+
+grid-template-columns:
+1.15fr .85fr;
+
+gap:60px;
+
 }
 
-/* =========================
+
+/* ===============================
 GALERIA
-========================= */
+=============================== */
 
 .gallery{
-    display:grid;
-    grid-template-columns:100px 1fr;
-    gap:15px;
+
+display:grid;
+
+grid-template-columns:
+100px 1fr;
+
+gap:15px;
+
 }
+
 
 .thumbs{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
 }
+
 
 .thumb{
-    width:100%;
-    aspect-ratio:1/1;
-    object-fit:cover;
 
-    border-radius:12px;
-    border:1px solid var(--line);
+width:100%;
 
-    opacity:.65;
-    cursor:pointer;
+aspect-ratio:1/1;
+
+object-fit:cover;
+
+border-radius:12px;
+
+border:
+1px solid var(--line);
+
+opacity:.65;
+
+cursor:pointer;
+
+transition:.2s;
+
 }
 
+
+.thumb:hover,
 .thumb.active{
-    opacity:1;
-    border-color:var(--blue-light);
+
+opacity:1;
+
+border-color:
+var(--blue-light);
+
 }
+
 
 .main-image{
-    width:100%;
-    aspect-ratio:9/11;
-    object-fit:cover;
 
-    background:#111;
-    border-radius:18px;
+width:100%;
+
+aspect-ratio:9/11;
+
+object-fit:cover;
+
+background:#111;
+
+border-radius:18px;
+
 }
 
-/* =========================
-INFORMAÇÕES
-========================= */
+
+/* ===============================
+INFO
+=============================== */
 
 .info{
-    padding-top:10px;
+
+padding-top:10px;
+
 }
+
 
 .brand{
-    color:var(--blue-light);
 
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:2px;
+color:
+var(--blue-light);
 
-    margin-bottom:10px;
+font-size:11px;
+
+font-weight:700;
+
+letter-spacing:2px;
+
+margin-bottom:10px;
+
 }
+
 
 h1{
-    font-family:"Barlow Condensed",sans-serif;
 
-    font-size:clamp(48px,6vw,78px);
-    line-height:.9;
+font-family:
+"Barlow Condensed",
+sans-serif;
 
-    text-transform:uppercase;
+font-size:
+clamp(48px,6vw,78px);
 
-    margin-bottom:25px;
+line-height:.9;
+
+text-transform:uppercase;
+
+margin-bottom:25px;
+
 }
+
 
 .price{
-    font-size:25px;
-    font-weight:800;
-    margin-bottom:6px;
+
+font-size:25px;
+
+font-weight:800;
+
+margin-bottom:6px;
+
 }
+
 
 .old-price{
-    color:#666;
-    font-size:14px;
 
-    text-decoration:line-through;
+color:#666;
 
-    margin-right:9px;
+font-size:14px;
+
+text-decoration:
+line-through;
+
+margin-right:9px;
+
 }
+
 
 .discount{
-    display:inline-block;
 
-    margin-left:8px;
-    padding:5px 9px;
+display:inline-block;
 
-    border-radius:999px;
-    border:1px solid rgba(57,112,180,.45);
+margin-left:8px;
 
-    color:var(--blue-light);
+padding:5px 9px;
 
-    font-size:10px;
-    font-weight:700;
+border-radius:999px;
+
+border:
+1px solid
+rgba(57,112,180,.45);
+
+color:
+var(--blue-light);
+
+font-size:10px;
+
+font-weight:700;
+
 }
+
 
 .installments{
-    color:#8c929b;
-    font-size:12px;
 
-    margin-bottom:28px;
+color:#8c929b;
+
+font-size:12px;
+
+margin-bottom:28px;
+
 }
 
-/* =========================
+
+/* ===============================
 TAMANHOS
-========================= */
+=============================== */
 
 .size-title,
 .shipping-title{
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:1.5px;
 
-    margin-bottom:12px;
+font-size:11px;
+
+font-weight:700;
+
+letter-spacing:1.5px;
+
+margin-bottom:12px;
+
 }
+
 
 .sizes{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
 
-    margin-bottom:30px;
+display:flex;
+
+flex-wrap:wrap;
+
+gap:8px;
+
+margin-bottom:30px;
+
 }
+
 
 .size{
-    min-width:49px;
-    height:45px;
 
-    border-radius:12px;
-    border:1px solid #2b3038;
+min-width:49px;
 
-    background:#101216;
-    color:white;
+height:45px;
+
+border-radius:12px;
+
+border:
+1px solid #2b3038;
+
+background:#101216;
+
+color:white;
+
+transition:.2s;
+
 }
+
+
+.size:hover{
+
+border-color:
+var(--blue-light);
+
+}
+
 
 .size.selected{
-    background:var(--blue);
-    border-color:var(--blue);
+
+background:
+var(--blue);
+
+border-color:
+var(--blue);
+
 }
 
-/* =========================
+
+/* ===============================
 FRETE
-========================= */
+=============================== */
 
 .shipping-box{
-    padding:22px;
 
-    border:1px solid #252a31;
+padding:22px;
 
-    background:#0d0f13;
+border:
+1px solid #252a31;
 
-    border-radius:17px;
+background:#0d0f13;
 
-    margin-bottom:28px;
+border-radius:17px;
+
+margin-bottom:28px;
+
 }
+
 
 .free-shipping-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
 
-    margin-bottom:18px;
+display:inline-flex;
 
-    padding:8px 12px;
+align-items:center;
 
-    background:rgba(37,184,102,.1);
+gap:7px;
 
-    border:1px solid rgba(37,184,102,.3);
+margin-bottom:18px;
 
-    border-radius:999px;
+padding:8px 12px;
 
-    color:#57d88c;
+background:
+rgba(37,184,102,.1);
 
-    font-size:10px;
-    font-weight:800;
+border:
+1px solid
+rgba(37,184,102,.3);
+
+border-radius:999px;
+
+color:#57d88c;
+
+font-size:10px;
+
+font-weight:800;
+
 }
+
 
 .cep-row{
-    display:flex;
-    gap:8px;
+
+display:flex;
+
+gap:8px;
+
 }
+
 
 .cep-row input{
-    flex:1;
-    min-width:0;
 
-    height:48px;
+flex:1;
 
-    border-radius:12px;
-    border:1px solid #292e36;
+min-width:0;
 
-    background:#15181e;
+height:48px;
 
-    color:white;
+border-radius:12px;
 
-    padding:0 15px;
+border:
+1px solid #292e36;
 
-    outline:none;
+background:#15181e;
+
+color:white;
+
+padding:0 15px;
+
+outline:none;
+
 }
+
 
 .cep-row input:focus{
-    border-color:var(--blue-light);
+
+border-color:
+var(--blue-light);
+
 }
+
 
 .calculate-button{
-    height:48px;
 
-    padding:0 18px;
+height:48px;
 
-    border:none;
+padding:0 18px;
 
-    border-radius:12px;
+border:none;
 
-    background:var(--blue);
+border-radius:12px;
 
-    color:white;
+background:
+var(--blue);
 
-    font-size:10px;
-    font-weight:800;
+color:white;
+
+font-size:10px;
+
+font-weight:800;
+
 }
+
 
 .shipping-message{
-    margin-top:12px;
 
-    font-size:11px;
+margin-top:12px;
 
-    color:#90959d;
+font-size:11px;
+
+color:#90959d;
+
 }
+
 
 .shipping-options{
-    margin-top:15px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:9px;
+
+margin-top:15px;
+
 }
+
 
 .shipping-option{
-    width:100%;
 
-    display:flex;
-    align-items:center;
-    gap:12px;
+width:100%;
 
-    padding:15px;
+display:flex;
 
-    background:#12151a;
+align-items:center;
 
-    border:1px solid var(--blue-light);
+gap:12px;
 
-    border-radius:13px;
+padding:14px;
+
+background:#12151a;
+
+border:
+1px solid #292e36;
+
+border-radius:13px;
+
+cursor:pointer;
+
+transition:.2s;
+
 }
 
-.shipping-icon{
-    width:18px;
-    height:18px;
 
-    border-radius:50%;
+.shipping-option:hover{
 
-    background:var(--blue-light);
+border-color:
+var(--blue-light);
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    color:white;
-
-    font-size:10px;
-    font-weight:900;
-
-    flex-shrink:0;
 }
+
+
+.shipping-option.selected{
+
+border-color:
+var(--blue-light);
+
+background:
+rgba(35,79,135,.15);
+
+}
+
+
+.shipping-radio{
+
+width:17px;
+
+height:17px;
+
+border-radius:50%;
+
+border:
+2px solid #555;
+
+flex-shrink:0;
+
+}
+
+
+.shipping-option.selected
+.shipping-radio{
+
+border:
+5px solid
+var(--blue-light);
+
+}
+
 
 .shipping-content{
-    flex:1;
+
+flex:1;
+
+min-width:0;
+
 }
+
 
 .shipping-service{
-    font-size:12px;
-    font-weight:700;
+
+font-size:12px;
+
+font-weight:700;
+
 }
+
 
 .shipping-deadline{
-    font-size:10px;
 
-    color:#838891;
+font-size:10px;
 
-    margin-top:4px;
+color:#838891;
+
+margin-top:4px;
+
 }
+
 
 .shipping-price-box{
-    text-align:right;
+
+text-align:right;
+
+flex-shrink:0;
+
 }
+
 
 .shipping-old-price{
-    color:#777;
 
-    font-size:10px;
+color:#777;
 
-    text-decoration:line-through;
+font-size:10px;
+
+text-decoration:
+line-through;
+
 }
+
 
 .shipping-free{
-    color:#57d88c;
 
-    font-size:13px;
+color:#57d88c;
 
-    font-weight:900;
+font-size:13px;
 
-    margin-top:2px;
+font-weight:900;
+
+margin-top:2px;
+
 }
 
-/* =========================
+
+.shipping-paid{
+
+color:white;
+
+font-size:13px;
+
+font-weight:800;
+
+}
+
+
+/* ===============================
 RESUMO
-========================= */
+=============================== */
 
 .summary{
-    border-top:1px solid #23272d;
 
-    padding-top:18px;
+border-top:
+1px solid #23272d;
 
-    margin-bottom:20px;
+padding-top:18px;
+
+margin-bottom:20px;
+
 }
+
 
 .summary-row{
-    display:flex;
-    justify-content:space-between;
 
-    margin-bottom:9px;
+display:flex;
 
-    font-size:12px;
+justify-content:space-between;
 
-    color:#9a9fa7;
+gap:20px;
+
+margin-bottom:9px;
+
+font-size:12px;
+
+color:#9a9fa7;
+
 }
+
 
 .summary-shipping{
-    display:flex;
-    align-items:center;
-    gap:8px;
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
 }
+
 
 .summary-old-shipping{
-    text-decoration:line-through;
-    color:#666;
+
+text-decoration:
+line-through;
+
+color:#666;
+
 }
+
 
 .summary-free{
-    color:#57d88c;
-    font-weight:800;
+
+color:#57d88c;
+
+font-weight:800;
+
 }
+
 
 .summary-total{
-    display:flex;
-    justify-content:space-between;
 
-    padding-top:10px;
+display:flex;
 
-    border-top:1px solid #22262d;
+justify-content:space-between;
 
-    font-size:17px;
+padding-top:10px;
 
-    font-weight:800;
+border-top:
+1px solid #22262d;
+
+font-size:17px;
+
+font-weight:800;
+
 }
 
-/* =========================
+
+/* ===============================
 BOTÕES
-========================= */
+=============================== */
 
 .buttons{
-    display:flex;
-    flex-direction:column;
-    gap:11px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:11px;
+
 }
+
 
 .btn{
-    width:100%;
-    min-height:54px;
 
-    border-radius:999px;
+width:100%;
 
-    border:none;
+min-height:54px;
 
-    font-size:11px;
+border-radius:999px;
 
-    font-weight:800;
+border:none;
+
+font-size:11px;
+
+font-weight:800;
+
+letter-spacing:1px;
+
+transition:.25s;
+
 }
+
 
 .btn-cart{
-    background:#171a20;
 
-    border:1px solid #30353d;
+background:#171a20;
 
-    color:white;
+border:
+1px solid #30353d;
+
+color:white;
+
 }
+
+
+.btn-cart:hover{
+
+border-color:
+var(--blue-light);
+
+}
+
 
 .btn-checkout{
-    background:white;
-    color:#08090b;
+
+background:white;
+
+color:#08090b;
+
 }
+
 
 .btn-checkout:hover{
-    background:var(--blue);
-    color:white;
+
+background:
+var(--blue);
+
+color:white;
+
 }
+
 
 .btn-whatsapp{
-    background:#1fa855;
-    color:white;
+
+background:#1fa855;
+
+color:white;
+
 }
 
-/* =========================
+
+/* ===============================
 DETALHES
-========================= */
+=============================== */
 
 .product-details{
-    width:min(1250px,92%);
 
-    margin:0 auto 80px;
+width:
+min(1250px,92%);
+
+margin:
+0 auto 80px;
+
 }
+
 
 .detail-box{
-    border-top:1px solid var(--line);
 
-    padding:35px 0;
+border-top:
+1px solid var(--line);
+
+padding:35px 0;
+
 }
+
 
 .detail-box h2{
-    font-family:"Barlow Condensed",sans-serif;
 
-    font-size:29px;
+font-family:
+"Barlow Condensed",
+sans-serif;
 
-    text-transform:uppercase;
+font-size:29px;
 
-    margin-bottom:15px;
+text-transform:uppercase;
+
+margin-bottom:15px;
+
 }
+
 
 .detail-box p{
-    color:#9399a2;
 
-    line-height:1.8;
+color:#9399a2;
 
-    font-size:13px;
+line-height:1.8;
 
-    white-space:pre-line;
+font-size:13px;
+
+white-space:pre-line;
+
 }
 
-/* =========================
-RECOMENDAÇÕES
-========================= */
+
+/* ===============================
+RECOMENDADOS
+=============================== */
 
 .recommendations{
-    width:min(1250px,92%);
 
-    margin:0 auto 100px;
+width:
+min(1250px,92%);
+
+margin:
+0 auto 100px;
+
 }
+
 
 .recommend-label{
-    color:var(--blue-light);
 
-    font-size:10px;
+color:
+var(--blue-light);
 
-    font-weight:700;
+font-size:10px;
 
-    letter-spacing:2.5px;
+font-weight:700;
 
-    margin-bottom:7px;
+letter-spacing:2.5px;
+
+margin-bottom:7px;
+
 }
+
 
 .recommend-title{
-    font-family:"Barlow Condensed",sans-serif;
 
-    font-size:clamp(42px,5vw,68px);
+font-family:
+"Barlow Condensed",
+sans-serif;
 
-    font-weight:900;
+font-size:
+clamp(42px,5vw,68px);
 
-    margin-bottom:28px;
+font-weight:900;
+
+margin-bottom:28px;
+
 }
+
 
 .recommend-scroll{
-    display:flex;
 
-    gap:18px;
+display:flex;
 
-    overflow-x:auto;
+gap:18px;
 
-    scroll-snap-type:x mandatory;
+overflow-x:auto;
 
-    scrollbar-width:none;
+scroll-snap-type:
+x mandatory;
 
-    padding-bottom:10px;
+scrollbar-width:none;
 
-    cursor:grab;
+padding-bottom:10px;
+
 }
+
 
 .recommend-scroll::-webkit-scrollbar{
-    display:none;
+
+display:none;
+
 }
+
 
 .recommend-card{
-    flex:0 0 calc(25% - 14px);
 
-    scroll-snap-align:start;
+flex:
+0 0 calc(25% - 14px);
 
-    cursor:pointer;
+scroll-snap-align:start;
+
+cursor:pointer;
+
 }
+
 
 .recommend-img{
-    width:100%;
 
-    aspect-ratio:9/14;
+width:100%;
 
-    object-fit:cover;
+aspect-ratio:9/14;
 
-    border-radius:6px;
+object-fit:cover;
+
+border-radius:6px;
+
 }
+
 
 .recommend-brand{
-    color:#777;
 
-    font-size:9px;
+color:#777;
 
-    margin-top:11px;
+font-size:9px;
+
+margin-top:11px;
+
 }
+
 
 .recommend-name{
-    font-family:"Barlow Condensed",sans-serif;
 
-    font-size:19px;
+font-family:
+"Barlow Condensed",
+sans-serif;
 
-    font-weight:700;
+font-size:19px;
 
-    text-transform:uppercase;
+font-weight:700;
 
-    margin-top:4px;
+text-transform:uppercase;
+
+margin-top:4px;
+
 }
+
 
 .recommend-price{
-    font-size:13px;
 
-    font-weight:700;
+font-size:13px;
 
-    margin-top:5px;
+font-weight:700;
+
+margin-top:5px;
+
 }
 
-/* =========================
+
+/* ===============================
 MOBILE
-========================= */
+=============================== */
 
 @media(max-width:850px){
 
-    .product-page{
-        grid-template-columns:1fr;
+.product-page{
 
-        gap:35px;
+grid-template-columns:1fr;
 
-        margin-top:30px;
-    }
+gap:35px;
 
-    .gallery{
-        grid-template-columns:1fr;
-    }
-
-    .thumbs{
-        order:2;
-
-        flex-direction:row;
-
-        overflow-x:auto;
-    }
-
-    .thumb{
-        width:75px;
-
-        min-width:75px;
-    }
-
-    .recommend-card{
-        flex:0 0 calc(50% - 7px);
-    }
+margin-top:30px;
 
 }
 
+
+.gallery{
+
+grid-template-columns:1fr;
+
+}
+
+
+.thumbs{
+
+order:2;
+
+flex-direction:row;
+
+overflow-x:auto;
+
+}
+
+
+.thumb{
+
+width:75px;
+
+min-width:75px;
+
+}
+
+
+.recommend-card{
+
+flex:
+0 0 calc(50% - 7px);
+
+}
+
+}
+
+
 @media(max-width:500px){
 
-    header{
-        height:65px;
-    }
+header{
 
-    .logo{
-        font-size:24px;
-    }
+height:65px;
 
-    .back{
-        display:none;
-    }
+}
 
-    h1{
-        font-size:52px;
-    }
 
-    .product-page{
-        width:94%;
-    }
+.logo{
 
-    .cep-row{
-        flex-direction:column;
-    }
+font-size:24px;
 
-    .calculate-button{
-        width:100%;
-    }
+}
+
+
+.back{
+
+display:none;
+
+}
+
+
+h1{
+
+font-size:52px;
+
+}
+
+
+.product-page{
+
+width:94%;
+
+}
+
+
+.cep-row{
+
+flex-direction:column;
+
+}
+
+
+.calculate-button{
+
+width:100%;
+
+}
+
+
+.shipping-option{
+
+align-items:flex-start;
+
+}
+
+
+.shipping-price-box{
+
+min-width:65px;
+
+}
 
 }
 
@@ -730,7 +1217,10 @@ MOBILE
 
 <header>
 
-<a href="index.html" class="logo">
+<a
+href="index.html"
+class="logo"
+>
 
 URBANSTEP<span>.</span>
 
@@ -772,6 +1262,7 @@ id="productDetails"
 style="display:none;"
 >
 
+
 <div class="detail-box">
 
 <h2>
@@ -797,6 +1288,7 @@ Entre em contato com nosso atendimento informando o número do pedido para inici
 
 </div>
 
+
 </section>
 
 
@@ -805,6 +1297,7 @@ class="recommendations"
 id="recommendations"
 style="display:none;"
 >
+
 
 <div class="recommend-label">
 
@@ -826,14 +1319,15 @@ id="recommendScroll"
 >
 </div>
 
+
 </section>
 
 
 <script>
 
-/* =========================
+/* ===============================
 SUPABASE
-========================= */
+=============================== */
 
 const SUPABASE_URL =
 "https://gpovidqzqgttitsgelzm.supabase.co";
@@ -875,9 +1369,13 @@ let cepCalculado =
 "";
 
 
-/* =========================
+let opcoesFrete =
+[];
+
+
+/* ===============================
 ID
-========================= */
+=============================== */
 
 const params =
 new URLSearchParams(
@@ -889,9 +1387,9 @@ const productId =
 params.get("id");
 
 
-/* =========================
-PREÇO
-========================= */
+/* ===============================
+DINHEIRO
+=============================== */
 
 function money(value){
 
@@ -909,9 +1407,9 @@ currency:"BRL"
 }
 
 
-/* =========================
+/* ===============================
 CARREGAR PRODUTO
-========================= */
+=============================== */
 
 async function carregarProduto(){
 
@@ -936,6 +1434,11 @@ if(
 error ||
 !data
 ){
+
+console.error(
+error
+);
+
 
 document
 .getElementById(
@@ -973,9 +1476,9 @@ carregarRecomendados();
 }
 
 
-/* =========================
+/* ===============================
 IMAGENS
-========================= */
+=============================== */
 
 function getImages(){
 
@@ -1012,9 +1515,9 @@ produtoAtual.imagem_principal,
 }
 
 
-/* =========================
-RENDER PRODUTO
-========================= */
+/* ===============================
+RENDER
+=============================== */
 
 function renderProduto(){
 
@@ -1122,7 +1625,7 @@ imagens
 (img,index)=>`
 
 <img
-class="thumb ${index===0?"active":""}"
+class="thumb ${index === 0 ? "active" : ""}"
 src="${img}"
 onclick="trocarImagem(this)"
 >
@@ -1212,7 +1715,12 @@ tamanho => `
 
 <button
 class="size"
-onclick="selecionarTamanho(this,'${tamanho}')"
+onclick="
+selecionarTamanho(
+this,
+'${tamanho}'
+)
+"
 >
 
 ${tamanho}
@@ -1234,12 +1742,16 @@ ${tamanho}
 }
 
 
+<!-- ===============================
+FRETE
+=============================== -->
+
 <div class="shipping-box">
 
 
 <div class="free-shipping-badge">
 
-✓ FRETE GRÁTIS PARA TODO O BRASIL
+✓ OPÇÃO DE FRETE GRÁTIS
 
 </div>
 
@@ -1279,7 +1791,7 @@ id="shippingMessage"
 class="shipping-message"
 >
 
-Informe seu CEP para consultar o prazo de entrega.
+Informe seu CEP para consultar as opções de entrega.
 
 </div>
 
@@ -1294,6 +1806,10 @@ class="shipping-options"
 </div>
 
 
+<!-- ===============================
+RESUMO
+=============================== -->
+
 <div class="summary">
 
 
@@ -1304,9 +1820,7 @@ Produto
 </span>
 
 <span>
-
 ${money(precoFinal)}
-
 </span>
 
 </div>
@@ -1317,6 +1831,7 @@ class="summary-row"
 id="shippingSummaryRow"
 style="display:none;"
 >
+
 
 <span>
 
@@ -1331,18 +1846,17 @@ id="summaryShipping"
 >
 </div>
 
+
 </div>
 
 
 <div class="summary-total">
 
 <span>
-
 Total
-
 </span>
 
-<span>
+<span id="summaryTotal">
 
 ${money(precoFinal)}
 
@@ -1353,6 +1867,10 @@ ${money(precoFinal)}
 
 </div>
 
+
+<!-- ===============================
+BOTÕES
+=============================== -->
 
 <div class="buttons">
 
@@ -1451,15 +1969,65 @@ valor.slice(5);
 e.target.value =
 valor;
 
+
+/*
+SE ALTERAR O CEP,
+REMOVE A COTAÇÃO ANTERIOR
+*/
+
+cepCalculado =
+"";
+
+
+freteSelecionado =
+null;
+
+
+opcoesFrete =
+[];
+
+
+const row =
+document
+.getElementById(
+"shippingSummaryRow"
+);
+
+
+if(row){
+
+row.style.display =
+"none";
+
+}
+
+
+const options =
+document
+.getElementById(
+"shippingOptions"
+);
+
+
+if(options){
+
+options.innerHTML =
+"";
+
+}
+
+
+atualizarTotal();
+
 }
 );
 
 }
 
 
-/* =========================
-TROCAR IMAGEM
-========================= */
+/* ===============================
+IMAGEM
+=============================== */
 
 function trocarImagem(el){
 
@@ -1494,9 +2062,9 @@ el
 }
 
 
-/* =========================
+/* ===============================
 TAMANHO
-========================= */
+=============================== */
 
 function selecionarTamanho(
 botao,
@@ -1530,9 +2098,9 @@ botao
 }
 
 
-/* =========================
+/* ===============================
 CALCULAR FRETE
-========================= */
+=============================== */
 
 async function calcularFrete(){
 
@@ -1574,6 +2142,10 @@ freteSelecionado =
 null;
 
 
+opcoesFrete =
+[];
+
+
 cepCalculado =
 "";
 
@@ -1584,6 +2156,9 @@ shippingRow.style.display =
 
 options.innerHTML =
 "";
+
+
+atualizarTotal();
 
 
 if(
@@ -1599,7 +2174,7 @@ return;
 
 
 message.textContent =
-"Consultando entrega...";
+"Consultando opções de entrega...";
 
 
 try{
@@ -1672,136 +2247,32 @@ throw new Error(
 }
 
 
-/*
-PEGAMOS APENAS A PRIMEIRA
-OPÇÃO RETORNADA PELA FRENET
-*/
-
-const opcao =
-data.opcoes[0];
-
-
-freteSelecionado =
-opcao;
-
-
 cepCalculado =
 cep;
 
 
-message.textContent =
-"Entrega disponível para seu CEP:";
-
-
-options.innerHTML = `
-
-
-<div class="shipping-option">
-
-
-<div class="shipping-icon">
-
-✓
-
-</div>
-
-
-<div class="shipping-content">
-
-
-<div class="shipping-service">
-
-${
-opcao.transportadora
-?
-opcao.transportadora + " - "
-:
-""
-}
-
-${opcao.servico || "Entrega"}
-
-</div>
-
-
-<div class="shipping-deadline">
-
-${
-Number(opcao.prazo) > 0
-?
-`Entrega estimada em até ${opcao.prazo} dia(s) úteis`
-:
-"Prazo informado pela transportadora"
-}
-
-</div>
-
-
-</div>
-
-
-<div class="shipping-price-box">
-
-
-<div class="shipping-old-price">
-
-${money(opcao.preco)}
-
-</div>
-
-
-<div class="shipping-free">
-
-GRÁTIS
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-`;
+opcoesFrete =
+data.opcoes;
 
 
 /*
-MOSTRA FRETE NO RESUMO
-SÓ DEPOIS DO CEP
+PRIMEIRA OPÇÃO
+FICA SELECIONADA
+AUTOMATICAMENTE
 */
 
-const summary =
-document
-.getElementById(
-"summaryShipping"
-);
+freteSelecionado =
+opcoesFrete[0];
 
 
-shippingRow.style.display =
-"flex";
+message.textContent =
+"Escolha a forma de entrega:";
 
 
-summary.innerHTML = `
+renderOpcoesFrete();
 
 
-<span class="summary-old-shipping">
-
-${money(
-opcao.preco
-)}
-
-</span>
-
-
-<span class="summary-free">
-
-GRÁTIS
-
-</span>
-
-
-`;
+atualizarResumoFrete();
 
 
 }catch(error){
@@ -1831,14 +2302,343 @@ null;
 cepCalculado =
 "";
 
+
+atualizarTotal();
+
+}
+
+}
+
+
+/* ===============================
+RENDER FRETES
+=============================== */
+
+function renderOpcoesFrete(){
+
+const options =
+document
+.getElementById(
+"shippingOptions"
+);
+
+
+options.innerHTML =
+
+opcoesFrete
+.map(
+(opcao,index)=>{
+
+
+const gratis =
+index === 0;
+
+
+const selecionado =
+freteSelecionado &&
+freteSelecionado.codigo ===
+opcao.codigo;
+
+
+return `
+
+
+<div
+class="
+shipping-option
+${selecionado ? "selected" : ""}
+"
+onclick="
+selecionarFrete(
+${index}
+)
+"
+>
+
+
+<div class="shipping-radio">
+</div>
+
+
+<div class="shipping-content">
+
+
+<div class="shipping-service">
+
+
+${
+opcao.transportadora
+?
+opcao.transportadora + " - "
+:
+""
+}
+
+
+${opcao.servico || "Entrega"}
+
+
+</div>
+
+
+<div class="shipping-deadline">
+
+
+${
+Number(opcao.prazo) > 0
+?
+`Entrega estimada em até ${opcao.prazo} dia(s) úteis`
+:
+"Prazo informado pela transportadora"
+}
+
+
+</div>
+
+
+</div>
+
+
+<div class="shipping-price-box">
+
+
+${
+gratis
+?
+`
+
+<div class="shipping-old-price">
+
+${money(opcao.preco)}
+
+</div>
+
+
+<div class="shipping-free">
+
+GRÁTIS
+
+</div>
+
+`
+:
+`
+
+<div class="shipping-paid">
+
+${money(opcao.preco)}
+
+</div>
+
+`
+}
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+}
+)
+.join("");
+
+}
+
+
+/* ===============================
+SELECIONAR FRETE
+=============================== */
+
+function selecionarFrete(index){
+
+freteSelecionado =
+opcoesFrete[index];
+
+
+renderOpcoesFrete();
+
+
+atualizarResumoFrete();
+
+}
+
+
+/* ===============================
+RESUMO FRETE
+=============================== */
+
+function atualizarResumoFrete(){
+
+if(
+!freteSelecionado
+){
+
+return;
+
+}
+
+
+const index =
+opcoesFrete.findIndex(
+item =>
+item.codigo ===
+freteSelecionado.codigo
+);
+
+
+const gratis =
+index === 0;
+
+
+const row =
+document
+.getElementById(
+"shippingSummaryRow"
+);
+
+
+const summary =
+document
+.getElementById(
+"summaryShipping"
+);
+
+
+row.style.display =
+"flex";
+
+
+if(gratis){
+
+summary.innerHTML = `
+
+
+<span class="summary-old-shipping">
+
+${money(
+freteSelecionado.preco
+)}
+
+</span>
+
+
+<span class="summary-free">
+
+GRÁTIS
+
+</span>
+
+
+`;
+
+}else{
+
+summary.innerHTML = `
+
+<span>
+
+${money(
+freteSelecionado.preco
+)}
+
+</span>
+
+`;
+
+}
+
+
+atualizarTotal();
+
+}
+
+
+/* ===============================
+ATUALIZAR TOTAL
+=============================== */
+
+function atualizarTotal(){
+
+if(
+!produtoAtual
+){
+
+return;
+
+}
+
+
+const preco =
+Number(
+produtoAtual.preco_promocional ||
+produtoAtual.preco ||
+0
+);
+
+
+let freteCobrado =
+0;
+
+
+if(
+freteSelecionado
+){
+
+const index =
+opcoesFrete.findIndex(
+item =>
+item.codigo ===
+freteSelecionado.codigo
+);
+
+
+if(
+index > 0
+){
+
+freteCobrado =
+Number(
+freteSelecionado.preco ||
+0
+);
+
 }
 
 }
 
 
-/* =========================
-VALIDAR COMPRA
-========================= */
+const total =
+preco +
+freteCobrado;
+
+
+const totalElement =
+document
+.getElementById(
+"summaryTotal"
+);
+
+
+if(totalElement){
+
+totalElement.textContent =
+money(
+total
+);
+
+}
+
+}
+
+
+/* ===============================
+VALIDAR
+=============================== */
 
 function validarCompra(){
 
@@ -1882,7 +2682,7 @@ if(
 ){
 
 alert(
-"Não foi possível identificar a entrega."
+"Escolha uma forma de entrega."
 );
 
 return false;
@@ -1895,9 +2695,9 @@ return true;
 }
 
 
-/* =========================
-CHECKOUT
-========================= */
+/* ===============================
+COMPRAR AGORA
+=============================== */
 
 async function comprarAgora(){
 
@@ -2005,15 +2805,17 @@ error.message
 }
 
 
-/* =========================
+/* ===============================
 WHATSAPP
-========================= */
+=============================== */
 
 function comprarWhatsApp(){
 
 const preco =
+Number(
 produtoAtual.preco_promocional ||
-produtoAtual.preco;
+produtoAtual.preco
+);
 
 
 let texto = `Olá! Tenho interesse neste produto da UrbanStep:
@@ -2022,20 +2824,62 @@ ${produtoAtual.marca} ${produtoAtual.nome}
 
 Tamanho: ${tamanhoSelecionado || "Não informado"}
 
-Produto: ${money(preco)}
-
-Frete: GRÁTIS`;
+Produto: ${money(preco)}`;
 
 
 if(
 freteSelecionado
 ){
 
+const index =
+opcoesFrete.findIndex(
+item =>
+item.codigo ===
+freteSelecionado.codigo
+);
+
+
+const gratis =
+index === 0;
+
+
 texto += `
 
-Entrega: ${freteSelecionado.servico}
+Entrega: ${freteSelecionado.transportadora || ""} ${freteSelecionado.servico || ""}
 
-Prazo estimado: ${freteSelecionado.prazo} dia(s) úteis`;
+Prazo estimado: ${freteSelecionado.prazo || "-"} dia(s) úteis
+
+Frete: ${
+gratis
+?
+"GRÁTIS"
+:
+money(
+freteSelecionado.preco
+)
+}
+
+Total: ${
+money(
+preco +
+(
+gratis
+?
+0
+:
+Number(
+freteSelecionado.preco
+)
+)
+)
+}`;
+
+
+}else{
+
+texto += `
+
+Frete: ainda não calculado`;
 
 }
 
@@ -2051,11 +2895,33 @@ window.open(
 }
 
 
-/* =========================
+/* ===============================
 SACOLA
-========================= */
+=============================== */
 
 function adicionarSacola(){
+
+const possuiTamanho =
+String(
+produtoAtual.tamanhos ||
+""
+)
+.trim();
+
+
+if(
+possuiTamanho &&
+!tamanhoSelecionado
+){
+
+alert(
+"Escolha um tamanho antes de adicionar à sacola."
+);
+
+return;
+
+}
+
 
 const cart =
 JSON.parse(
@@ -2069,15 +2935,15 @@ localStorage.getItem(
 const existente =
 cart.find(
 item =>
-item.id === produtoAtual.id
+item.id ===
+produtoAtual.id
 &&
-item.tamanho === tamanhoSelecionado
+item.tamanho ===
+tamanhoSelecionado
 );
 
 
-if(
-existente
-){
+if(existente){
 
 existente.quantidade =
 Number(
@@ -2142,9 +3008,9 @@ alert(
 }
 
 
-/* =========================
-RECOMENDAÇÕES
-========================= */
+/* ===============================
+RECOMENDADOS
+=============================== */
 
 async function carregarRecomendados(){
 
@@ -2184,14 +3050,11 @@ return;
 }
 
 
-const container =
 document
 .getElementById(
 "recommendScroll"
-);
-
-
-container.innerHTML =
+)
+.innerHTML =
 
 data
 .map(
@@ -2264,13 +3127,14 @@ document
 }
 
 
-/* =========================
+/* ===============================
 INICIAR
-========================= */
+=============================== */
 
 carregarProduto();
 
 </script>
+
 
 </body>
 
