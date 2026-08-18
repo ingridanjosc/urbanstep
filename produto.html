@@ -14,7 +14,6 @@ content="width=device-width, initial-scale=1.0"
 Produto | URBANSTEP.
 </title>
 
-
 <link
 rel="preconnect"
 href="https://fonts.googleapis.com"
@@ -31,1178 +30,576 @@ href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700
 rel="stylesheet"
 >
 
-
 <script
 src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-
 <style>
 
 :root{
-
 --bg:#07080a;
-
 --card:#101216;
-
 --text:#f5f5f5;
-
 --muted:#858b95;
-
 --line:#22262d;
-
 --blue:#234f87;
-
 --blue-light:#3970b4;
-
 --green:#25b866;
-
 }
-
 
 *{
-
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
 }
-
 
 html{
-
 scroll-behavior:smooth;
-
 }
-
 
 body{
-
 background:var(--bg);
-
 color:var(--text);
-
 font-family:"Inter",sans-serif;
-
 overflow-x:hidden;
-
 }
-
 
 a{
-
 color:inherit;
-
 text-decoration:none;
-
 }
-
 
 button,
 input{
-
 font:inherit;
-
 }
-
 
 button{
-
 cursor:pointer;
-
 }
-
-
-/* ===============================
-HEADER
-=============================== */
 
 header{
-
 height:76px;
-
 padding:0 5%;
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
-border-bottom:
-1px solid var(--line);
-
+border-bottom:1px solid var(--line);
 position:sticky;
-
 top:0;
-
 z-index:100;
-
-background:
-rgba(7,8,10,.96);
-
-backdrop-filter:
-blur(14px);
-
+background:rgba(7,8,10,.96);
+backdrop-filter:blur(14px);
 }
-
 
 .logo{
-
-font-family:
-"Barlow Condensed",
-sans-serif;
-
+font-family:"Barlow Condensed",sans-serif;
 font-size:30px;
-
 font-weight:900;
-
 }
-
 
 .logo span{
-
-color:
-var(--blue-light);
-
+color:var(--blue-light);
 }
-
 
 .back{
-
 color:#aaa;
-
 font-size:11px;
-
 }
-
-
-/* ===============================
-PRODUTO
-=============================== */
 
 .product-page{
-
-width:
-min(1250px,92%);
-
-margin:
-60px auto 80px;
-
+width:min(1250px,92%);
+margin:60px auto 80px;
 display:grid;
-
-grid-template-columns:
-1.15fr .85fr;
-
+grid-template-columns:1.15fr .85fr;
 gap:60px;
-
 }
-
-
-/* ===============================
-GALERIA
-=============================== */
 
 .gallery{
-
 display:grid;
-
-grid-template-columns:
-100px 1fr;
-
+grid-template-columns:100px 1fr;
 gap:15px;
-
 }
-
 
 .thumbs{
-
 display:flex;
-
 flex-direction:column;
-
 gap:10px;
-
 }
-
 
 .thumb{
-
 width:100%;
-
 aspect-ratio:1/1;
-
 object-fit:cover;
-
 border-radius:12px;
-
-border:
-1px solid var(--line);
-
+border:1px solid var(--line);
 opacity:.65;
-
 cursor:pointer;
-
 transition:.2s;
-
 }
-
 
 .thumb:hover,
 .thumb.active{
-
 opacity:1;
-
-border-color:
-var(--blue-light);
-
+border-color:var(--blue-light);
 }
-
 
 .main-image{
-
 width:100%;
-
 aspect-ratio:9/11;
-
 object-fit:cover;
-
 background:#111;
-
 border-radius:18px;
-
 }
-
-
-/* ===============================
-INFO
-=============================== */
 
 .info{
-
 padding-top:10px;
-
 }
-
 
 .brand{
-
-color:
-var(--blue-light);
-
+color:var(--blue-light);
 font-size:11px;
-
 font-weight:700;
-
 letter-spacing:2px;
-
 margin-bottom:10px;
-
 }
-
 
 h1{
-
-font-family:
-"Barlow Condensed",
-sans-serif;
-
-font-size:
-clamp(48px,6vw,78px);
-
+font-family:"Barlow Condensed",sans-serif;
+font-size:clamp(48px,6vw,78px);
 line-height:.9;
-
 text-transform:uppercase;
-
 margin-bottom:25px;
-
 }
-
 
 .price{
-
 font-size:25px;
-
 font-weight:800;
-
 margin-bottom:6px;
-
 }
-
 
 .old-price{
-
 color:#666;
-
 font-size:14px;
-
-text-decoration:
-line-through;
-
+text-decoration:line-through;
 margin-right:9px;
-
 }
-
 
 .discount{
-
 display:inline-block;
-
 margin-left:8px;
-
 padding:5px 9px;
-
 border-radius:999px;
-
-border:
-1px solid
-rgba(57,112,180,.45);
-
-color:
-var(--blue-light);
-
+border:1px solid rgba(57,112,180,.45);
+color:var(--blue-light);
 font-size:10px;
-
 font-weight:700;
-
 }
-
 
 .installments{
-
 color:#8c929b;
-
 font-size:12px;
-
 margin-bottom:28px;
-
 }
-
-
-/* ===============================
-TAMANHOS
-=============================== */
 
 .size-title,
 .shipping-title{
-
 font-size:11px;
-
 font-weight:700;
-
 letter-spacing:1.5px;
-
 margin-bottom:12px;
-
 }
-
 
 .sizes{
-
 display:flex;
-
 flex-wrap:wrap;
-
 gap:8px;
-
 margin-bottom:30px;
-
 }
-
 
 .size{
-
 min-width:49px;
-
 height:45px;
-
 border-radius:12px;
-
-border:
-1px solid #2b3038;
-
+border:1px solid #2b3038;
 background:#101216;
-
 color:white;
-
 transition:.2s;
-
 }
-
 
 .size:hover{
-
-border-color:
-var(--blue-light);
-
+border-color:var(--blue-light);
 }
-
 
 .size.selected{
-
-background:
-var(--blue);
-
-border-color:
-var(--blue);
-
+background:var(--blue);
+border-color:var(--blue);
 }
-
-
-/* ===============================
-FRETE
-=============================== */
 
 .shipping-box{
-
 padding:22px;
-
-border:
-1px solid #252a31;
-
+border:1px solid #252a31;
 background:#0d0f13;
-
 border-radius:17px;
-
 margin-bottom:28px;
-
 }
-
-
-.free-shipping-badge{
-
-display:inline-flex;
-
-align-items:center;
-
-gap:7px;
-
-margin-bottom:18px;
-
-padding:8px 12px;
-
-background:
-rgba(37,184,102,.1);
-
-border:
-1px solid
-rgba(37,184,102,.3);
-
-border-radius:999px;
-
-color:#57d88c;
-
-font-size:10px;
-
-font-weight:800;
-
-}
-
 
 .cep-row{
-
 display:flex;
-
 gap:8px;
-
 }
-
 
 .cep-row input{
-
 flex:1;
-
 min-width:0;
-
 height:48px;
-
 border-radius:12px;
-
-border:
-1px solid #292e36;
-
+border:1px solid #292e36;
 background:#15181e;
-
 color:white;
-
 padding:0 15px;
-
 outline:none;
-
 }
-
 
 .cep-row input:focus{
-
-border-color:
-var(--blue-light);
-
+border-color:var(--blue-light);
 }
-
 
 .calculate-button{
-
 height:48px;
-
 padding:0 18px;
-
 border:none;
-
 border-radius:12px;
-
-background:
-var(--blue);
-
+background:var(--blue);
 color:white;
-
 font-size:10px;
-
 font-weight:800;
-
 }
-
 
 .shipping-message{
-
 margin-top:12px;
-
 font-size:11px;
-
 color:#90959d;
-
 }
-
 
 .shipping-options{
-
 display:flex;
-
 flex-direction:column;
-
 gap:9px;
-
 margin-top:15px;
-
 }
-
 
 .shipping-option{
-
 width:100%;
-
 display:flex;
-
 align-items:center;
-
 gap:12px;
-
 padding:14px;
-
 background:#12151a;
-
-border:
-1px solid #292e36;
-
+border:1px solid #292e36;
 border-radius:13px;
-
 cursor:pointer;
-
 transition:.2s;
-
 }
-
 
 .shipping-option:hover{
-
-border-color:
-var(--blue-light);
-
+border-color:var(--blue-light);
 }
-
 
 .shipping-option.selected{
-
-border-color:
-var(--blue-light);
-
-background:
-rgba(35,79,135,.15);
-
+border-color:var(--blue-light);
+background:rgba(35,79,135,.15);
 }
 
-
 .shipping-radio{
-
 width:17px;
-
 height:17px;
-
 border-radius:50%;
-
-border:
-2px solid #555;
-
+border:2px solid #555;
 flex-shrink:0;
-
 }
 
-
-.shipping-option.selected
-.shipping-radio{
-
-border:
-5px solid
-var(--blue-light);
-
+.shipping-option.selected .shipping-radio{
+border:5px solid var(--blue-light);
 }
-
 
 .shipping-content{
-
 flex:1;
-
 min-width:0;
-
 }
-
 
 .shipping-service{
-
 font-size:12px;
-
 font-weight:700;
-
 }
-
 
 .shipping-deadline{
-
 font-size:10px;
-
 color:#838891;
-
 margin-top:4px;
-
 }
-
 
 .shipping-price-box{
-
 text-align:right;
-
 flex-shrink:0;
-
 }
-
 
 .shipping-old-price{
-
 color:#777;
-
 font-size:10px;
-
-text-decoration:
-line-through;
-
+text-decoration:line-through;
 }
-
 
 .shipping-free{
-
 color:#57d88c;
-
 font-size:13px;
-
 font-weight:900;
-
 margin-top:2px;
-
 }
-
 
 .shipping-paid{
-
 color:white;
-
 font-size:13px;
-
 font-weight:800;
-
 }
-
-
-/* ===============================
-RESUMO
-=============================== */
 
 .summary{
-
-border-top:
-1px solid #23272d;
-
+border-top:1px solid #23272d;
 padding-top:18px;
-
 margin-bottom:20px;
-
 }
-
 
 .summary-row{
-
 display:flex;
-
 justify-content:space-between;
-
 gap:20px;
-
 margin-bottom:9px;
-
 font-size:12px;
-
 color:#9a9fa7;
-
 }
-
 
 .summary-shipping{
-
 display:flex;
-
 align-items:center;
-
 gap:8px;
-
 }
-
 
 .summary-old-shipping{
-
-text-decoration:
-line-through;
-
+text-decoration:line-through;
 color:#666;
-
 }
-
 
 .summary-free{
-
 color:#57d88c;
-
 font-weight:800;
-
 }
-
 
 .summary-total{
-
 display:flex;
-
 justify-content:space-between;
-
 padding-top:10px;
-
-border-top:
-1px solid #22262d;
-
+border-top:1px solid #22262d;
 font-size:17px;
-
 font-weight:800;
-
 }
-
-
-/* ===============================
-BOTÕES
-=============================== */
 
 .buttons{
-
 display:flex;
-
 flex-direction:column;
-
 gap:11px;
-
 }
-
 
 .btn{
-
 width:100%;
-
 min-height:54px;
-
 border-radius:999px;
-
 border:none;
-
 font-size:11px;
-
 font-weight:800;
-
 letter-spacing:1px;
-
 transition:.25s;
-
 }
-
 
 .btn-cart{
-
 background:#171a20;
-
-border:
-1px solid #30353d;
-
+border:1px solid #30353d;
 color:white;
-
 }
-
 
 .btn-cart:hover{
-
-border-color:
-var(--blue-light);
-
+border-color:var(--blue-light);
 }
-
 
 .btn-checkout{
-
 background:white;
-
 color:#08090b;
-
 }
-
 
 .btn-checkout:hover{
-
-background:
-var(--blue);
-
+background:var(--blue);
 color:white;
-
 }
-
 
 .btn-whatsapp{
-
 background:#1fa855;
-
 color:white;
-
 }
-
-
-/* ===============================
-DETALHES
-=============================== */
 
 .product-details{
-
-width:
-min(1250px,92%);
-
-margin:
-0 auto 80px;
-
+width:min(1250px,92%);
+margin:0 auto 80px;
 }
-
 
 .detail-box{
-
-border-top:
-1px solid var(--line);
-
+border-top:1px solid var(--line);
 padding:35px 0;
-
 }
-
 
 .detail-box h2{
-
-font-family:
-"Barlow Condensed",
-sans-serif;
-
+font-family:"Barlow Condensed",sans-serif;
 font-size:29px;
-
 text-transform:uppercase;
-
 margin-bottom:15px;
-
 }
-
 
 .detail-box p{
-
 color:#9399a2;
-
 line-height:1.8;
-
 font-size:13px;
-
 white-space:pre-line;
-
 }
-
-
-/* ===============================
-RECOMENDADOS
-=============================== */
 
 .recommendations{
-
-width:
-min(1250px,92%);
-
-margin:
-0 auto 100px;
-
+width:min(1250px,92%);
+margin:0 auto 100px;
 }
-
 
 .recommend-label{
-
-color:
-var(--blue-light);
-
+color:var(--blue-light);
 font-size:10px;
-
 font-weight:700;
-
 letter-spacing:2.5px;
-
 margin-bottom:7px;
-
 }
-
 
 .recommend-title{
-
-font-family:
-"Barlow Condensed",
-sans-serif;
-
-font-size:
-clamp(42px,5vw,68px);
-
+font-family:"Barlow Condensed",sans-serif;
+font-size:clamp(42px,5vw,68px);
 font-weight:900;
-
 margin-bottom:28px;
-
 }
-
 
 .recommend-scroll{
-
 display:flex;
-
 gap:18px;
-
 overflow-x:auto;
-
-scroll-snap-type:
-x mandatory;
-
+scroll-snap-type:x mandatory;
 scrollbar-width:none;
-
 padding-bottom:10px;
-
 }
-
 
 .recommend-scroll::-webkit-scrollbar{
-
 display:none;
-
 }
-
 
 .recommend-card{
-
-flex:
-0 0 calc(25% - 14px);
-
+flex:0 0 calc(25% - 14px);
 scroll-snap-align:start;
-
 cursor:pointer;
-
 }
-
 
 .recommend-img{
-
 width:100%;
-
 aspect-ratio:9/14;
-
 object-fit:cover;
-
 border-radius:6px;
-
 }
-
 
 .recommend-brand{
-
 color:#777;
-
 font-size:9px;
-
 margin-top:11px;
-
 }
-
 
 .recommend-name{
-
-font-family:
-"Barlow Condensed",
-sans-serif;
-
+font-family:"Barlow Condensed",sans-serif;
 font-size:19px;
-
 font-weight:700;
-
 text-transform:uppercase;
-
 margin-top:4px;
-
 }
-
 
 .recommend-price{
-
 font-size:13px;
-
 font-weight:700;
-
 margin-top:5px;
-
 }
-
-
-/* ===============================
-MOBILE
-=============================== */
 
 @media(max-width:850px){
 
 .product-page{
-
 grid-template-columns:1fr;
-
 gap:35px;
-
 margin-top:30px;
-
 }
-
 
 .gallery{
-
 grid-template-columns:1fr;
-
 }
-
 
 .thumbs{
-
 order:2;
-
 flex-direction:row;
-
 overflow-x:auto;
-
 }
-
 
 .thumb{
-
 width:75px;
-
 min-width:75px;
-
 }
-
 
 .recommend-card{
-
-flex:
-0 0 calc(50% - 7px);
-
+flex:0 0 calc(50% - 7px);
 }
 
 }
-
 
 @media(max-width:500px){
 
 header{
-
 height:65px;
-
 }
-
 
 .logo{
-
 font-size:24px;
-
 }
-
 
 .back{
-
 display:none;
-
 }
-
 
 h1{
-
 font-size:52px;
-
 }
-
 
 .product-page{
-
 width:94%;
-
 }
-
 
 .cep-row{
-
 flex-direction:column;
-
 }
-
 
 .calculate-button{
-
 width:100%;
-
 }
-
 
 .shipping-option{
-
 align-items:flex-start;
-
 }
 
-
 .shipping-price-box{
-
 min-width:65px;
-
 }
 
 }
@@ -1211,9 +608,7 @@ min-width:65px;
 
 </head>
 
-
 <body>
-
 
 <header>
 
@@ -1221,19 +616,14 @@ min-width:65px;
 href="index.html"
 class="logo"
 >
-
 URBANSTEP<span>.</span>
-
 </a>
-
 
 <a
 href="index.html#catalogo"
 class="back"
 >
-
 ← VOLTAR AO CATÁLOGO
-
 </a>
 
 </header>
@@ -1248,9 +638,7 @@ text-align:center;
 color:#777;
 "
 >
-
 Carregando produto...
-
 </div>
 
 </main>
@@ -1262,7 +650,6 @@ id="productDetails"
 style="display:none;"
 >
 
-
 <div class="detail-box">
 
 <h2>
@@ -1272,7 +659,6 @@ Descrição
 <p id="description"></p>
 
 </div>
-
 
 <div class="detail-box">
 
@@ -1288,7 +674,6 @@ Entre em contato com nosso atendimento informando o número do pedido para inici
 
 </div>
 
-
 </section>
 
 
@@ -1298,27 +683,19 @@ id="recommendations"
 style="display:none;"
 >
 
-
 <div class="recommend-label">
-
 DESCUBRA MAIS
-
 </div>
 
-
 <h2 class="recommend-title">
-
 VOCÊ TAMBÉM PODE GOSTAR
-
 </h2>
-
 
 <div
 class="recommend-scroll"
 id="recommendScroll"
 >
 </div>
-
 
 </section>
 
@@ -1332,15 +709,12 @@ SUPABASE
 const SUPABASE_URL =
 "https://gpovidqzqgttitsgelzm.supabase.co";
 
-
 const SUPABASE_KEY =
 "sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
-
 
 const {
 createClient
 } = supabase;
-
 
 const db =
 createClient(
@@ -1348,26 +722,20 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-
 const WHATSAPP =
 "5561996223295";
-
 
 let produtoAtual =
 null;
 
-
 let tamanhoSelecionado =
 null;
-
 
 let freteSelecionado =
 null;
 
-
 let cepCalculado =
 "";
-
 
 let opcoesFrete =
 [];
@@ -1381,7 +749,6 @@ const params =
 new URLSearchParams(
 window.location.search
 );
-
 
 const productId =
 params.get("id");
@@ -1429,7 +796,6 @@ true
 )
 .single();
 
-
 if(
 error ||
 !data
@@ -1438,7 +804,6 @@ error ||
 console.error(
 error
 );
-
 
 document
 .getElementById(
@@ -1452,9 +817,7 @@ padding:100px;
 text-align:center;
 "
 >
-
 Produto não encontrado.
-
 </div>
 
 `;
@@ -1463,13 +826,10 @@ return;
 
 }
 
-
 produtoAtual =
 data;
 
-
 renderProduto();
-
 
 carregarRecomendados();
 
@@ -1483,7 +843,6 @@ IMAGENS
 function getImages(){
 
 let extras = [];
-
 
 try{
 
@@ -1501,7 +860,6 @@ produtoAtual.imagens
 extras = [];
 
 }
-
 
 return [
 
@@ -1524,13 +882,11 @@ function renderProduto(){
 const imagens =
 getImages();
 
-
 const preco =
 Number(
 produtoAtual.preco ||
 0
 );
-
 
 const promo =
 produtoAtual.preco_promocional
@@ -1541,10 +897,8 @@ produtoAtual.preco_promocional
 :
 null;
 
-
 const precoFinal =
 promo || preco;
-
 
 const tamanhos =
 String(
@@ -1557,12 +911,10 @@ x => x.trim()
 )
 .filter(Boolean);
 
-
 let priceHTML =
 money(
 precoFinal
 );
-
 
 if(
 promo &&
@@ -1572,14 +924,10 @@ promo < preco
 priceHTML = `
 
 <span class="old-price">
-
 ${money(preco)}
-
 </span>
 
-
 ${money(promo)}
-
 
 ${
 produtoAtual.desconto
@@ -1587,9 +935,7 @@ produtoAtual.desconto
 `
 
 <span class="discount">
-
 ${produtoAtual.desconto}% OFF
-
 </span>
 
 `
@@ -1601,22 +947,17 @@ ${produtoAtual.desconto}% OFF
 
 }
 
-
 document
 .getElementById(
 "productContainer"
 )
 .innerHTML = `
 
-
 <section class="product-page">
-
 
 <div class="gallery">
 
-
 <div class="thumbs">
-
 
 ${
 
@@ -1636,9 +977,7 @@ onclick="trocarImagem(this)"
 
 }
 
-
 </div>
-
 
 <img
 class="main-image"
@@ -1647,33 +986,22 @@ src="${imagens[0] || ""}"
 alt="${produtoAtual.nome || ""}"
 >
 
-
 </div>
 
 
 <div class="info">
 
-
 <div class="brand">
-
 ${produtoAtual.marca || ""}
-
 </div>
-
 
 <h1>
-
 ${produtoAtual.nome || ""}
-
 </h1>
 
-
 <div class="price">
-
 ${priceHTML}
-
 </div>
-
 
 ${
 produtoAtual.parcelamento
@@ -1681,9 +1009,7 @@ produtoAtual.parcelamento
 `
 
 <div class="installments">
-
 ${produtoAtual.parcelamento}
-
 </div>
 
 `
@@ -1691,21 +1017,16 @@ ${produtoAtual.parcelamento}
 ""
 }
 
-
 ${
 tamanhos.length
 ?
 `
 
 <div class="size-title">
-
 ESCOLHA O TAMANHO
-
 </div>
 
-
 <div class="sizes">
-
 
 ${
 
@@ -1722,9 +1043,7 @@ this,
 )
 "
 >
-
 ${tamanho}
-
 </button>
 
 `
@@ -1732,7 +1051,6 @@ ${tamanho}
 .join("")
 
 }
-
 
 </div>
 
@@ -1742,29 +1060,13 @@ ${tamanho}
 }
 
 
-<!-- ===============================
-FRETE
-=============================== -->
-
 <div class="shipping-box">
 
-
-<div class="free-shipping-badge">
-
-✓ OPÇÃO DE FRETE GRÁTIS
-
-</div>
-
-
 <div class="shipping-title">
-
 CALCULAR PRAZO DE ENTREGA
-
 </div>
-
 
 <div class="cep-row">
-
 
 <input
 id="cepInput"
@@ -1772,29 +1074,21 @@ placeholder="Digite seu CEP"
 maxlength="9"
 >
 
-
 <button
 class="calculate-button"
 onclick="calcularFrete()"
 >
-
 CALCULAR
-
 </button>
 
-
 </div>
-
 
 <div
 id="shippingMessage"
 class="shipping-message"
 >
-
 Informe seu CEP para consultar as opções de entrega.
-
 </div>
-
 
 <div
 id="shippingOptions"
@@ -1802,16 +1096,10 @@ class="shipping-options"
 >
 </div>
 
-
 </div>
 
 
-<!-- ===============================
-RESUMO
-=============================== -->
-
 <div class="summary">
-
 
 <div class="summary-row">
 
@@ -1825,20 +1113,15 @@ ${money(precoFinal)}
 
 </div>
 
-
 <div
 class="summary-row"
 id="shippingSummaryRow"
 style="display:none;"
 >
 
-
 <span>
-
 Frete
-
 </span>
-
 
 <div
 class="summary-shipping"
@@ -1846,9 +1129,7 @@ id="summaryShipping"
 >
 </div>
 
-
 </div>
-
 
 <div class="summary-total">
 
@@ -1857,62 +1138,42 @@ Total
 </span>
 
 <span id="summaryTotal">
-
 ${money(precoFinal)}
-
 </span>
 
 </div>
 
-
 </div>
 
 
-<!-- ===============================
-BOTÕES
-=============================== -->
-
 <div class="buttons">
-
 
 <button
 class="btn btn-cart"
 onclick="adicionarSacola()"
 >
-
 ADICIONAR À SACOLA
-
 </button>
-
 
 <button
 class="btn btn-checkout"
 onclick="comprarAgora()"
 >
-
 COMPRAR AGORA →
-
 </button>
-
 
 <button
 class="btn btn-whatsapp"
 onclick="comprarWhatsApp()"
 >
-
 COMPRAR PELO WHATSAPP
-
 </button>
 
-
 </div>
 
-
 </div>
-
 
 </section>
-
 
 `;
 
@@ -1924,7 +1185,6 @@ document
 .textContent =
 produtoAtual.descricao ||
 "Consulte as informações deste produto com nosso atendimento.";
-
 
 document
 .getElementById(
@@ -1940,7 +1200,6 @@ document
 "cepInput"
 );
 
-
 cepInput
 .addEventListener(
 "input",
@@ -1950,7 +1209,6 @@ let valor =
 e.target.value
 .replace(/\D/g,"")
 .slice(0,8);
-
 
 if(
 valor.length > 5
@@ -1965,27 +1223,17 @@ valor.slice(5);
 
 }
 
-
 e.target.value =
 valor;
-
-
-/*
-SE ALTERAR O CEP,
-REMOVE A COTAÇÃO ANTERIOR
-*/
 
 cepCalculado =
 "";
 
-
 freteSelecionado =
 null;
 
-
 opcoesFrete =
 [];
-
 
 const row =
 document
@@ -1993,14 +1241,10 @@ document
 "shippingSummaryRow"
 );
 
-
 if(row){
-
 row.style.display =
 "none";
-
 }
-
 
 const options =
 document
@@ -2008,14 +1252,21 @@ document
 "shippingOptions"
 );
 
-
 if(options){
-
 options.innerHTML =
 "";
-
 }
 
+const message =
+document
+.getElementById(
+"shippingMessage"
+);
+
+if(message){
+message.textContent =
+"Informe seu CEP para consultar as opções de entrega.";
+}
 
 atualizarTotal();
 
@@ -2038,7 +1289,6 @@ document
 .src =
 el.src;
 
-
 document
 .querySelectorAll(
 ".thumb"
@@ -2051,7 +1301,6 @@ thumb
 "active"
 )
 );
-
 
 el
 .classList
@@ -2074,7 +1323,6 @@ tamanho
 tamanhoSelecionado =
 tamanho;
 
-
 document
 .querySelectorAll(
 ".size"
@@ -2087,7 +1335,6 @@ item
 "selected"
 )
 );
-
 
 botao
 .classList
@@ -2110,13 +1357,11 @@ document
 "cepInput"
 );
 
-
 const message =
 document
 .getElementById(
 "shippingMessage"
 );
-
 
 const options =
 document
@@ -2124,42 +1369,33 @@ document
 "shippingOptions"
 );
 
-
 const shippingRow =
 document
 .getElementById(
 "shippingSummaryRow"
 );
 
-
 const cep =
 input
 .value
 .replace(/\D/g,"");
 
-
 freteSelecionado =
 null;
-
 
 opcoesFrete =
 [];
 
-
 cepCalculado =
 "";
-
 
 shippingRow.style.display =
 "none";
 
-
 options.innerHTML =
 "";
 
-
 atualizarTotal();
-
 
 if(
 cep.length !== 8
@@ -2172,13 +1408,10 @@ return;
 
 }
 
-
 message.textContent =
 "Consultando opções de entrega...";
 
-
 try{
-
 
 const response =
 await fetch(
@@ -2218,10 +1451,8 @@ quantidade:
 
 );
 
-
 const data =
 await response.json();
-
 
 if(
 !response.ok
@@ -2234,7 +1465,6 @@ data.error ||
 
 }
 
-
 if(
 !data.opcoes ||
 !data.opcoes.length
@@ -2246,62 +1476,42 @@ throw new Error(
 
 }
 
-
 cepCalculado =
 cep;
-
 
 opcoesFrete =
 data.opcoes;
 
-
-/*
-PRIMEIRA OPÇÃO
-FICA SELECIONADA
-AUTOMATICAMENTE
-*/
-
 freteSelecionado =
 opcoesFrete[0];
-
 
 message.textContent =
 "Escolha a forma de entrega:";
 
-
 renderOpcoesFrete();
-
 
 atualizarResumoFrete();
 
-
 }catch(error){
-
 
 console.error(
 error
 );
 
-
 message.textContent =
 error.message;
-
 
 options.innerHTML =
 "";
 
-
 shippingRow.style.display =
 "none";
-
 
 freteSelecionado =
 null;
 
-
 cepCalculado =
 "";
-
 
 atualizarTotal();
 
@@ -2322,26 +1532,21 @@ document
 "shippingOptions"
 );
 
-
 options.innerHTML =
 
 opcoesFrete
 .map(
 (opcao,index)=>{
 
-
 const gratis =
 index === 0;
-
 
 const selecionado =
 freteSelecionado &&
 freteSelecionado.codigo ===
 opcao.codigo;
 
-
 return `
-
 
 <div
 class="
@@ -2355,16 +1560,12 @@ ${index}
 "
 >
 
-
 <div class="shipping-radio">
 </div>
 
-
 <div class="shipping-content">
 
-
 <div class="shipping-service">
-
 
 ${
 opcao.transportadora
@@ -2374,15 +1575,11 @@ opcao.transportadora + " - "
 ""
 }
 
-
 ${opcao.servico || "Entrega"}
-
 
 </div>
 
-
 <div class="shipping-deadline">
-
 
 ${
 Number(opcao.prazo) > 0
@@ -2392,15 +1589,11 @@ Number(opcao.prazo) > 0
 "Prazo informado pela transportadora"
 }
 
-
 </div>
 
-
 </div>
-
 
 <div class="shipping-price-box">
-
 
 ${
 gratis
@@ -2408,16 +1601,11 @@ gratis
 `
 
 <div class="shipping-old-price">
-
 ${money(opcao.preco)}
-
 </div>
 
-
 <div class="shipping-free">
-
 GRÁTIS
-
 </div>
 
 `
@@ -2425,23 +1613,17 @@ GRÁTIS
 `
 
 <div class="shipping-paid">
-
 ${money(opcao.preco)}
-
 </div>
 
 `
 }
 
-
 </div>
 
-
 </div>
-
 
 `;
-
 
 }
 )
@@ -2459,9 +1641,7 @@ function selecionarFrete(index){
 freteSelecionado =
 opcoesFrete[index];
 
-
 renderOpcoesFrete();
-
 
 atualizarResumoFrete();
 
@@ -2482,7 +1662,6 @@ return;
 
 }
 
-
 const index =
 opcoesFrete.findIndex(
 item =>
@@ -2490,10 +1669,8 @@ item.codigo ===
 freteSelecionado.codigo
 );
 
-
 const gratis =
 index === 0;
-
 
 const row =
 document
@@ -2501,22 +1678,18 @@ document
 "shippingSummaryRow"
 );
 
-
 const summary =
 document
 .getElementById(
 "summaryShipping"
 );
 
-
 row.style.display =
 "flex";
-
 
 if(gratis){
 
 summary.innerHTML = `
-
 
 <span class="summary-old-shipping">
 
@@ -2526,13 +1699,9 @@ freteSelecionado.preco
 
 </span>
 
-
 <span class="summary-free">
-
 GRÁTIS
-
 </span>
-
 
 `;
 
@@ -2541,17 +1710,14 @@ GRÁTIS
 summary.innerHTML = `
 
 <span>
-
 ${money(
 freteSelecionado.preco
 )}
-
 </span>
 
 `;
 
 }
-
 
 atualizarTotal();
 
@@ -2572,7 +1738,6 @@ return;
 
 }
 
-
 const preco =
 Number(
 produtoAtual.preco_promocional ||
@@ -2580,10 +1745,8 @@ produtoAtual.preco ||
 0
 );
 
-
 let freteCobrado =
 0;
-
 
 if(
 freteSelecionado
@@ -2595,7 +1758,6 @@ item =>
 item.codigo ===
 freteSelecionado.codigo
 );
-
 
 if(
 index > 0
@@ -2611,18 +1773,15 @@ freteSelecionado.preco ||
 
 }
 
-
 const total =
 preco +
 freteCobrado;
-
 
 const totalElement =
 document
 .getElementById(
 "summaryTotal"
 );
-
 
 if(totalElement){
 
@@ -2649,7 +1808,6 @@ produtoAtual.tamanhos ||
 )
 .trim();
 
-
 if(
 possuiTamanho &&
 !tamanhoSelecionado
@@ -2663,7 +1821,6 @@ return false;
 
 }
 
-
 if(
 !cepCalculado
 ){
@@ -2676,7 +1833,6 @@ return false;
 
 }
 
-
 if(
 !freteSelecionado
 ){
@@ -2688,7 +1844,6 @@ alert(
 return false;
 
 }
-
 
 return true;
 
@@ -2709,9 +1864,7 @@ return;
 
 }
 
-
 try{
-
 
 const response =
 await fetch(
@@ -2756,10 +1909,8 @@ freteSelecionado.codigo
 
 );
 
-
 const data =
 await response.json();
-
 
 if(
 !response.ok
@@ -2772,7 +1923,6 @@ data.error ||
 
 }
 
-
 if(
 !data.url
 ){
@@ -2783,18 +1933,14 @@ throw new Error(
 
 }
 
-
 window.location.href =
 data.url;
 
-
 }catch(error){
-
 
 console.error(
 error
 );
-
 
 alert(
 error.message
@@ -2817,7 +1963,6 @@ produtoAtual.preco_promocional ||
 produtoAtual.preco
 );
 
-
 let texto = `Olá! Tenho interesse neste produto da UrbanStep:
 
 ${produtoAtual.marca} ${produtoAtual.nome}
@@ -2825,7 +1970,6 @@ ${produtoAtual.marca} ${produtoAtual.nome}
 Tamanho: ${tamanhoSelecionado || "Não informado"}
 
 Produto: ${money(preco)}`;
-
 
 if(
 freteSelecionado
@@ -2838,10 +1982,8 @@ item.codigo ===
 freteSelecionado.codigo
 );
 
-
 const gratis =
 index === 0;
-
 
 texto += `
 
@@ -2874,7 +2016,6 @@ freteSelecionado.preco
 )
 }`;
 
-
 }else{
 
 texto += `
@@ -2882,7 +2023,6 @@ texto += `
 Frete: ainda não calculado`;
 
 }
-
 
 window.open(
 
@@ -2908,7 +2048,6 @@ produtoAtual.tamanhos ||
 )
 .trim();
 
-
 if(
 possuiTamanho &&
 !tamanhoSelecionado
@@ -2922,7 +2061,6 @@ return;
 
 }
 
-
 const cart =
 JSON.parse(
 localStorage.getItem(
@@ -2930,7 +2068,6 @@ localStorage.getItem(
 ) ||
 "[]"
 );
-
 
 const existente =
 cart.find(
@@ -2941,7 +2078,6 @@ produtoAtual.id
 item.tamanho ===
 tamanhoSelecionado
 );
-
 
 if(existente){
 
@@ -2954,7 +2090,6 @@ existente.quantidade ||
 1;
 
 }else{
-
 
 cart.push({
 
@@ -2989,7 +2124,6 @@ quantidade:
 
 }
 
-
 localStorage.setItem(
 
 "urbanstep_cart",
@@ -2999,7 +2133,6 @@ cart
 )
 
 );
-
 
 alert(
 "Produto adicionado à sacola."
@@ -3038,7 +2171,6 @@ ascending:false
 )
 .limit(20);
 
-
 if(
 error ||
 !data ||
@@ -3048,7 +2180,6 @@ error ||
 return;
 
 }
-
 
 document
 .getElementById(
@@ -3060,14 +2191,11 @@ data
 .map(
 produto=>{
 
-
 const preco =
 produto.preco_promocional ||
 produto.preco;
 
-
 return `
-
 
 <div
 class="recommend-card"
@@ -3077,45 +2205,31 @@ location.href=
 "
 >
 
-
 <img
 class="recommend-img"
 src="${produto.imagem_principal || ""}"
 alt="${produto.nome || ""}"
 >
 
-
 <div class="recommend-brand">
-
 ${produto.marca || ""}
-
 </div>
-
 
 <div class="recommend-name">
-
 ${produto.nome || ""}
-
 </div>
-
 
 <div class="recommend-price">
-
 ${money(preco)}
-
 </div>
 
-
 </div>
-
 
 `;
-
 
 }
 )
 .join("");
-
 
 document
 .getElementById(
@@ -3134,7 +2248,6 @@ INICIAR
 carregarProduto();
 
 </script>
-
 
 </body>
 
