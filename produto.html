@@ -1,398 +1,1659 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-function json(data: unknown, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      ...corsHeaders,
-      "Content-Type": "application/json",
-    },
-  });
+<title>Produto | URBANSTEP.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+    --bg:#07080a;
+    --text:#f5f5f5;
+    --muted:#858b95;
+    --line:#22262d;
+    --blue:#234f87;
+    --blue-light:#3970b4;
+    --green:#25b866;
 }
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Inter",sans-serif;
+    overflow-x:hidden;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+header{
+    height:76px;
+    padding:0 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(7,8,10,.96);
+    backdrop-filter:blur(14px);
+}
+
+.logo{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:30px;
+    font-weight:900;
+}
+
+.logo span{
+    color:var(--blue-light);
+}
+
+.back{
+    color:#aaa;
+    font-size:11px;
+}
+
+.product-page{
+    width:min(1250px,92%);
+    margin:60px auto 80px;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:60px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:100px 1fr;
+    gap:15px;
+}
+
+.thumbs{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.thumb{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:12px;
+    border:1px solid var(--line);
+    opacity:.65;
+    cursor:pointer;
+}
+
+.thumb.active{
+    opacity:1;
+    border-color:var(--blue-light);
+}
+
+.main-image{
+    width:100%;
+    aspect-ratio:9/11;
+    object-fit:cover;
+    background:#111;
+    border-radius:18px;
+}
+
+.info{
+    padding-top:10px;
+}
+
+.brand{
+    color:var(--blue-light);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:10px;
+}
+
+h1{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:clamp(48px,6vw,78px);
+    line-height:.9;
+    text-transform:uppercase;
+    margin-bottom:25px;
+}
+
+.price{
+    font-size:25px;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.old-price{
+    color:#666;
+    font-size:14px;
+    text-decoration:line-through;
+    margin-right:9px;
+}
+
+.discount{
+    display:inline-block;
+    margin-left:8px;
+    padding:5px 9px;
+    border-radius:999px;
+    border:1px solid rgba(57,112,180,.45);
+    color:var(--blue-light);
+    font-size:10px;
+    font-weight:700;
+}
+
+.installments{
+    color:#8c929b;
+    font-size:12px;
+    margin-bottom:28px;
+}
+
+.size-title,
+.shipping-title{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    margin-bottom:12px;
+}
+
+.sizes{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:30px;
+}
+
+.size{
+    min-width:49px;
+    height:45px;
+    border-radius:12px;
+    border:1px solid #2b3038;
+    background:#101216;
+    color:white;
+}
+
+.size.selected{
+    background:var(--blue);
+    border-color:var(--blue);
+}
+
+.shipping-box{
+    padding:22px;
+    border:1px solid #252a31;
+    background:#0d0f13;
+    border-radius:17px;
+    margin-bottom:28px;
+}
+
+.free-shipping-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:18px;
+    padding:8px 12px;
+    background:rgba(37,184,102,.1);
+    border:1px solid rgba(37,184,102,.3);
+    border-radius:999px;
+    color:#57d88c;
+    font-size:10px;
+    font-weight:800;
+}
+
+.cep-row{
+    display:flex;
+    gap:8px;
+}
+
+.cep-row input{
+    flex:1;
+    min-width:0;
+    height:48px;
+    border-radius:12px;
+    border:1px solid #292e36;
+    background:#15181e;
+    color:white;
+    padding:0 15px;
+    outline:none;
+}
+
+.calculate-button{
+    height:48px;
+    padding:0 18px;
+    border:none;
+    border-radius:12px;
+    background:var(--blue);
+    color:white;
+    font-size:10px;
+    font-weight:800;
+}
+
+.shipping-message{
+    margin-top:12px;
+    font-size:11px;
+    color:#90959d;
+}
+
+.shipping-options{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    margin-top:15px;
+}
+
+.shipping-option{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+    background:#12151a;
+    border:1px solid #292e36;
+    border-radius:13px;
+    cursor:pointer;
+}
+
+.shipping-option.selected{
+    border-color:var(--blue-light);
+    background:rgba(35,79,135,.15);
+}
+
+.shipping-radio{
+    width:17px;
+    height:17px;
+    border-radius:50%;
+    border:2px solid #555;
+}
+
+.shipping-option.selected .shipping-radio{
+    border:5px solid var(--blue-light);
+}
+
+.shipping-content{
+    flex:1;
+}
+
+.shipping-service{
+    font-size:12px;
+    font-weight:700;
+}
+
+.shipping-deadline{
+    font-size:10px;
+    color:#838891;
+    margin-top:4px;
+}
+
+.shipping-price-box{
+    text-align:right;
+}
+
+.shipping-old-price{
+    color:#777;
+    font-size:10px;
+    text-decoration:line-through;
+}
+
+.shipping-free{
+    color:#57d88c;
+    font-size:13px;
+    font-weight:900;
+}
+
+.summary{
+    border-top:1px solid #23272d;
+    padding-top:18px;
+    margin-bottom:20px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:9px;
+    font-size:12px;
+    color:#9a9fa7;
+}
+
+.summary-shipping{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.summary-old-shipping{
+    text-decoration:line-through;
+    color:#666;
+}
+
+.summary-free{
+    color:#57d88c;
+    font-weight:800;
+}
+
+.summary-total{
+    display:flex;
+    justify-content:space-between;
+    padding-top:10px;
+    border-top:1px solid #22262d;
+    font-size:17px;
+    font-weight:800;
+}
+
+.buttons{
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+}
+
+.btn{
+    width:100%;
+    min-height:54px;
+    border-radius:999px;
+    border:none;
+    font-size:11px;
+    font-weight:800;
+}
+
+.btn-cart{
+    background:#171a20;
+    border:1px solid #30353d;
+    color:white;
+}
+
+.btn-checkout{
+    background:white;
+    color:#08090b;
+}
+
+.btn-whatsapp{
+    background:#1fa855;
+    color:white;
+}
+
+.product-details{
+    width:min(1250px,92%);
+    margin:0 auto 80px;
+}
+
+.detail-box{
+    border-top:1px solid var(--line);
+    padding:35px 0;
+}
+
+.detail-box h2{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:29px;
+    text-transform:uppercase;
+    margin-bottom:15px;
+}
+
+.detail-box p{
+    color:#9399a2;
+    line-height:1.8;
+    font-size:13px;
+    white-space:pre-line;
+}
+
+.recommendations{
+    width:min(1250px,92%);
+    margin:0 auto 100px;
+}
+
+.recommend-label{
+    color:var(--blue-light);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:2.5px;
+    margin-bottom:7px;
+}
+
+.recommend-title{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:clamp(42px,5vw,68px);
+    font-weight:900;
+    margin-bottom:28px;
+}
+
+.recommend-scroll{
+    display:flex;
+    gap:18px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    padding-bottom:10px;
+}
+
+.recommend-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.recommend-card{
+    flex:0 0 calc(25% - 14px);
+    scroll-snap-align:start;
+    cursor:pointer;
+}
+
+.recommend-img{
+    width:100%;
+    aspect-ratio:9/14;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.recommend-brand{
+    color:#777;
+    font-size:9px;
+    margin-top:11px;
+}
+
+.recommend-name{
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:19px;
+    font-weight:700;
+    text-transform:uppercase;
+    margin-top:4px;
+}
+
+.recommend-price{
+    font-size:13px;
+    font-weight:700;
+    margin-top:5px;
+}
+
+@media(max-width:850px){
+
+    .product-page{
+        grid-template-columns:1fr;
+        gap:35px;
+        margin-top:30px;
+    }
+
+    .gallery{
+        grid-template-columns:1fr;
+    }
+
+    .thumbs{
+        order:2;
+        flex-direction:row;
+        overflow-x:auto;
+    }
+
+    .thumb{
+        width:75px;
+        min-width:75px;
+    }
+
+    .recommend-card{
+        flex:0 0 calc(50% - 7px);
+    }
+
+}
+
+@media(max-width:500px){
+
+    header{
+        height:65px;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+    .back{
+        display:none;
+    }
+
+    h1{
+        font-size:52px;
+    }
+
+    .product-page{
+        width:94%;
+    }
+
+    .cep-row{
+        flex-direction:column;
+    }
+
+    .calculate-button{
+        width:100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<a href="index.html" class="logo">
+URBANSTEP<span>.</span>
+</a>
+
+<a href="index.html#catalogo" class="back">
+← VOLTAR AO CATÁLOGO
+</a>
+
+</header>
+
+
+<main id="productContainer">
+
+<div style="padding:100px;text-align:center;color:#777;">
+Carregando produto...
+</div>
+
+</main>
+
+
+<section
+class="product-details"
+id="productDetails"
+style="display:none;"
+>
+
+<div class="detail-box">
+
+<h2>Descrição</h2>
+
+<p id="description"></p>
+
+</div>
+
+
+<div class="detail-box">
+
+<h2>Trocas e devoluções</h2>
+
+<p>
+Você pode solicitar troca ou devolução em até 7 dias após o recebimento do produto.
+
+Entre em contato com nosso atendimento informando o número do pedido para iniciar a solicitação.
+</p>
+
+</div>
+
+</section>
+
+
+<section
+class="recommendations"
+id="recommendations"
+style="display:none;"
+>
+
+<div class="recommend-label">
+DESCUBRA MAIS
+</div>
+
+<h2 class="recommend-title">
+VOCÊ TAMBÉM PODE GOSTAR
+</h2>
+
+<div
+class="recommend-scroll"
+id="recommendScroll"
+></div>
+
+</section>
+
+
+<script>
+
 const SUPABASE_URL =
-  Deno.env.get("SUPABASE_URL")!;
+"https://gpovidqzqgttitsgelzm.supabase.co";
 
-const SUPABASE_SERVICE_ROLE_KEY =
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const SUPABASE_KEY =
+"sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
 
-const FRENET_TOKEN =
-  Deno.env.get("FRENET_TOKEN");
+const {
+createClient
+} = supabase;
 
-const db = createClient(
-  SUPABASE_URL,
-  SUPABASE_SERVICE_ROLE_KEY
+const db =
+createClient(
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
-Deno.serve(async (req) => {
-
-  if (req.method === "OPTIONS") {
-    return new Response("ok", {
-      headers: corsHeaders,
-    });
-  }
-
-  if (req.method !== "POST") {
-    return json(
-      {
-        error: "Método não permitido.",
-      },
-      405
-    );
-  }
-
-  try {
-
-    if (!FRENET_TOKEN) {
-      return json(
-        {
-          error:
-            "Token da Frenet não configurado.",
-        },
-        500
-      );
-    }
-
-    const body =
-      await req.json();
-
-    const produtoId =
-      Number(body.produto_id);
-
-    const cepDestino =
-      String(body.cep || "")
-        .replace(/\D/g, "");
-
-    const quantidade =
-      Math.max(
-        1,
-        Number(body.quantidade || 1)
-      );
-
-    if (!produtoId) {
-      return json(
-        {
-          error:
-            "Produto não informado.",
-        },
-        400
-      );
-    }
-
-    if (cepDestino.length !== 8) {
-      return json(
-        {
-          error:
-            "Informe um CEP válido.",
-        },
-        400
-      );
-    }
-
-    /*
-      BUSCA PRODUTO + FORNECEDOR
-    */
-
-    const {
-      data: produto,
-      error: produtoError,
-    } = await db
-      .from("produtos")
-      .select(`
-        id,
-        nome,
-        marca,
-        preco,
-        preco_promocional,
-        ativo,
-        fornecedor_id,
-        fornecedores (
-          id,
-          nome,
-          cep
-        )
-      `)
-      .eq("id", produtoId)
-      .eq("ativo", true)
-      .single();
-
-    if (
-      produtoError ||
-      !produto
-    ) {
-
-      console.error(
-        produtoError
-      );
-
-      return json(
-        {
-          error:
-            "Produto não encontrado.",
-        },
-        404
-      );
-    }
-
-    const fornecedor: any =
-      produto.fornecedores;
-
-    if (!fornecedor) {
-      return json(
-        {
-          error:
-            "Este produto ainda não possui fornecedor cadastrado.",
-        },
-        400
-      );
-    }
-
-    const cepOrigem =
-      String(
-        fornecedor.cep || ""
-      )
-        .replace(/\D/g, "");
-
-    if (cepOrigem.length !== 8) {
-      return json(
-        {
-          error:
-            "O CEP do fornecedor é inválido.",
-        },
-        400
-      );
-    }
-
-    const precoProduto =
-      Number(
-        produto.preco_promocional ||
-        produto.preco
-      );
-
-    if (
-      !Number.isFinite(
-        precoProduto
-      ) ||
-      precoProduto <= 0
-    ) {
-      return json(
-        {
-          error:
-            "Preço do produto inválido.",
-        },
-        400
-      );
-    }
-
-    /*
-      COTAÇÃO FRENET
-
-      PADRÃO DOS TÊNIS:
-      10 × 20 × 30 cm
-      800 g
-    */
-
-    const frenetPayload = {
-
-      SellerCEP:
-        cepOrigem,
-
-      RecipientCEP:
-        cepDestino,
-
-      ShipmentInvoiceValue:
-        precoProduto *
-        quantidade,
-
-      ShippingItemArray: [
-        {
-          Height: 10,
-
-          Width: 20,
-
-          Length: 30,
-
-          Weight: 0.8,
-
-          Quantity:
-            quantidade,
-
-          SKU:
-            String(produto.id),
-        },
-      ],
-    };
-
-    const frenetResponse =
-      await fetch(
-        "https://api.frenet.com.br/shipping/quote",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-
-            token:
-              FRENET_TOKEN,
-          },
-
-          body:
-            JSON.stringify(
-              frenetPayload
-            ),
-        }
-      );
-
-    const frenetData =
-      await frenetResponse.json();
-
-    if (!frenetResponse.ok) {
-
-      console.error(
-        "Erro Frenet:",
-        frenetData
-      );
-
-      return json(
-        {
-          error:
-            frenetData?.Message ||
-            frenetData?.message ||
-            "Não foi possível calcular o frete.",
-        },
-        frenetResponse.status
-      );
-    }
-
-    const servicos =
-      frenetData
-        .ShippingSevicesArray ||
-
-      frenetData
-        .ShippingServicesArray ||
-
-      [];
-
-    /*
-      LIMPA A RESPOSTA PARA O SITE
-    */
-
-    const opcoes =
-      servicos
-        .filter(
-          (item: any) => {
-
-            const preco =
-              Number(
-                item.ShippingPrice ||
-                0
-              );
-
-            return (
-              !item.Error &&
-              Number.isFinite(preco) &&
-              preco >= 0
-            );
-          }
-        )
-        .map(
-          (item: any) => ({
-
-            codigo:
-              String(
-                item.ServiceCode ||
-                item.ShippingServiceCode ||
-                ""
-              ),
-
-            servico:
-              item.ServiceDescription ||
-              item.ShippingServiceName ||
-              "Entrega",
-
-            transportadora:
-              item.Carrier ||
-              item.CarrierName ||
-              "",
-
-            /*
-              Esse é o custo REAL
-              que você terá na Frenet.
-            */
-            preco:
-              Number(
-                item.ShippingPrice ||
-                0
-              ),
-
-            /*
-              Para o consumidor:
-              frete é GRÁTIS.
-            */
-            preco_cliente:
-              0,
-
-            gratis:
-              true,
-
-            prazo:
-              Number(
-                item.DeliveryTime ||
-                0
-              ),
-          })
-        );
-
-    if (!opcoes.length) {
-      return json(
-        {
-          error:
-            "Nenhuma opção de entrega disponível para este CEP.",
-        },
-        404
-      );
-    }
-
-    return json({
-
-      success: true,
-
-      frete_gratis:
-        true,
-
-      fornecedor:
-        fornecedor.nome,
-
-      cep_origem:
-        cepOrigem,
-
-      cep_destino:
-        cepDestino,
-
-      opcoes,
-    });
-
-  } catch (error) {
-
-    console.error(error);
-
-    return json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Erro interno ao calcular frete.",
-      },
-      500
-    );
-  }
+const WHATSAPP =
+"5561996223295";
+
+let produtoAtual = null;
+let tamanhoSelecionado = null;
+let freteSelecionado = null;
+let cepCalculado = "";
+let opcoesFrete = [];
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const productId =
+params.get("id");
+
+
+function money(value){
+
+return Number(
+value || 0
+)
+.toLocaleString(
+"pt-BR",
+{
+style:"currency",
+currency:"BRL"
+}
+);
+
+}
+
+
+async function carregarProduto(){
+
+const {
+data,
+error
+} = await db
+.from("produtos")
+.select("*")
+.eq("id",productId)
+.eq("ativo",true)
+.single();
+
+if(error || !data){
+
+document
+.getElementById("productContainer")
+.innerHTML =
+"<div style='padding:100px;text-align:center;'>Produto não encontrado.</div>";
+
+return;
+
+}
+
+produtoAtual = data;
+
+renderProduto();
+
+carregarRecomendados();
+
+}
+
+
+function getImages(){
+
+let extras = [];
+
+try{
+
+extras =
+produtoAtual.imagens
+?
+JSON.parse(
+produtoAtual.imagens
+)
+:
+[];
+
+}catch{
+
+extras = [];
+
+}
+
+return [
+produtoAtual.imagem_principal,
+...extras
+].filter(Boolean);
+
+}
+
+
+function renderProduto(){
+
+const imagens =
+getImages();
+
+const preco =
+Number(
+produtoAtual.preco || 0
+);
+
+const promo =
+produtoAtual.preco_promocional
+?
+Number(
+produtoAtual.preco_promocional
+)
+:
+null;
+
+const final =
+promo || preco;
+
+const tamanhos =
+String(
+produtoAtual.tamanhos || ""
+)
+.split(",")
+.map(x=>x.trim())
+.filter(Boolean);
+
+let priceHTML =
+money(final);
+
+if(
+promo &&
+promo < preco
+){
+
+priceHTML = `
+
+<span class="old-price">
+${money(preco)}
+</span>
+
+${money(promo)}
+
+${
+produtoAtual.desconto
+?
+`
+<span class="discount">
+${produtoAtual.desconto}% OFF
+</span>
+`
+:
+""
+}
+
+`;
+
+}
+
+
+document
+.getElementById("productContainer")
+.innerHTML = `
+
+<section class="product-page">
+
+<div class="gallery">
+
+<div class="thumbs">
+
+${imagens.map(
+(img,index)=>`
+
+<img
+class="thumb ${index===0?"active":""}"
+src="${img}"
+onclick="trocarImagem(this)"
+>
+
+`
+).join("")}
+
+</div>
+
+<img
+class="main-image"
+id="mainImage"
+src="${imagens[0] || ""}"
+>
+
+</div>
+
+
+<div class="info">
+
+<div class="brand">
+${produtoAtual.marca || ""}
+</div>
+
+<h1>
+${produtoAtual.nome || ""}
+</h1>
+
+<div class="price">
+${priceHTML}
+</div>
+
+${
+produtoAtual.parcelamento
+?
+`
+<div class="installments">
+${produtoAtual.parcelamento}
+</div>
+`
+:
+""
+}
+
+${
+tamanhos.length
+?
+`
+
+<div class="size-title">
+ESCOLHA O TAMANHO
+</div>
+
+<div class="sizes">
+
+${tamanhos.map(
+tamanho=>`
+
+<button
+class="size"
+onclick="selecionarTamanho(this,'${tamanho}')"
+>
+${tamanho}
+</button>
+
+`
+).join("")}
+
+</div>
+
+`
+:
+""
+}
+
+
+<div class="shipping-box">
+
+<div class="free-shipping-badge">
+✓ FRETE GRÁTIS PARA TODO O BRASIL
+</div>
+
+<div class="shipping-title">
+CALCULAR PRAZO DE ENTREGA
+</div>
+
+<div class="cep-row">
+
+<input
+id="cepInput"
+placeholder="Digite seu CEP"
+maxlength="9"
+>
+
+<button
+class="calculate-button"
+onclick="calcularFrete()"
+>
+CALCULAR
+</button>
+
+</div>
+
+<div
+id="shippingMessage"
+class="shipping-message"
+>
+Informe seu CEP para consultar as opções de entrega.
+</div>
+
+<div
+id="shippingOptions"
+class="shipping-options"
+></div>
+
+</div>
+
+
+<div class="summary">
+
+<div class="summary-row">
+
+<span>
+Produto
+</span>
+
+<span>
+${money(final)}
+</span>
+
+</div>
+
+<div class="summary-row">
+
+<span>
+Frete
+</span>
+
+<div
+class="summary-shipping"
+id="summaryShipping"
+>
+
+<span class="summary-free">
+GRÁTIS
+</span>
+
+</div>
+
+</div>
+
+<div class="summary-total">
+
+<span>
+Total
+</span>
+
+<span>
+${money(final)}
+</span>
+
+</div>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+class="btn btn-cart"
+onclick="adicionarSacola()"
+>
+ADICIONAR À SACOLA
+</button>
+
+<button
+class="btn btn-checkout"
+onclick="comprarAgora()"
+>
+COMPRAR AGORA →
+</button>
+
+<button
+class="btn btn-whatsapp"
+onclick="comprarWhatsApp()"
+>
+COMPRAR PELO WHATSAPP
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+`;
+
+
+document
+.getElementById("description")
+.textContent =
+produtoAtual.descricao ||
+"Consulte as informações deste produto com nosso atendimento.";
+
+document
+.getElementById("productDetails")
+.style.display =
+"block";
+
+
+const cepInput =
+document
+.getElementById("cepInput");
+
+cepInput.addEventListener(
+"input",
+e=>{
+
+let valor =
+e.target.value
+.replace(/\D/g,"")
+.slice(0,8);
+
+if(valor.length > 5){
+
+valor =
+valor.slice(0,5)
++
+"-"
++
+valor.slice(5);
+
+}
+
+e.target.value =
+valor;
+
+}
+);
+
+}
+
+
+function trocarImagem(el){
+
+document
+.getElementById("mainImage")
+.src =
+el.src;
+
+document
+.querySelectorAll(".thumb")
+.forEach(
+thumb=>
+thumb.classList.remove("active")
+);
+
+el.classList.add("active");
+
+}
+
+
+function selecionarTamanho(
+botao,
+tamanho
+){
+
+tamanhoSelecionado =
+tamanho;
+
+document
+.querySelectorAll(".size")
+.forEach(
+item=>
+item.classList.remove("selected")
+);
+
+botao.classList.add("selected");
+
+}
+
+
+async function calcularFrete(){
+
+const input =
+document.getElementById(
+"cepInput"
+);
+
+const message =
+document.getElementById(
+"shippingMessage"
+);
+
+const options =
+document.getElementById(
+"shippingOptions"
+);
+
+const cep =
+input.value
+.replace(/\D/g,"");
+
+freteSelecionado = null;
+opcoesFrete = [];
+
+if(cep.length !== 8){
+
+message.textContent =
+"Digite um CEP válido.";
+
+options.innerHTML =
+"";
+
+return;
+
+}
+
+message.textContent =
+"Consultando prazo e entrega...";
+
+options.innerHTML =
+"";
+
+try{
+
+const response =
+await fetch(
+
+`${SUPABASE_URL}/functions/v1/calcular-frete`,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":
+"application/json",
+
+"apikey":
+SUPABASE_KEY
+
+},
+
+body:
+JSON.stringify({
+
+produto_id:
+produtoAtual.id,
+
+cep,
+
+quantidade:
+1
+
+})
+
+}
+
+);
+
+const data =
+await response.json();
+
+if(!response.ok){
+
+throw new Error(
+data.error ||
+"Não foi possível calcular o frete."
+);
+
+}
+
+if(
+!data.opcoes ||
+!data.opcoes.length
+){
+
+throw new Error(
+"Nenhuma opção de entrega disponível."
+);
+
+}
+
+cepCalculado =
+cep;
+
+opcoesFrete =
+data.opcoes;
+
+message.textContent =
+"Escolha a forma de entrega:";
+
+options.innerHTML =
+
+opcoesFrete.map(
+(opcao,index)=>`
+
+<div
+class="shipping-option"
+onclick="selecionarFrete(${index},this)"
+>
+
+<div class="shipping-radio"></div>
+
+<div class="shipping-content">
+
+<div class="shipping-service">
+
+${
+opcao.transportadora
+?
+opcao.transportadora + " - "
+:
+""
+}
+
+${opcao.servico}
+
+</div>
+
+<div class="shipping-deadline">
+
+${
+Number(opcao.prazo) > 0
+?
+`Entrega estimada em até ${opcao.prazo} dia(s) úteis`
+:
+"Prazo informado pela transportadora"
+}
+
+</div>
+
+</div>
+
+<div class="shipping-price-box">
+
+<div class="shipping-old-price">
+${money(opcao.preco)}
+</div>
+
+<div class="shipping-free">
+GRÁTIS
+</div>
+
+</div>
+
+</div>
+
+`
+).join("");
+
+}catch(error){
+
+console.error(error);
+
+message.textContent =
+error.message;
+
+options.innerHTML =
+"";
+
+}
+
+}
+
+
+function selecionarFrete(
+index,
+elemento
+){
+
+freteSelecionado =
+opcoesFrete[index];
+
+document
+.querySelectorAll(
+".shipping-option"
+)
+.forEach(
+item=>
+item.classList.remove(
+"selected"
+)
+);
+
+elemento
+.classList
+.add(
+"selected"
+);
+
+const summary =
+document
+.getElementById(
+"summaryShipping"
+);
+
+summary.innerHTML = `
+
+<span class="summary-old-shipping">
+
+${money(
+freteSelecionado.preco
+)}
+
+</span>
+
+<span class="summary-free">
+GRÁTIS
+</span>
+
+`;
+
+}
+
+
+function validarCompra(){
+
+const possuiTamanho =
+String(
+produtoAtual.tamanhos ||
+""
+)
+.trim();
+
+if(
+possuiTamanho &&
+!tamanhoSelecionado
+){
+
+alert(
+"Escolha um tamanho."
+);
+
+return false;
+
+}
+
+if(!cepCalculado){
+
+alert(
+"Informe seu CEP antes de continuar."
+);
+
+return false;
+
+}
+
+if(!freteSelecionado){
+
+alert(
+"Escolha uma forma de entrega."
+);
+
+return false;
+
+}
+
+return true;
+
+}
+
+
+async function comprarAgora(){
+
+if(!validarCompra()){
+return;
+}
+
+try{
+
+const response =
+await fetch(
+
+`${SUPABASE_URL}/functions/v1/criar-checkout`,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":
+"application/json",
+
+"apikey":
+SUPABASE_KEY
+
+},
+
+body:
+JSON.stringify({
+
+produto_id:
+produtoAtual.id,
+
+tamanho:
+tamanhoSelecionado,
+
+quantidade:
+1,
+
+cep:
+cepCalculado,
+
+servico_frete:
+freteSelecionado.codigo
+
+})
+
+}
+
+);
+
+const data =
+await response.json();
+
+if(!response.ok){
+
+throw new Error(
+data.error ||
+"Erro ao gerar checkout."
+);
+
+}
+
+if(!data.url){
+
+throw new Error(
+"Checkout não retornado."
+);
+
+}
+
+window.location.href =
+data.url;
+
+}catch(error){
+
+console.error(error);
+
+alert(
+error.message
+);
+
+}
+
+}
+
+
+function comprarWhatsApp(){
+
+const preco =
+produtoAtual.preco_promocional ||
+produtoAtual.preco;
+
+let texto =
+
+`Olá! Tenho interesse neste produto da UrbanStep:
+
+${produtoAtual.marca} ${produtoAtual.nome}
+
+Tamanho: ${tamanhoSelecionado || "Não informado"}
+
+Produto: ${money(preco)}
+
+Frete: GRÁTIS`;
+
+if(freteSelecionado){
+
+texto += `
+
+Forma de entrega: ${freteSelecionado.servico}
+
+Prazo estimado: ${freteSelecionado.prazo} dia(s) úteis`;
+
+}
+
+window.open(
+
+`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`,
+
+"_blank"
+
+);
+
+}
+
+
+function adicionarSacola(){
+
+const cart =
+JSON.parse(
+localStorage.getItem(
+"urbanstep_cart"
+) || "[]"
+);
+
+cart.push({
+
+id:
+produtoAtual.id,
+
+nome:
+produtoAtual.nome,
+
+marca:
+produtoAtual.marca,
+
+imagem:
+produtoAtual.imagem_principal,
+
+preco:
+Number(
+produtoAtual.preco_promocional ||
+produtoAtual.preco
+),
+
+tamanho:
+tamanhoSelecionado,
+
+fornecedor_id:
+produtoAtual.fornecedor_id,
+
+quantidade:
+1
 
 });
+
+localStorage.setItem(
+
+"urbanstep_cart",
+
+JSON.stringify(
+cart
+)
+
+);
+
+alert(
+"Produto adicionado à sacola."
+);
+
+}
+
+
+async function carregarRecomendados(){
+
+const {
+data,
+error
+} = await db
+.from("produtos")
+.select(
+"id,nome,marca,preco,preco_promocional,imagem_principal"
+)
+.eq("ativo",true)
+.neq("id",productId)
+.order(
+"created_at",
+{
+ascending:false
+}
+)
+.limit(20);
+
+if(
+error ||
+!data ||
+!data.length
+){
+
+return;
+
+}
+
+document
+.getElementById(
+"recommendScroll"
+)
+.innerHTML =
+
+data.map(
+produto=>{
+
+const preco =
+produto.preco_promocional ||
+produto.preco;
+
+return `
+
+<div
+class="recommend-card"
+onclick="location.href='produto.html?id=${produto.id}'"
+>
+
+<img
+class="recommend-img"
+src="${produto.imagem_principal || ""}"
+>
+
+<div class="recommend-brand">
+${produto.marca || ""}
+</div>
+
+<div class="recommend-name">
+${produto.nome || ""}
+</div>
+
+<div class="recommend-price">
+${money(preco)}
+</div>
+
+</div>
+
+`;
+
+}
+).join("");
+
+document
+.getElementById(
+"recommendations"
+)
+.style.display =
+"block";
+
+}
+
+
+carregarProduto();
+
+</script>
+
+</body>
+</html>
