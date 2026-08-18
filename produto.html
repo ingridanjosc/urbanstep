@@ -78,6 +78,11 @@ button{
 cursor:pointer;
 }
 
+button:disabled{
+cursor:not-allowed;
+opacity:.65;
+}
+
 header{
 height:76px;
 padding:0 5%;
@@ -435,7 +440,7 @@ background:white;
 color:#08090b;
 }
 
-.btn-checkout:hover{
+.btn-checkout:hover:not(:disabled){
 background:var(--blue);
 color:white;
 }
@@ -628,7 +633,6 @@ class="back"
 
 </header>
 
-
 <main id="productContainer">
 
 <div
@@ -735,6 +739,9 @@ let cepCalculado =
 
 let opcoesFrete =
 [];
+
+let checkoutEmAndamento =
+false;
 
 const params =
 new URLSearchParams(
@@ -1132,6 +1139,7 @@ ADICIONAR À SACOLA
 
 <button
 class="btn btn-checkout"
+id="checkoutButton"
 onclick="comprarAgora()"
 >
 COMPRAR AGORA →
@@ -1793,7 +1801,20 @@ return true;
 }
 
 
+/* ===============================
+COMPRAR AGORA
+PROTEÇÃO CONTRA CLIQUE DUPLO
+=============================== */
+
 async function comprarAgora(){
+
+if(
+checkoutEmAndamento
+){
+
+return;
+
+}
 
 if(
 !validarCompra()
@@ -1802,6 +1823,21 @@ if(
 return;
 
 }
+
+const botao =
+document
+.getElementById(
+"checkoutButton"
+);
+
+checkoutEmAndamento =
+true;
+
+botao.disabled =
+true;
+
+botao.textContent =
+"PROCESSANDO...";
 
 try{
 
@@ -1872,6 +1908,9 @@ throw new Error(
 
 }
 
+botao.textContent =
+"REDIRECIONANDO...";
+
 window.location.href =
 data.url;
 
@@ -1884,6 +1923,15 @@ error
 alert(
 error.message
 );
+
+checkoutEmAndamento =
+false;
+
+botao.disabled =
+false;
+
+botao.textContent =
+"COMPRAR AGORA →";
 
 }
 
