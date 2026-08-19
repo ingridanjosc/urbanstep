@@ -259,13 +259,8 @@ input:focus,select:focus{border-color:var(--blue-light)}
         <div class="shipping-area">
           <div class="shipping-title">OPÇÕES DE FRETE</div>
           <div class="shipping-help">
-            Preencha o endereço e clique em CALCULAR FRETE. A primeira opção disponível fica grátis; as demais continuam disponíveis caso você prefira outra modalidade.
+            Ao informar um CEP válido, as opções de entrega serão calculadas automaticamente. A primeira opção disponível fica grátis; as demais continuam disponíveis caso você prefira outra modalidade.
           </div>
-
-          <button class="secondary" style="width:100%" onclick="calcularFreteCarrinho()">
-            CALCULAR FRETE
-          </button>
-
           <div id="shippingList" class="shipping-list"></div>
         </div>
 
@@ -759,6 +754,8 @@ function formatCep(v){
   return c.length > 5 ? c.slice(0,5) + "-" + c.slice(5) : c;
 }
 
+let cepTimer = null;
+
 document.getElementById("cep").addEventListener("input",e=>{
   e.target.value = formatCep(e.target.value);
 
@@ -767,6 +764,21 @@ document.getElementById("cep").addEventListener("input",e=>{
   opcoesFrete = [];
   document.getElementById("shippingList").innerHTML = "";
   atualizarTotais();
+
+  clearTimeout(cepTimer);
+
+  const cepLimpo = e.target.value.replace(/\D/g,"");
+
+  if(cepLimpo.length === 8){
+
+    document.getElementById("shippingList").innerHTML =
+      `<div class="shipping-loading">Calculando opções de entrega...</div>`;
+
+    // Pequena espera para evitar várias chamadas enquanto a pessoa digita.
+    cepTimer = setTimeout(()=>{
+      calcularFreteCarrinho();
+    },500);
+  }
 });
 
 async function finalizarPagamento(){
