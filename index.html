@@ -48,6 +48,7 @@ body {
     color: var(--text);
     font-family: "Inter", sans-serif;
     overflow-x: hidden;
+    transition: background .3s ease, color .3s ease;
 }
 
 a {
@@ -288,11 +289,25 @@ button {
         linear-gradient(
             90deg,
             rgba(5,6,8,.98) 0%,
-            rgba(5,6,8,.84) 42%,
-            rgba(5,6,8,.3) 100%
+            rgba(5,6,8,.90) 38%,
+            rgba(5,6,8,.34) 70%,
+            rgba(5,6,8,.12) 100%
         ),
-        url("https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1800&q=90")
-        center / cover no-repeat;
+        url("https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1800&q=92")
+        center 58% / cover no-repeat;
+
+    isolation: isolate;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        radial-gradient(circle at 78% 45%, rgba(57,112,180,.20), transparent 29%),
+        linear-gradient(180deg, transparent 65%, rgba(7,8,10,.35));
 }
 
 .hero-content {
@@ -771,12 +786,23 @@ button {
     border-radius: 23px;
 
     background:
-        radial-gradient(
-            circle at 75% 50%,
-            rgba(35,79,135,.22),
-            transparent 36%
+        linear-gradient(
+            90deg,
+            rgba(16,18,23,.98) 0%,
+            rgba(16,18,23,.94) 44%,
+            rgba(16,18,23,.50) 68%,
+            rgba(16,18,23,.20) 100%
         ),
-        #101217;
+        radial-gradient(
+            circle at 78% 50%,
+            rgba(57,112,180,.28),
+            transparent 34%
+        ),
+        url("https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1600&q=88")
+        72% 58% / cover no-repeat;
+
+    position: relative;
+    overflow: hidden;
 
     display: flex;
     align-items: center;
@@ -784,6 +810,11 @@ button {
     justify-content: space-between;
 
     gap: 30px;
+}
+
+.offer > * {
+    position: relative;
+    z-index: 2;
 }
 
 .offer-label {
@@ -1197,6 +1228,38 @@ footer {
 
 }
 
+
+/* CARRINHO + TEMA */
+.cart-button{position:relative}
+.cart-count{position:absolute;top:1px;right:0;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--blue-light);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);line-height:1}
+.cart-count:empty,.cart-count[data-count="0"]{display:none}
+body,.header,.search-inner,.product-image,.offer,footer,.icon-button,.main-button,.offer-button{transition:background-color .25s,color .25s,border-color .25s}
+body.light-theme{--bg:#f6f7f9;--bg-soft:#eef1f5;--card:#ffffff;--text:#111318;--muted:#646b76;--line:#dfe3e8}
+body.light-theme .header{background:rgba(255,255,255,.94);border-bottom-color:rgba(0,0,0,.08)}
+body.light-theme .logo{color:#111318}
+body.light-theme .nav a{color:#4d535c}
+body.light-theme .icon-button{color:#20242a}
+body.light-theme .search-inner{background:#fff;border-color:#d9dee5;box-shadow:0 15px 45px rgba(0,0,0,.12)}
+body.light-theme .search-inner input{color:#111318}
+body.light-theme .hero{background:linear-gradient(90deg,rgba(5,6,8,.98) 0%,rgba(5,6,8,.90) 38%,rgba(5,6,8,.34) 70%,rgba(5,6,8,.12) 100%),url("https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1800&q=92") center 58%/cover no-repeat}
+body.light-theme .hero::after{background:radial-gradient(circle at 78% 45%,rgba(57,112,180,.20),transparent 29%),linear-gradient(180deg,transparent 65%,rgba(7,8,10,.35))}
+body.light-theme .hero h1{color:#fff}
+body.light-theme .main-button{background:#fff;color:#111}
+body.light-theme .main-button:hover{background:#e9edf2}
+body.light-theme .hero-description{color:#a5a9b0}
+body.light-theme .hero-label{color:#777d87}
+body.light-theme .product-image{background:#e9edf2}
+body.light-theme .product-name{color:#15181d}
+body.light-theme .product-brand,body.light-theme .product-installments{color:#68707b}
+body.light-theme .view-all{color:#333942}
+body.light-theme .offer{background:linear-gradient(90deg,rgba(16,18,23,.98) 0%,rgba(16,18,23,.94) 44%,rgba(16,18,23,.50) 68%,rgba(16,18,23,.20) 100%),radial-gradient(circle at 78% 50%,rgba(57,112,180,.28),transparent 34%),url("https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1600&q=88") 72% 58%/cover no-repeat;border-color:#262b34;box-shadow:none}
+body.light-theme .offer h2,body.light-theme .offer-discount{color:#fff}
+body.light-theme .offer-button{background:#fff;color:#111}
+body.light-theme .offer-button:hover{background:#e9edf2}
+body.light-theme footer{background:#fff}
+body.light-theme .footer-description,body.light-theme .footer-links a{color:#626a75}
+body.light-theme .cart-count{border-color:#fff}
+
 </style>
 </head>
 
@@ -1306,6 +1369,14 @@ footer {
     </div>
 
 
+    <!-- TEMA CLARO / ESCURO -->
+    <button class="icon-button" id="themeToggle" type="button" aria-label="Alternar tema" title="Alternar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="1.7">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
+        </svg>
+    </button>
+
     <!-- CONTA -->
 
     <a
@@ -1338,8 +1409,8 @@ footer {
     <!-- SACOLA -->
 
     <a
-        class="icon-button"
-        href="javascript:void(0)"
+        class="icon-button cart-button"
+        href="carrinho.html"
         aria-label="Sacola"
     >
 
@@ -1358,6 +1429,7 @@ footer {
             ></path>
 
         </svg>
+        <span class="cart-count" id="cartCount" data-count="0"></span>
 
     </a>
 
@@ -2726,6 +2798,50 @@ function escapeHTML(value) {
     );
 
 }
+
+
+
+
+/* ===================================
+   TEMA + CONTADOR DA SACOLA
+=================================== */
+const CART_KEY = "urbanstep_cart";
+const themeToggle = document.getElementById("themeToggle");
+
+function aplicarTema(tema){
+    const claro = tema === "light";
+    document.body.classList.toggle("light-theme", claro);
+    localStorage.setItem("urbanstep_theme", claro ? "light" : "dark");
+    if(themeToggle){
+        themeToggle.setAttribute("aria-label", claro ? "Ativar modo escuro" : "Ativar modo claro");
+        themeToggle.setAttribute("title", claro ? "Modo escuro" : "Modo claro");
+    }
+}
+
+const temaSalvo = localStorage.getItem("urbanstep_theme");
+aplicarTema(temaSalvo === "light" ? "light" : "dark");
+
+if(themeToggle){
+    themeToggle.addEventListener("click", () => {
+        aplicarTema(document.body.classList.contains("light-theme") ? "dark" : "light");
+    });
+}
+
+function atualizarContadorSacola(){
+    const badge = document.getElementById("cartCount");
+    if(!badge) return;
+    let itens = [];
+    try{ itens = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }catch(e){ itens = []; }
+    if(!Array.isArray(itens)) itens = [];
+    const total = itens.reduce((soma,item) => soma + Number(item.quantidade || 1), 0);
+    badge.dataset.count = String(total);
+    badge.textContent = total > 99 ? "99+" : (total ? String(total) : "");
+}
+
+atualizarContadorSacola();
+window.addEventListener("storage", atualizarContadorSacola);
+window.addEventListener("focus", atualizarContadorSacola);
+document.addEventListener("visibilitychange", () => { if(!document.hidden) atualizarContadorSacola(); });
 
 
 /* ===================================
