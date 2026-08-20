@@ -609,6 +609,175 @@ min-width:65px;
 
 }
 
+
+/* ===== TEMA + SACOLA URBANSTEP ===== */
+.header-tools{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.theme-toggle,
+.cart-top{
+  position:relative;
+  width:42px;
+  height:42px;
+  border:1px solid #292e36;
+  border-radius:50%;
+  background:#111419;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  text-decoration:none;
+  transition:.2s ease;
+}
+
+.theme-toggle:hover,
+.cart-top:hover{
+  border-color:var(--blue-light);
+  color:var(--blue-light);
+}
+
+.cart-count{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:var(--blue-light);
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+body.light-theme{
+  --bg:#f5f6f8;
+  --card:#ffffff;
+  --text:#111318;
+  --muted:#6d7480;
+  --line:#dfe3e8;
+  background:#f5f6f8;
+  color:#111318;
+}
+
+body.light-theme header{
+  background:rgba(255,255,255,.96);
+  border-bottom-color:#dfe3e8;
+}
+
+body.light-theme .logo{
+  color:#111318;
+}
+
+body.light-theme .back{
+  color:#666d77;
+}
+
+body.light-theme .theme-toggle,
+body.light-theme .cart-top{
+  background:#fff;
+  color:#111318;
+  border-color:#d7dce3;
+}
+
+body.light-theme .main-image{
+  background:#eceff3;
+}
+
+body.light-theme .thumb{
+  border-color:#dfe3e8;
+}
+
+body.light-theme .size{
+  background:#fff;
+  color:#111318;
+  border-color:#d7dce3;
+}
+
+body.light-theme .shipping-box{
+  background:#fff;
+  border-color:#dfe3e8;
+}
+
+body.light-theme .cep-row input{
+  background:#fff;
+  color:#111318;
+  border-color:#d7dce3;
+}
+
+body.light-theme .shipping-option{
+  background:#f7f8fa;
+  border-color:#dfe3e8;
+}
+
+body.light-theme .shipping-option.selected{
+  background:rgba(35,79,135,.08);
+}
+
+body.light-theme .shipping-paid{
+  color:#111318;
+}
+
+body.light-theme .summary{
+  border-top-color:#dfe3e8;
+}
+
+body.light-theme .summary-total{
+  border-top-color:#dfe3e8;
+}
+
+body.light-theme .btn-checkout{
+  background:#111318;
+  color:#fff;
+}
+
+body.light-theme .btn-checkout:hover:not(:disabled){
+  background:var(--blue);
+}
+
+body.light-theme .detail-box{
+  border-top-color:#dfe3e8;
+}
+
+body.light-theme .detail-box p,
+body.light-theme .installments,
+body.light-theme .shipping-message,
+body.light-theme .summary-row,
+body.light-theme .shipping-deadline,
+body.light-theme .recommend-brand{
+  color:#6d7480;
+}
+
+body.light-theme .recommend-name,
+body.light-theme .recommend-price,
+body.light-theme h1,
+body.light-theme .price,
+body.light-theme .size-title,
+body.light-theme .shipping-title,
+body.light-theme .detail-box h2,
+body.light-theme .recommend-title{
+  color:#111318;
+}
+
+@media(max-width:500px){
+  .theme-toggle,
+  .cart-top{
+    width:38px;
+    height:38px;
+  }
+
+  .header-tools{
+    gap:7px;
+  }
+}
+
 </style>
 
 </head>
@@ -624,12 +793,36 @@ class="logo"
 URBANSTEP<span>.</span>
 </a>
 
+<div class="header-tools">
+
 <a
 href="index.html#catalogo"
 class="back"
 >
 ← VOLTAR AO CATÁLOGO
 </a>
+
+<button
+class="theme-toggle"
+id="themeToggle"
+type="button"
+aria-label="Alternar tema"
+title="Alternar tema"
+>
+<span id="themeIcon">☾</span>
+</button>
+
+<a
+href="carrinho.html"
+class="cart-top"
+aria-label="Abrir sacola"
+title="Sacola"
+>
+<span style="font-size:18px">🛍</span>
+<span class="cart-count" id="cartCount">0</span>
+</a>
+
+</div>
 
 </header>
 
@@ -1832,6 +2025,7 @@ if(existente){
 }
 
 localStorage.setItem("urbanstep_cart", JSON.stringify(cart));
+atualizarContadorUrbanStep();
 window.location.href = "carrinho.html";
 }
 
@@ -2011,6 +2205,199 @@ document
 "block";
 
 }
+
+
+
+/* ===================================
+   TEMA + CONTADOR DA SACOLA
+=================================== */
+
+const URBANSTEP_THEME_KEY =
+"urbanstep_theme";
+
+const URBANSTEP_CART_KEY =
+"urbanstep_cart";
+
+
+function aplicarTemaUrbanStep(
+tema
+){
+
+const claro =
+tema === "light";
+
+document
+.body
+.classList
+.toggle(
+"light-theme",
+claro
+);
+
+const icon =
+document
+.getElementById(
+"themeIcon"
+);
+
+if(icon){
+
+icon.textContent =
+claro
+?
+"☀"
+:
+"☾";
+
+}
+
+localStorage
+.setItem(
+URBANSTEP_THEME_KEY,
+claro
+?
+"light"
+:
+"dark"
+);
+
+}
+
+
+function alternarTemaUrbanStep(){
+
+const claroAgora =
+document
+.body
+.classList
+.contains(
+"light-theme"
+);
+
+aplicarTemaUrbanStep(
+claroAgora
+?
+"dark"
+:
+"light"
+);
+
+}
+
+
+function atualizarContadorUrbanStep(){
+
+let quantidade =
+0;
+
+try{
+
+const carrinho =
+JSON.parse(
+localStorage
+.getItem(
+URBANSTEP_CART_KEY
+)
+||
+"[]"
+);
+
+if(
+Array.isArray(
+carrinho
+)
+){
+
+quantidade =
+carrinho
+.reduce(
+(
+total,
+item
+) =>
+total +
+Math.max(
+1,
+Number(
+item.quantidade ||
+1
+)
+),
+0
+);
+
+}
+
+}catch{}
+
+const contador =
+document
+.getElementById(
+"cartCount"
+);
+
+if(contador){
+
+contador.textContent =
+quantidade;
+
+contador.style.display =
+quantidade > 0
+?
+"flex"
+:
+"none";
+
+}
+
+}
+
+
+(function iniciarPreferenciasUrbanStep(){
+
+const temaSalvo =
+localStorage
+.getItem(
+URBANSTEP_THEME_KEY
+)
+||
+"dark";
+
+aplicarTemaUrbanStep(
+temaSalvo
+);
+
+atualizarContadorUrbanStep();
+
+const botaoTema =
+document
+.getElementById(
+"themeToggle"
+);
+
+if(botaoTema){
+
+botaoTema
+.addEventListener(
+"click",
+alternarTemaUrbanStep
+);
+
+}
+
+window
+.addEventListener(
+"storage",
+atualizarContadorUrbanStep
+);
+
+window
+.addEventListener(
+"focus",
+atualizarContadorUrbanStep
+);
+
+})();
 
 
 carregarProduto();
