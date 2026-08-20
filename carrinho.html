@@ -127,13 +127,44 @@ input:focus,select:focus{border-color:var(--blue-light)}
   .item img{width:78px;height:96px}.item-total{grid-column:2}.form-grid{grid-template-columns:1fr}
   .full{grid-column:auto}.actions{flex-direction:column}
 }
+
+/* ===== TEMA URBANSTEP ===== */
+.theme-toggle{width:42px;height:42px;border:1px solid #292e36;border-radius:50%;background:#111419;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s ease}
+.theme-toggle:hover{border-color:var(--blue-light);color:var(--blue-light)}
+.header-right{display:flex;align-items:center;gap:12px}
+body.light-theme{--bg:#f5f6f8;--text:#111318;--muted:#6d7480;--line:#dfe3e8;background:#f5f6f8;color:#111318}
+body.light-theme header{background:rgba(255,255,255,.97);border-bottom-color:#dfe3e8}
+body.light-theme .logo,body.light-theme h1{color:#111318}
+body.light-theme .back{color:#626975}
+body.light-theme .theme-toggle{background:#fff;color:#111318;border-color:#d7dce3}
+body.light-theme .panel{background:#fff;border-color:#dfe3e8}
+body.light-theme .step{border-color:#d7dce3;color:#747b85}
+body.light-theme .step.active{color:#111318;background:rgba(35,79,135,.09)}
+body.light-theme .item{border-bottom-color:#e1e4e8}
+body.light-theme .item img{background:#eef0f3}
+body.light-theme .item-name,body.light-theme .item-price,body.light-theme .item-total,body.light-theme .panel-title,body.light-theme .shipping-title,body.light-theme .shipping-name,body.light-theme .paid,body.light-theme .summary-total,body.light-theme .review{color:#111318}
+body.light-theme .item-meta,body.light-theme .summary-row,body.light-theme label,body.light-theme .shipping-help,body.light-theme .shipping-deadline,body.light-theme .shipping-loading,body.light-theme .checkout-message{color:#6d7480}
+body.light-theme .qty{border-color:#d7dce3}
+body.light-theme .qty button{background:#f1f3f5;color:#111318}
+body.light-theme .secondary{background:#fff;color:#111318;border-color:#d7dce3}
+body.light-theme input,body.light-theme select{background:#fff;color:#111318;border-color:#d7dce3}
+body.light-theme .shipping-area,body.light-theme .review-block{border-color:#e1e4e8}
+body.light-theme .shipping-option{background:#f7f8fa;border-color:#dfe3e8}
+body.light-theme .shipping-option.selected{background:rgba(35,79,135,.08)}
+body.light-theme .primary{background:#111318;color:#fff}
+body.light-theme .primary:hover:not(:disabled){background:var(--blue);color:#fff}
+@media(max-width:600px){.theme-toggle{width:38px;height:38px}.header-right{gap:8px}}
+
 </style>
 </head>
 
 <body>
 <header>
   <a href="index.html" class="logo">URBANSTEP<span>.</span></a>
-  <a href="index.html#catalogo" class="back">← CONTINUAR COMPRANDO</a>
+  <div class="header-right">
+<a href="index.html#catalogo" class="back">← CONTINUAR COMPRANDO</a>
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema" title="Alternar tema"><span id="themeIcon">☾</span></button>
+</div>
 </header>
 
 <main>
@@ -841,6 +872,29 @@ async function finalizarPagamento(){
     msg.textContent = error.message;
   }
 }
+
+
+/* ===== TEMA SINCRONIZADO ===== */
+const THEME_KEY = "urbanstep_theme";
+function aplicarTema(tema){
+  const claro = tema === "light";
+  document.body.classList.toggle("light-theme",claro);
+  const icon=document.getElementById("themeIcon");
+  if(icon) icon.textContent=claro?"☀":"☾";
+  localStorage.setItem(THEME_KEY,claro?"light":"dark");
+}
+function alternarTema(){
+  aplicarTema(document.body.classList.contains("light-theme")?"dark":"light");
+}
+(function iniciarTema(){
+  aplicarTema(localStorage.getItem(THEME_KEY)||"dark");
+  const btn=document.getElementById("themeToggle");
+  if(btn) btn.addEventListener("click",alternarTema);
+  window.addEventListener("storage",e=>{
+    if(e.key===THEME_KEY) aplicarTema(e.newValue||"dark");
+  });
+})();
+
 
 renderCart();
 </script>
