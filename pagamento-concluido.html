@@ -1,690 +1,317 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<title>
-Pagamento | URBANSTEP
-</title>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
-rel="stylesheet"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedido recebido | URBANSTEP</title>
+<meta name="robots" content="noindex,nofollow">
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+:root{
+  --bg:#07090c;--card:#101318;--text:#f5f7fa;--muted:#8e96a3;
+  --line:#242a33;--blue:#234f87;--blue-light:#3970b4;--green:#45c783;
 }
-
+*{box-sizing:border-box}
 body{
-
-min-height:100vh;
-
-background:#07080a;
-
-color:#fff;
-
-font-family:
-"Inter",
-sans-serif;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-padding:25px;
-
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 }
-
+header{
+  height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;
+  justify-content:space-between;padding:0 5%;background:rgba(7,9,12,.96)
+}
+.logo{font-size:22px;font-weight:900;letter-spacing:2px;color:#fff;text-decoration:none}
+.logo span{color:var(--blue-light)}
+.theme-toggle{
+  width:42px;height:42px;border:1px solid var(--line);border-radius:50%;
+  background:#111419;color:#fff;cursor:pointer;font-size:17px
+}
+main{
+  min-height:calc(100vh - 76px);display:flex;align-items:center;
+  justify-content:center;padding:42px 18px
+}
 .card{
-
-width:100%;
-
-max-width:560px;
-
-background:#0e1014;
-
-border:
-1px solid #22262d;
-
-border-radius:24px;
-
-padding:45px 35px;
-
-text-align:center;
-
+  width:min(680px,100%);background:var(--card);border:1px solid var(--line);
+  border-radius:18px;padding:42px;box-shadow:0 20px 70px rgba(0,0,0,.25)
 }
-
-.logo{
-
-font-family:
-"Barlow Condensed",
-sans-serif;
-
-font-size:29px;
-
-font-weight:900;
-
-margin-bottom:40px;
-
+.status-icon{
+  width:66px;height:66px;border-radius:50%;margin:0 auto 22px;
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  border:1px solid var(--line);background:#15191f
 }
-
-.logo span{
-
-color:#3970b4;
-
+h1{text-align:center;font-size:28px;margin:0 0 10px}
+.subtitle{text-align:center;color:var(--muted);line-height:1.6;margin:0 auto 30px;max-width:520px}
+.order-box{
+  border:1px solid var(--line);border-radius:12px;padding:20px;margin:24px 0
 }
-
-.icon{
-
-width:75px;
-
-height:75px;
-
-margin:
-0 auto 25px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:32px;
-
-background:
-rgba(57,112,180,.12);
-
-border:
-1px solid
-rgba(57,112,180,.4);
-
+.row{
+  display:flex;justify-content:space-between;gap:20px;padding:10px 0;
+  color:var(--muted);font-size:13px
 }
-
-h1{
-
-font-family:
-"Barlow Condensed",
-sans-serif;
-
-font-size:42px;
-
-text-transform:uppercase;
-
-margin-bottom:12px;
-
-}
-
-.message{
-
-font-size:13px;
-
-color:#949aa4;
-
-line-height:1.7;
-
-margin-bottom:25px;
-
-}
-
-.order{
-
-display:none;
-
-padding:17px;
-
-background:#15181e;
-
-border:
-1px solid #292e36;
-
-border-radius:14px;
-
-margin-bottom:25px;
-
-text-align:left;
-
-}
-
-.order-row{
-
-display:flex;
-
-justify-content:space-between;
-
-gap:15px;
-
-font-size:12px;
-
-padding:7px 0;
-
-}
-
-.order-row span:first-child{
-
-color:#858b95;
-
-}
-
-.status{
-
-font-weight:800;
-
-}
-
-.status.paid{
-
-color:#56db90;
-
-}
-
+.row strong{color:var(--text);text-align:right}
+.row.total{border-top:1px solid var(--line);margin-top:8px;padding-top:18px;font-size:16px}
+.actions{display:grid;gap:10px;margin-top:26px}
 .btn{
-
-display:block;
-
-width:100%;
-
-padding:16px;
-
-border-radius:999px;
-
-background:#fff;
-
-color:#08090b;
-
-font-size:11px;
-
-font-weight:800;
-
-text-decoration:none;
-
-margin-top:10px;
-
+  min-height:50px;border-radius:8px;border:1px solid var(--line);display:flex;
+  align-items:center;justify-content:center;text-decoration:none;font-size:12px;
+  font-weight:900;letter-spacing:.8px;cursor:pointer;padding:0 18px
 }
-
-.btn-secondary{
-
-background:#171a20;
-
-color:white;
-
-border:
-1px solid #30353d;
-
+.primary{background:#fff;color:#0b0d10;border-color:#fff}
+.secondary{background:transparent;color:var(--text)}
+.hidden{display:none!important}
+.loader{
+  width:28px;height:28px;border:3px solid #333b46;border-top-color:var(--blue-light);
+  border-radius:50%;animation:spin .8s linear infinite
 }
-
-.loading{
-
-width:28px;
-
-height:28px;
-
-margin:
-0 auto 25px;
-
-border:
-3px solid #333;
-
-border-top-color:#3970b4;
-
-border-radius:50%;
-
-animation:
-spin .8s linear infinite;
-
+@keyframes spin{to{transform:rotate(360deg)}}
+.notice{
+  background:rgba(57,112,180,.09);border:1px solid rgba(57,112,180,.28);
+  color:#aabbd1;padding:14px;border-radius:9px;font-size:12px;line-height:1.6;margin-top:18px
 }
-
-@keyframes spin{
-
-to{
-transform:
-rotate(360deg);
+.success .status-icon{color:var(--green);border-color:rgba(69,199,131,.35);background:rgba(69,199,131,.08)}
+.error .status-icon{color:#ff8080}
+body.light-theme{
+  --bg:#f5f6f8;--card:#fff;--text:#111318;--muted:#6d7480;--line:#dfe3e8;
+  background:var(--bg);color:var(--text)
 }
-
+body.light-theme header{background:rgba(255,255,255,.97)}
+body.light-theme .logo{color:#111318}
+body.light-theme .theme-toggle{background:#fff;color:#111318}
+body.light-theme .status-icon{background:#f4f6f8}
+body.light-theme .primary{background:#111318;color:#fff;border-color:#111318}
+@media(max-width:600px){
+  header{padding:0 18px}.card{padding:30px 20px}h1{font-size:23px}
+  .row{align-items:flex-start}.row strong{max-width:60%;overflow-wrap:anywhere}
 }
-
 </style>
-
 </head>
-
-
 <body>
+<header>
+  <a class="logo" href="index.html">URBANSTEP<span>.</span></a>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema">
+    <span id="themeIcon">☾</span>
+  </button>
+</header>
 
+<main>
+<section class="card" id="card">
+  <div class="status-icon" id="statusIcon"><div class="loader" id="loader"></div></div>
+  <h1 id="title">Confirmando seu pagamento...</h1>
+  <p class="subtitle" id="subtitle">
+    Estamos verificando a confirmação da InfinitePay. Não feche esta página por enquanto.
+  </p>
 
-<div class="card">
+  <div class="order-box hidden" id="orderBox">
+    <div class="row"><span>Pedido</span><strong id="orderNumber">—</strong></div>
+    <div class="row"><span>Status</span><strong id="orderStatus">—</strong></div>
+    <div class="row"><span>Pagamento</span><strong id="paymentMethod">—</strong></div>
+    <div class="row total"><span>Total</span><strong id="orderTotal">—</strong></div>
+  </div>
 
+  <div class="notice hidden" id="notice"></div>
 
-<div class="logo">
-
-URBANSTEP<span>.</span>
-
-</div>
-
-
-<div id="content">
-
-
-<div class="loading"></div>
-
-
-<h1>
-
-Confirmando pagamento
-
-</h1>
-
-
-<p class="message">
-
-Estamos verificando seu pagamento com segurança.
-
-</p>
-
-
-</div>
-
-
-<div
-class="order"
-id="orderBox"
->
-
-
-<div class="order-row">
-
-<span>
-Pedido
-</span>
-
-<strong id="orderNumber">
-—
-</strong>
-
-</div>
-
-
-<div class="order-row">
-
-<span>
-Status
-</span>
-
-<strong
-id="orderStatus"
-class="status"
->
-—
-</strong>
-
-</div>
-
-
-<div class="order-row">
-
-<span>
-Total
-</span>
-
-<strong id="orderTotal">
-—
-</strong>
-
-</div>
-
-
-</div>
-
-
-<a
-href="index.html"
-class="btn"
->
-
-VOLTAR PARA A LOJA
-
-</a>
-
-
-<a
-href="#"
-id="receiptButton"
-class="btn btn-secondary"
-target="_blank"
-style="display:none;"
->
-
-VER COMPROVANTE
-
-</a>
-
-
-</div>
-
+  <div class="actions hidden" id="actions">
+    <a class="btn primary" id="trackButton" href="minha-conta.html">ACOMPANHAR PEDIDO</a>
+    <a class="btn secondary hidden" id="receiptButton" target="_blank" rel="noopener noreferrer">VER COMPROVANTE</a>
+    <a class="btn secondary" href="index.html#catalogo">CONTINUAR COMPRANDO</a>
+  </div>
+</section>
+</main>
 
 <script>
+const SUPABASE_URL = "https://gpovidqzqgttitsgelzm.supabase.co";
+const CONSULTAR_URL = `${SUPABASE_URL}/functions/v1/consultar-pagamento`;
+const THEME_KEY = "urbanstep_theme";
+const CART_KEY = "urbanstep_cart";
 
-const SUPABASE_URL =
-"https://gpovidqzqgttitsgelzm.supabase.co";
+const params = new URLSearchParams(window.location.search);
 
+const dadosRetorno = {
+  order_nsu: params.get("order_nsu") || "",
+  transaction_nsu: params.get("transaction_nsu") || "",
+  slug: params.get("slug") || "",
+  capture_method: params.get("capture_method") || "",
+  receipt_url: params.get("receipt_url") || ""
+};
 
-const SUPABASE_KEY =
-"sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
+let tentativas = 0;
+const MAX_TENTATIVAS = 10;
+let finalizado = false;
 
-
-function money(value){
-
-return Number(
-value || 0
-)
-.toLocaleString(
-"pt-BR",
-{
-style:"currency",
-currency:"BRL"
-}
-);
-
-}
-
-
-async function confirmarPagamento(){
-
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-
-const orderNsu =
-params.get(
-"order_nsu"
-) || "";
-
-
-const transactionNsu =
-params.get(
-"transaction_nsu"
-) || "";
-
-
-const slug =
-params.get(
-"slug"
-) || "";
-
-
-const receiptUrl =
-params.get(
-"receipt_url"
-) || "";
-
-
-const content =
-document.getElementById(
-"content"
-);
-
-
-if(
-!orderNsu ||
-!transactionNsu ||
-!slug
-){
-
-content.innerHTML = `
-
-<div class="icon">
-!
-</div>
-
-<h1>
-Não foi possível confirmar
-</h1>
-
-<p class="message">
-
-Os dados do pagamento não foram encontrados.
-
-Se você realizou o pagamento, entre em contato com nosso atendimento.
-
-</p>
-
-`;
-
-return;
-
+function aplicarTema(tema){
+  const claro = tema === "light";
+  document.body.classList.toggle("light-theme",claro);
+  document.getElementById("themeIcon").textContent = claro ? "☀" : "☾";
+  localStorage.setItem(THEME_KEY,claro ? "light" : "dark");
 }
 
+document.getElementById("themeToggle").addEventListener("click",()=>{
+  aplicarTema(document.body.classList.contains("light-theme") ? "dark" : "light");
+});
 
-try{
+aplicarTema(localStorage.getItem(THEME_KEY) || "dark");
 
-
-const response =
-await fetch(
-
-`${SUPABASE_URL}/functions/v1/confirmar-pagamento`,
-
-{
-
-method:
-"POST",
-
-headers:{
-
-"Content-Type":
-"application/json",
-
-"apikey":
-SUPABASE_KEY
-
-},
-
-body:
-JSON.stringify({
-
-order_nsu:
-orderNsu,
-
-transaction_nsu:
-transactionNsu,
-
-slug:
-slug,
-
-receipt_url:
-receiptUrl
-
-})
-
+function dinheiro(valor){
+  return Number(valor || 0).toLocaleString("pt-BR",{
+    style:"currency",
+    currency:"BRL"
+  });
 }
 
-);
-
-
-const data =
-await response.json();
-
-
-if(
-!response.ok
-){
-
-throw new Error(
-data.error ||
-"Não foi possível confirmar o pagamento."
-);
-
+function formaPagamento(valor){
+  const v = String(valor || "").toLowerCase();
+  if(v === "pix") return "PIX";
+  if(v === "credit_card") return "Cartão de crédito";
+  return valor || "Confirmado";
 }
 
-
-if(
-data.paid === true
-){
-
-content.innerHTML = `
-
-<div class="icon">
-✓
-</div>
-
-<h1>
-Pagamento confirmado
-</h1>
-
-<p class="message">
-
-Recebemos seu pagamento com sucesso.
-
-Seu pedido agora será preparado para envio.
-
-</p>
-
-`;
-
-
-const box =
-document
-.getElementById(
-"orderBox"
-);
-
-
-box.style.display =
-"block";
-
-
-document
-.getElementById(
-"orderNumber"
-)
-.textContent =
-data.order_nsu;
-
-
-const status =
-document
-.getElementById(
-"orderStatus"
-);
-
-
-status.textContent =
-"Pago";
-
-
-status.classList
-.add(
-"paid"
-);
-
-
-document
-.getElementById(
-"orderTotal"
-)
-.textContent =
-money(
-data.total
-);
-
-
-if(
-data.receipt_url
-){
-
-const button =
-document
-.getElementById(
-"receiptButton"
-);
-
-
-button.href =
-data.receipt_url;
-
-
-button.style.display =
-"block";
-
+function mostrarPedido(pedido){
+  document.getElementById("orderBox").classList.remove("hidden");
+  document.getElementById("orderNumber").textContent = pedido.order_nsu || dadosRetorno.order_nsu || "—";
+  document.getElementById("orderStatus").textContent = pedido.status === "pago" ? "Pagamento aprovado" : pedido.status || "—";
+  document.getElementById("paymentMethod").textContent =
+    formaPagamento(pedido.forma_pagamento || dadosRetorno.capture_method);
+  document.getElementById("orderTotal").textContent = dinheiro(pedido.total);
 }
 
+function mostrarSucesso(data){
+  if(finalizado) return;
+  finalizado = true;
 
-return;
+  const pedido = data.pedido || {};
+  const card = document.getElementById("card");
+  card.classList.add("success");
 
+  document.getElementById("loader").remove();
+  document.getElementById("statusIcon").textContent = "✓";
+  document.getElementById("title").textContent = "Pagamento confirmado!";
+  document.getElementById("subtitle").textContent =
+    pedido.cliente_nome
+      ? `Obrigado pela compra, ${pedido.cliente_nome}. Seu pedido foi recebido pela UrbanStep.`
+      : "Seu pedido foi recebido pela UrbanStep e o pagamento foi confirmado.";
+
+  mostrarPedido(pedido);
+
+  const receipt =
+    pedido.receipt_url ||
+    dadosRetorno.receipt_url;
+
+  if(receipt){
+    const btn = document.getElementById("receiptButton");
+    btn.href = receipt;
+    btn.classList.remove("hidden");
+  }
+
+  document.getElementById("actions").classList.remove("hidden");
+
+  // Só apagamos a sacola depois que nossa Edge Function retorna paid:true.
+  localStorage.removeItem(CART_KEY);
+
+  // Guardamos apenas o identificador do último pedido para a futura área Minha Conta.
+  localStorage.setItem(
+    "urbanstep_ultimo_pedido",
+    pedido.order_nsu || dadosRetorno.order_nsu
+  );
 }
 
+function mostrarPendente(pedido){
+  mostrarPedido(pedido || {});
 
-content.innerHTML = `
+  document.getElementById("title").textContent = "Pagamento ainda em confirmação";
+  document.getElementById("subtitle").textContent =
+    "A confirmação pode levar alguns segundos. Estamos verificando novamente automaticamente.";
 
-<div class="icon">
-⌛
-</div>
-
-<h1>
-Pagamento em processamento
-</h1>
-
-<p class="message">
-
-Seu pagamento ainda não foi confirmado.
-
-Se você acabou de pagar, aguarde alguns instantes.
-
-</p>
-
-`;
-
-
-}catch(error){
-
-console.error(
-error
-);
-
-
-content.innerHTML = `
-
-<div class="icon">
-!
-</div>
-
-<h1>
-Não foi possível confirmar
-</h1>
-
-<p class="message">
-
-${error.message}
-
-</p>
-
-`;
-
+  const notice = document.getElementById("notice");
+  notice.textContent =
+    "Não faça outro pagamento para este mesmo pedido enquanto a confirmação estiver sendo processada.";
+  notice.classList.remove("hidden");
 }
 
+function mostrarErro(mensagem){
+  if(finalizado) return;
+  finalizado = true;
+
+  const card = document.getElementById("card");
+  card.classList.add("error");
+
+  const loader = document.getElementById("loader");
+  if(loader) loader.remove();
+
+  document.getElementById("statusIcon").textContent = "!";
+  document.getElementById("title").textContent = "Não conseguimos confirmar agora";
+  document.getElementById("subtitle").textContent =
+    mensagem || "Seu pedido não foi marcado como pago. Você pode voltar mais tarde para acompanhar a situação.";
+
+  const notice = document.getElementById("notice");
+  notice.textContent =
+    "Se você já pagou, não pague novamente. A confirmação também pode chegar automaticamente pelo webhook da InfinitePay.";
+  notice.classList.remove("hidden");
+
+  document.getElementById("actions").classList.remove("hidden");
 }
 
+async function consultarPagamento(){
+  if(finalizado) return;
 
-confirmarPagamento();
+  if(!dadosRetorno.order_nsu){
+    mostrarErro("O número do pedido não foi recebido no retorno do pagamento.");
+    return;
+  }
 
+  tentativas++;
+
+  try{
+    const response = await fetch(CONSULTAR_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(dadosRetorno)
+    });
+
+    const data = await response.json().catch(()=>({}));
+
+    if(response.ok && data.success === true && data.paid === true){
+      mostrarSucesso(data);
+      return;
+    }
+
+    if(response.ok && data.success === true && data.paid === false){
+      mostrarPendente(data.pedido);
+
+      if(tentativas < MAX_TENTATIVAS){
+        setTimeout(consultarPagamento,3000);
+      }else{
+        mostrarErro(
+          "A confirmação está demorando mais que o normal. Se você já pagou, não faça um novo pagamento."
+        );
+      }
+      return;
+    }
+
+    if(tentativas < 3){
+      setTimeout(consultarPagamento,3000);
+      return;
+    }
+
+    mostrarErro(
+      data.error ||
+      "Não foi possível consultar o pagamento neste momento."
+    );
+
+  }catch(error){
+    console.error(error);
+
+    if(tentativas < MAX_TENTATIVAS){
+      setTimeout(consultarPagamento,3000);
+    }else{
+      mostrarErro(
+        "Não foi possível conectar ao sistema de confirmação. Se o pagamento foi realizado, não pague novamente."
+      );
+    }
+  }
+}
+
+consultarPagamento();
 </script>
-
-
 </body>
-
 </html>
