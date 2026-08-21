@@ -156,6 +156,7 @@ body.light-theme .primary:hover:not(:disabled){background:var(--blue);color:#fff
 @media(max-width:600px){.theme-toggle{width:38px;height:38px}.header-right{gap:8px}}
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -383,6 +384,13 @@ body.light-theme .primary:hover:not(:disabled){background:var(--blue);color:#fff
 <script>
 const SUPABASE_URL = "https://gpovidqzqgttitsgelzm.supabase.co";
 const SUPABASE_KEY = "sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
+
+const { createClient } = supabase;
+
+const authClient = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 const CART_KEY = "urbanstep_cart";
 const CHECKOUT_KEY = "urbanstep_checkout_dados";
@@ -833,46 +841,150 @@ async function finalizarPagamento(){
   msg.textContent = "Criando seu pagamento...";
 
   try{
-    const response = await fetch(
-      `${SUPABASE_URL}/functions/v1/criar-checkout-carrinho`,
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "apikey":SUPABASE_KEY
-        },
-        body:JSON.stringify({
-          ...d,
-          itens:itensPayload(),
-          frete_id:freteSelecionado.id
-        })
-      }
-    );
 
-    const data = await response.json();
+    /* =====================================
+       VERIFICAR SE EXISTE CLIENTE LOGADO
+    ===================================== */
+
+    const {
+      data: sessionData
+    } =
+      await authClient
+      .auth
+      .getSession();
+
+    const accessToken =
+      sessionData
+      ?.session
+      ?.access_token
+      ||
+      null;
+
+
+    /* =====================================
+       CABEÇALHOS
+    ===================================== */
+
+    const headers = {
+      "Content-Type":
+        "application/json",
+
+      "apikey":
+        SUPABASE_KEY
+    };
+
+
+    /*
+      Se a cliente estiver logada,
+      enviamos o token dela para a
+      Edge Function.
+
+      Se não estiver, a compra
+      continua normalmente.
+    */
+
+    if(accessToken){
+      headers["Authorization"] =
+        `Bearer ${accessToken}`;
+    }
+
+
+    /* =====================================
+       CRIAR CHECKOUT
+    ===================================== */
+
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/functions/v1/criar-checkout-carrinho`,
+        {
+          method:
+            "POST",
+
+          headers:
+            headers,
+
+          body:
+            JSON.stringify({
+              ...d,
+              itens:
+                itensPayload(),
+              frete_id:
+                freteSelecionado.id
+            })
+        }
+      );
+
+
+    const data =
+      await response
+      .json();
+
 
     if(!response.ok){
-      throw new Error(data.error || "Não foi possível gerar o pagamento.");
+
+      throw new Error(
+        data.error
+        ||
+        "Não foi possível gerar o pagamento."
+      );
+
     }
+
 
     if(!data.url){
-      throw new Error("A InfinitePay não retornou o checkout.");
+
+      throw new Error(
+        "A InfinitePay não retornou o checkout."
+      );
+
     }
 
-    btn.textContent = "REDIRECIONANDO...";
-    msg.textContent = "";
 
-    window.location.href = data.url;
+    /*
+      Guardamos o pedido recém-criado.
+      Isso será útil também para
+      Minha Conta e página de sucesso.
+    */
+
+    if(data.order_nsu){
+
+      localStorage.setItem(
+        "urbanstep_ultimo_pedido",
+        data.order_nsu
+      );
+
+    }
+
+
+    btn.textContent =
+      "REDIRECIONANDO...";
+
+    msg.textContent =
+      "";
+
+
+    window.location.href =
+      data.url;
+
 
   }catch(error){
+
     console.error(error);
-    checkoutEmAndamento = false;
-    btn.disabled = false;
-    btn.textContent = "FINALIZAR COMPRA →";
-    msg.textContent = error.message;
+
+    checkoutEmAndamento =
+      false;
+
+    btn.disabled =
+      false;
+
+    btn.textContent =
+      "FINALIZAR COMPRA →";
+
+    msg.textContent =
+      error.message;
+
   }
 }
-
 
 /* ===== TEMA SINCRONIZADO ===== */
 const THEME_KEY = "urbanstep_theme";
