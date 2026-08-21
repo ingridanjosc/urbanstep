@@ -360,6 +360,207 @@ body.light-theme .order-total-block{
   .order-total-block{grid-column:1}
 }
 
+
+.shipping-box{margin-top:16px;padding:18px;border:1px solid #292e36;border-radius:14px;background:#0d1015}
+.shipping-title{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:900;margin-bottom:16px}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:8px 0 18px}
+.timeline-step{position:relative;text-align:center;padding-top:28px;color:#69717c;font-size:9px;font-weight:800;text-transform:uppercase}
+.timeline-step::before{content:"";position:absolute;top:6px;left:50%;width:14px;height:14px;transform:translateX(-50%);border-radius:50%;border:2px solid #3a414b;background:#111419;z-index:2}
+.timeline-step::after{content:"";position:absolute;top:13px;left:-50%;width:100%;height:2px;background:#303640;z-index:1}
+.timeline-step:first-child::after{display:none}
+.timeline-step.done,.timeline-step.current{color:#fff}
+.timeline-step.done::before,.timeline-step.current::before{background:#3970b4;border-color:#6fa7e8}
+.timeline-step.done::after,.timeline-step.current::after{background:#3970b4}
+.tracking-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tracking-card{padding:13px;border:1px solid #272d35;border-radius:11px}
+.tracking-label{color:#7f8791;font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.tracking-value{font-size:11px;font-weight:700;overflow-wrap:anywhere}
+.tracking-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.tracking-actions .btn{margin-top:0}
+body.light-theme .shipping-box{background:#fafbfc;border-color:#dfe3e8}
+body.light-theme .tracking-card{border-color:#dfe3e8}
+body.light-theme .timeline-step.done,body.light-theme .timeline-step.current{color:#111318}
+body.light-theme .timeline-step::before{background:#fff}
+body.light-theme .timeline-step.done::before,body.light-theme .timeline-step.current::before{background:#3970b4}
+@media(max-width:600px){
+.timeline{grid-template-columns:1fr}
+.timeline-step{text-align:left;padding:5px 0 18px 32px}
+.timeline-step::before{top:3px;left:7px;transform:none}
+.timeline-step::after{top:-17px;left:13px;width:2px;height:25px}
+.tracking-grid{grid-template-columns:1fr}
+}
+
+
+/* ===== TROCAS E DEVOLUÇÕES ===== */
+.return-box{
+  margin-top:16px;
+  border:1px solid #2a3038;
+  border-radius:14px;
+  padding:16px;
+  background:#0d1015;
+}
+.return-header{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:flex-start;
+  margin-bottom:14px;
+}
+.return-title{
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:21px;
+  font-weight:900;
+}
+.return-deadline{
+  color:#63d997;
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.return-deadline.expired{color:#ff8080}
+.return-items{
+  display:grid;
+  gap:9px;
+  margin:12px 0;
+}
+.return-item{
+  display:grid;
+  grid-template-columns:auto 52px 1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border:1px solid #282e36;
+  border-radius:10px;
+}
+.return-item img{
+  width:52px;
+  height:60px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#181c22;
+}
+.return-item input[type="checkbox"]{
+  width:17px;
+  height:17px;
+}
+.return-item select{
+  width:64px;
+  height:36px;
+  border-radius:8px;
+  border:1px solid #30363f;
+  background:#15181e;
+  color:#fff;
+  padding:0 7px;
+}
+.return-form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+.return-form .full{grid-column:1/-1}
+.return-form label{
+  display:block;
+  color:#7f8791;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.return-form select,
+.return-form textarea{
+  width:100%;
+  border:1px solid #2c323a;
+  border-radius:10px;
+  background:#15181e;
+  color:#fff;
+  padding:11px 12px;
+  outline:none;
+}
+.return-form select{height:44px}
+.return-form textarea{min-height:95px;resize:vertical}
+.return-request{
+  border:1px solid #2a3038;
+  border-radius:13px;
+  padding:15px;
+  margin-bottom:12px;
+}
+.return-request-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:10px;
+}
+.return-request-title{
+  font-size:12px;
+  font-weight:900;
+}
+.return-status{
+  border:1px solid #35404c;
+  border-radius:999px;
+  padding:6px 9px;
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.return-status.solicitado,
+.return-status.em_analise,
+.return-status.aprovado,
+.return-status.aguardando_envio,
+.return-status.produto_enviado,
+.return-status.produto_recebido,
+.return-status.reembolso_processando,
+.return-status.troca_enviada{
+  color:#80b2ec;
+  border-color:rgba(128,178,236,.35);
+}
+.return-status.reembolsado,
+.return-status.concluido{
+  color:#63d997;
+  border-color:rgba(99,217,151,.35);
+}
+.return-status.recusado,
+.return-status.cancelado{
+  color:#ff8080;
+  border-color:rgba(255,128,128,.35);
+}
+.return-meta{
+  color:#858b95;
+  font-size:10px;
+  line-height:1.7;
+}
+.return-message{
+  min-height:16px;
+  margin-top:10px;
+  font-size:10px;
+}
+.return-message.success{color:#63d997}
+.return-message.error{color:#ff8080}
+body.light-theme .return-box,
+body.light-theme .return-request{
+  background:#fafbfc;
+  border-color:#dfe3e8;
+}
+body.light-theme .return-item{border-color:#dfe3e8}
+body.light-theme .return-item img{background:#eef0f3}
+body.light-theme .return-item select,
+body.light-theme .return-form select,
+body.light-theme .return-form textarea{
+  background:#fff;
+  color:#111318;
+  border-color:#d7dce3;
+}
+@media(max-width:600px){
+  .return-header{flex-direction:column}
+  .return-item{grid-template-columns:auto 46px 1fr}
+  .return-item select{grid-column:3}
+  .return-form{grid-template-columns:1fr}
+  .return-form .full{grid-column:1}
+  .return-request-head{flex-direction:column}
+}
+
 </style>
 </head>
 
@@ -444,13 +645,15 @@ body.light-theme .order-total-block{
       <div id="returnsSection" class="hidden">
         <div class="panel-title">TROCAS E DEVOLUÇÕES</div>
         <div class="panel-subtitle">
-          Depois que um pedido for marcado como entregue, você poderá solicitar troca ou devolução por esta área conforme as regras aplicáveis.
+          Pedidos elegíveis podem solicitar troca ou devolução diretamente por aqui.
         </div>
 
-        <div class="empty">
-          <strong>Nenhuma solicitação.</strong>
-          Quando houver pedidos elegíveis, as opções de troca ou devolução aparecerão aqui.
+        <div id="returnsLoading" class="empty">
+          <strong>Carregando solicitações...</strong>
+          Aguarde um instante.
         </div>
+
+        <div id="returnsList" class="hidden"></div>
       </div>
 
       <div id="dataSection" class="hidden">
@@ -711,6 +914,695 @@ function statusLabel(status){
   return labels[status] || status || "Em processamento";
 }
 
+function shippingLabel(status){
+  const labels = {
+    aguardando_pagamento:"Aguardando pagamento",
+    preparando:"Preparando pedido",
+    enviado:"Enviado",
+    em_transporte:"Em transporte",
+    entregue:"Entregue"
+  };
+  return labels[status] || "Preparando pedido";
+}
+
+function shippingLevel(status){
+  const levels = {
+    aguardando_pagamento:0,
+    preparando:1,
+    enviado:2,
+    em_transporte:3,
+    entregue:4
+  };
+  return levels[status] ?? 1;
+}
+
+function timelineHtml(pedido){
+  const status = String(
+    pedido.status_envio ||
+    (pedido.status === "pago" ? "preparando" : "aguardando_pagamento")
+  );
+
+  const level = shippingLevel(status);
+
+  const steps = [
+    {label:"Pagamento", level:1},
+    {label:"Preparando", level:1},
+    {label:"Enviado", level:2},
+    {label:"Entregue", level:4}
+  ];
+
+  const timeline = steps.map((step,index)=>{
+    let cls = "";
+    if(level > step.level) cls = "done";
+    else if(level >= step.level) cls = "current";
+
+    if(index === 0 && pedido.status === "pago"){
+      cls = level > 1 ? "done" : "current";
+    }
+
+    return `<div class="timeline-step ${cls}">${escapeHtml(step.label)}</div>`;
+  }).join("");
+
+  const rastreio = pedido.codigo_rastreio
+    ? escapeHtml(pedido.codigo_rastreio)
+    : "Ainda não disponível";
+
+  const previsao = pedido.previsao_entrega
+    ? new Date(pedido.previsao_entrega + "T12:00:00").toLocaleDateString("pt-BR")
+    : (Number(pedido.prazo_frete || 0) > 0
+        ? `Até ${Number(pedido.prazo_frete)} dia(s) úteis após o envio`
+        : "A informar");
+
+  const enviado = pedido.enviado_em ? formatDate(pedido.enviado_em) : "Ainda não enviado";
+  const entregue = pedido.entregue_em ? formatDate(pedido.entregue_em) : "Ainda não entregue";
+
+  const trackingButton = pedido.url_rastreio
+    ? `<a class="btn btn-primary" href="${escapeHtml(pedido.url_rastreio)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:center">RASTREAR PEDIDO</a>`
+    : "";
+
+  return `
+    <div class="shipping-box">
+      <div class="shipping-title">ENTREGA · ${escapeHtml(shippingLabel(status))}</div>
+      <div class="timeline">${timeline}</div>
+      <div class="tracking-grid">
+        <div class="tracking-card"><div class="tracking-label">Código de rastreio</div><div class="tracking-value">${rastreio}</div></div>
+        <div class="tracking-card"><div class="tracking-label">Previsão</div><div class="tracking-value">${escapeHtml(previsao)}</div></div>
+        <div class="tracking-card"><div class="tracking-label">Enviado em</div><div class="tracking-value">${escapeHtml(enviado)}</div></div>
+        <div class="tracking-card"><div class="tracking-label">Entregue em</div><div class="tracking-value">${escapeHtml(entregue)}</div></div>
+      </div>
+      <div class="tracking-actions">${trackingButton}</div>
+    </div>
+  `;
+}
+
+
+function returnStatusLabel(status){
+  const labels = {
+    solicitado:"Solicitado",
+    em_analise:"Em análise",
+    aprovado:"Aprovado",
+    aguardando_envio:"Aguardando envio",
+    produto_enviado:"Produto enviado",
+    produto_recebido:"Produto recebido",
+    reembolso_processando:"Reembolso em processamento",
+    reembolsado:"Reembolsado",
+    troca_enviada:"Troca enviada",
+    concluido:"Concluído",
+    recusado:"Recusado",
+    cancelado:"Cancelado"
+  };
+
+  return labels[status] || status || "Em análise";
+}
+
+function diasRestantes(entregueEm){
+  if(!entregueEm) return -1;
+
+  const inicio =
+    new Date(entregueEm);
+
+  if(Number.isNaN(inicio.getTime())){
+    return -1;
+  }
+
+  const limite =
+    new Date(
+      inicio.getTime() +
+      7 * 24 * 60 * 60 * 1000
+    );
+
+  const diff =
+    limite.getTime() -
+    Date.now();
+
+  if(diff < 0){
+    return -1;
+  }
+
+  return Math.ceil(
+    diff /
+    (24 * 60 * 60 * 1000)
+  );
+}
+
+function pedidoElegivelDevolucao(pedido){
+  if(
+    pedido.status_envio !== "entregue"
+    ||
+    !pedido.entregue_em
+  ){
+    return false;
+  }
+
+  return diasRestantes(
+    pedido.entregue_em
+  ) >= 0;
+}
+
+function optionsQuantidade(max){
+  const quantidade =
+    Math.max(
+      1,
+      Number(max || 1)
+    );
+
+  return Array.from(
+    {length:quantidade},
+    (_,index)=>
+      `<option value="${index + 1}">${index + 1}</option>`
+  ).join("");
+}
+
+async function criarSolicitacaoDevolucao(pedidoId){
+
+  const message =
+    document.getElementById(
+      `return-message-${pedidoId}`
+    );
+
+  const button =
+    document.getElementById(
+      `return-submit-${pedidoId}`
+    );
+
+  const tipo =
+    document.getElementById(
+      `return-type-${pedidoId}`
+    ).value;
+
+  const motivo =
+    document.getElementById(
+      `return-reason-${pedidoId}`
+    ).value;
+
+  const observacao =
+    document.getElementById(
+      `return-note-${pedidoId}`
+    ).value.trim();
+
+  const checkboxes =
+    Array.from(
+      document.querySelectorAll(
+        `.return-check-${pedidoId}:checked`
+      )
+    );
+
+  if(!checkboxes.length){
+    message.className =
+      "return-message error";
+
+    message.textContent =
+      "Selecione pelo menos um produto.";
+
+    return;
+  }
+
+  if(!motivo){
+    message.className =
+      "return-message error";
+
+    message.textContent =
+      "Selecione o motivo.";
+
+    return;
+  }
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth.getSession();
+
+  if(!session){
+    window.location.href =
+      "login.html";
+    return;
+  }
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "ENVIANDO...";
+
+  message.className =
+    "return-message";
+
+  message.textContent =
+    "Registrando sua solicitação...";
+
+  try{
+
+    const {
+      data:solicitacao,
+      error:solicitacaoError
+    } =
+      await db
+      .from("solicitacoes_devolucao")
+      .insert({
+        pedido_id:
+          Number(pedidoId),
+
+        user_id:
+          session.user.id,
+
+        tipo:
+          tipo,
+
+        motivo:
+          motivo,
+
+        observacao:
+          observacao || null
+      })
+      .select("id")
+      .single();
+
+    if(solicitacaoError){
+      throw solicitacaoError;
+    }
+
+    const itens =
+      checkboxes.map(
+        checkbox => {
+
+          const itemId =
+            Number(
+              checkbox.dataset.itemId
+            );
+
+          const select =
+            document.getElementById(
+              `return-qty-${pedidoId}-${itemId}`
+            );
+
+          return {
+            solicitacao_id:
+              solicitacao.id,
+
+            item_pedido_id:
+              itemId,
+
+            quantidade:
+              Number(
+                select?.value || 1
+              )
+          };
+        }
+      );
+
+    const {
+      error:itensError
+    } =
+      await db
+      .from("itens_solicitacao_devolucao")
+      .insert(
+        itens
+      );
+
+    if(itensError){
+      throw itensError;
+    }
+
+    message.className =
+      "return-message success";
+
+    message.textContent =
+      "Solicitação enviada com sucesso.";
+
+    button.textContent =
+      "SOLICITADO ✓";
+
+    setTimeout(
+      ()=>{
+        carregarDevolucoes();
+      },
+      900
+    );
+
+  }catch(error){
+
+    console.error(
+      "Erro devolução:",
+      error
+    );
+
+    message.className =
+      "return-message error";
+
+    let texto =
+      error?.message ||
+      "Não foi possível registrar a solicitação.";
+
+    if(
+      String(texto)
+      .toLowerCase()
+      .includes("duplicate")
+    ){
+      texto =
+        "Já existe uma solicitação aberta para este pedido.";
+    }
+
+    message.textContent =
+      texto;
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "ENVIAR SOLICITAÇÃO";
+
+  }
+}
+
+async function carregarDevolucoes(){
+
+  const loading =
+    document.getElementById(
+      "returnsLoading"
+    );
+
+  const container =
+    document.getElementById(
+      "returnsList"
+    );
+
+  loading.classList.remove(
+    "hidden"
+  );
+
+  container.classList.add(
+    "hidden"
+  );
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth.getSession();
+
+  if(!session){
+    return;
+  }
+
+  const {
+    data:solicitacoes,
+    error:solicitacoesError
+  } =
+    await db
+    .from(
+      "solicitacoes_devolucao"
+    )
+    .select(`
+      id,
+      pedido_id,
+      tipo,
+      motivo,
+      observacao,
+      status,
+      solicitado_em,
+      atualizado_em,
+      resolvido_em,
+      observacao_admin
+    `)
+    .eq(
+      "user_id",
+      session.user.id
+    )
+    .order(
+      "solicitado_em",
+      {
+        ascending:false
+      }
+    );
+
+  if(solicitacoesError){
+
+    console.error(
+      solicitacoesError
+    );
+
+    loading.innerHTML =
+      `<strong>Não foi possível carregar as solicitações.</strong>
+       Tente novamente em alguns instantes.`;
+
+    return;
+  }
+
+  const pedidosElegiveis =
+    pedidosCache.filter(
+      pedido =>
+        pedidoElegivelDevolucao(
+          pedido
+        )
+        &&
+        !(solicitacoes || []).some(
+          solicitacao =>
+            Number(
+              solicitacao.pedido_id
+            )
+            ===
+            Number(
+              pedido.id
+            )
+            &&
+            ![
+              "concluido",
+              "recusado",
+              "cancelado",
+              "reembolsado"
+            ].includes(
+              solicitacao.status
+            )
+        )
+    );
+
+  const formularios =
+    pedidosElegiveis.map(
+      pedido => {
+
+        const itens =
+          itensCache.filter(
+            item =>
+              Number(
+                item.pedido_id
+              )
+              ===
+              Number(
+                pedido.id
+              )
+          );
+
+        const dias =
+          diasRestantes(
+            pedido.entregue_em
+          );
+
+        const itensHtml =
+          itens.map(
+            item => `
+              <div class="return-item">
+
+                <input
+                  type="checkbox"
+                  class="return-check-${pedido.id}"
+                  data-item-id="${Number(item.id)}"
+                >
+
+                <img
+                  src="${escapeHtml(item.imagem || "")}"
+                  alt="${escapeHtml(item.nome_produto || "Produto")}"
+                  onerror="this.style.visibility='hidden'"
+                >
+
+                <div>
+                  <div class="order-item-name">
+                    ${escapeHtml(item.nome_produto || "Produto")}
+                  </div>
+
+                  <div class="order-item-meta">
+                    Tamanho ${escapeHtml(item.tamanho || "-")} ·
+                    comprado: ${Number(item.quantidade || 1)}
+                  </div>
+                </div>
+
+                <select
+                  id="return-qty-${pedido.id}-${Number(item.id)}"
+                  title="Quantidade"
+                >
+                  ${optionsQuantidade(item.quantidade)}
+                </select>
+
+              </div>
+            `
+          ).join("");
+
+        return `
+          <div class="return-box">
+
+            <div class="return-header">
+              <div>
+                <div class="return-title">
+                  PEDIDO ${escapeHtml(pedido.order_nsu || "#" + pedido.id)}
+                </div>
+
+                <div class="order-date">
+                  Entregue em ${formatDate(pedido.entregue_em)}
+                </div>
+              </div>
+
+              <div class="return-deadline">
+                ${dias === 0 ? "Último dia" : `${dias} dia(s) restante(s)`}
+              </div>
+            </div>
+
+            <div class="return-items">
+              ${itensHtml}
+            </div>
+
+            <div class="return-form">
+
+              <div>
+                <label>Quero solicitar</label>
+
+                <select id="return-type-${pedido.id}">
+                  <option value="devolucao">Devolução</option>
+                  <option value="troca">Troca</option>
+                </select>
+              </div>
+
+              <div>
+                <label>Motivo</label>
+
+                <select id="return-reason-${pedido.id}">
+                  <option value="">Selecione</option>
+                  <option value="arrependimento">Desisti da compra</option>
+                  <option value="tamanho">Tamanho não serviu</option>
+                  <option value="produto_diferente">Produto diferente do esperado</option>
+                  <option value="defeito">Produto com defeito</option>
+                  <option value="avaria">Produto chegou avariado</option>
+                  <option value="outro">Outro motivo</option>
+                </select>
+              </div>
+
+              <div class="full">
+                <label>Observação (opcional)</label>
+
+                <textarea
+                  id="return-note-${pedido.id}"
+                  placeholder="Se quiser, conte mais detalhes."
+                ></textarea>
+              </div>
+
+            </div>
+
+            <button
+              class="btn btn-primary"
+              id="return-submit-${pedido.id}"
+              onclick="criarSolicitacaoDevolucao(${pedido.id})"
+            >
+              ENVIAR SOLICITAÇÃO
+            </button>
+
+            <div
+              class="return-message"
+              id="return-message-${pedido.id}"
+            ></div>
+
+          </div>
+        `;
+      }
+    ).join("");
+
+  const historico =
+    (solicitacoes || []).map(
+      solicitacao => {
+
+        const pedido =
+          pedidosCache.find(
+            p =>
+              Number(p.id)
+              ===
+              Number(
+                solicitacao.pedido_id
+              )
+          );
+
+        return `
+          <div class="return-request">
+
+            <div class="return-request-head">
+              <div>
+                <div class="return-request-title">
+                  ${solicitacao.tipo === "troca" ? "TROCA" : "DEVOLUÇÃO"} ·
+                  ${escapeHtml(pedido?.order_nsu || "#" + solicitacao.pedido_id)}
+                </div>
+
+                <div class="order-date">
+                  Solicitado em ${formatDate(solicitacao.solicitado_em)}
+                </div>
+              </div>
+
+              <div class="return-status ${escapeHtml(solicitacao.status)}">
+                ${escapeHtml(returnStatusLabel(solicitacao.status))}
+              </div>
+            </div>
+
+            <div class="return-meta">
+              <strong>Motivo:</strong>
+              ${escapeHtml(solicitacao.motivo || "—")}
+              ${solicitacao.observacao ? `<br><strong>Observação:</strong> ${escapeHtml(solicitacao.observacao)}` : ""}
+              ${solicitacao.observacao_admin ? `<br><strong>Resposta da UrbanStep:</strong> ${escapeHtml(solicitacao.observacao_admin)}` : ""}
+            </div>
+
+          </div>
+        `;
+      }
+    ).join("");
+
+  let conteudo = "";
+
+  if(formularios){
+    conteudo += `
+      <div class="panel-subtitle" style="margin-top:0">
+        PEDIDOS ELEGÍVEIS
+      </div>
+      ${formularios}
+    `;
+  }
+
+  if(historico){
+    conteudo += `
+      <div class="panel-subtitle" style="margin-top:24px">
+        SUAS SOLICITAÇÕES
+      </div>
+      ${historico}
+    `;
+  }
+
+  if(!conteudo){
+    conteudo =
+      `<div class="empty">
+         <strong>Nenhum pedido elegível no momento.</strong>
+         Quando um pedido entregue estiver dentro do prazo aplicável, a opção aparecerá aqui.
+       </div>`;
+  }
+
+  container.innerHTML =
+    conteudo;
+
+  loading.classList.add(
+    "hidden"
+  );
+
+  container.classList.remove(
+    "hidden"
+  );
+}
+
+
 async function carregarPedidos(){
 
   const loading =
@@ -759,7 +1651,13 @@ async function carregarPedidos(){
         frete_gratis,
         valor_cobrado_frete,
         pago_em,
-        receipt_url
+        receipt_url,
+        status_envio,
+        codigo_rastreio,
+        enviado_em,
+        entregue_em,
+        previsao_entrega,
+        url_rastreio
       `)
       .eq("user_id",userId)
       .order("created_at",{
@@ -802,6 +1700,7 @@ async function carregarPedidos(){
     await db
       .from("itens_pedido")
       .select(`
+        id,
         pedido_id,
         produto_id,
         nome_produto,
@@ -912,6 +1811,7 @@ async function carregarPedidos(){
 
             <div class="order-body">
               ${itensHtml}
+              ${timelineHtml(pedido)}
             </div>
 
             <div class="order-footer">
@@ -1015,7 +1915,10 @@ db.auth.onAuthStateChange(
 );
 
 carregarConta();
-carregarPedidos();
+carregarPedidos()
+  .then(()=>{
+    carregarDevolucoes();
+  });
 </script>
 
 </body>
