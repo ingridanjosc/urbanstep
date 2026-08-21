@@ -221,6 +221,145 @@ body.light-theme .btn-secondary{background:#fff;color:#111318;border-color:#d7dc
   .top{align-items:flex-start;flex-direction:column}
   .info-grid{grid-template-columns:1fr}
 }
+
+.orders-list{display:grid;gap:16px}
+.order-card{
+  border:1px solid #292e36;
+  border-radius:15px;
+  overflow:hidden;
+  background:#111419;
+}
+.order-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  padding:17px 18px;
+  border-bottom:1px solid #252a31;
+  align-items:flex-start;
+}
+.order-number{
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:23px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.order-date{
+  color:#858b95;
+  font-size:10px;
+  margin-top:3px;
+}
+.order-status{
+  border:1px solid #35404c;
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.order-status.pago{
+  color:#63d997;
+  border-color:rgba(99,217,151,.35);
+  background:rgba(99,217,151,.07);
+}
+.order-status.aguardando_pagamento{
+  color:#f1bf63;
+  border-color:rgba(241,191,99,.35);
+  background:rgba(241,191,99,.07);
+}
+.order-status.erro_checkout{
+  color:#ff8080;
+  border-color:rgba(255,128,128,.35);
+  background:rgba(255,128,128,.07);
+}
+.order-body{padding:18px}
+.order-item{
+  display:grid;
+  grid-template-columns:58px 1fr auto;
+  gap:13px;
+  align-items:center;
+  padding:11px 0;
+  border-bottom:1px solid #22272e;
+}
+.order-item:last-child{border-bottom:0}
+.order-item img{
+  width:58px;
+  height:66px;
+  object-fit:cover;
+  border-radius:9px;
+  background:#181c22;
+}
+.order-item-name{
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+.order-item-meta{
+  color:#858b95;
+  font-size:10px;
+  line-height:1.6;
+}
+.order-item-total{
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.order-footer{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  border-top:1px solid #252a31;
+  padding:16px 18px;
+}
+.order-detail-label{
+  color:#7f8791;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+.order-detail-value{
+  font-size:11px;
+  font-weight:700;
+}
+.order-total-block{
+  grid-column:1/-1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px solid #252a31;
+  padding-top:14px;
+  margin-top:2px;
+  font-size:14px;
+  font-weight:900;
+}
+body.light-theme .order-card{
+  background:#fff;
+  border-color:#dfe3e8;
+}
+body.light-theme .order-head,
+body.light-theme .order-footer,
+body.light-theme .order-item,
+body.light-theme .order-total-block{
+  border-color:#e1e4e8;
+}
+body.light-theme .order-item img{background:#eef0f3}
+body.light-theme .order-number,
+body.light-theme .order-item-name,
+body.light-theme .order-item-total,
+body.light-theme .order-detail-value,
+body.light-theme .order-total-block{
+  color:#111318;
+}
+@media(max-width:600px){
+  .order-head{flex-direction:column}
+  .order-item{grid-template-columns:52px 1fr}
+  .order-item-total{grid-column:2}
+  .order-footer{grid-template-columns:1fr}
+  .order-total-block{grid-column:1}
+}
+
 </style>
 </head>
 
@@ -282,17 +421,24 @@ body.light-theme .btn-secondary{background:#fff;color:#111318;border-color:#d7dc
       <div id="ordersSection" class="hidden">
         <div class="panel-title">MEUS PEDIDOS</div>
         <div class="panel-subtitle">
-          Seus pedidos aparecerão aqui assim que terminarmos de vinculá-los à sua conta.
+          Acompanhe seus pedidos vinculados à sua conta UrbanStep.
         </div>
 
-        <div class="empty">
-          <strong>Área de pedidos preparada.</strong>
-          O próximo passo é conectar os pedidos do Supabase ao usuário logado com segurança.
+        <div id="ordersLoading" class="empty">
+          <strong>Carregando pedidos...</strong>
+          Aguarde um instante.
+        </div>
+
+        <div id="ordersEmpty" class="empty hidden">
+          <strong>Você ainda não tem pedidos vinculados.</strong>
+          Quando comprar usando esta conta, seus pedidos aparecerão aqui.
           <br>
           <a href="index.html#catalogo" class="btn btn-primary" style="display:inline-flex;align-items:center">
             IR PARA A LOJA
           </a>
         </div>
+
+        <div id="ordersList" class="orders-list hidden"></div>
       </div>
 
       <div id="returnsSection" class="hidden">
@@ -513,6 +659,324 @@ async function carregarConta(){
     user.id;
 }
 
+
+function money(value){
+  return Number(value || 0).toLocaleString(
+    "pt-BR",
+    {
+      style:"currency",
+      currency:"BRL"
+    }
+  );
+}
+
+function formatDate(value){
+  if(!value) return "—";
+
+  const d = new Date(value);
+
+  if(Number.isNaN(d.getTime())){
+    return "—";
+  }
+
+  return d.toLocaleString(
+    "pt-BR",
+    {
+      dateStyle:"short",
+      timeStyle:"short"
+    }
+  );
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function statusLabel(status){
+  const labels = {
+    aguardando_pagamento:"Aguardando pagamento",
+    pago:"Pagamento aprovado",
+    erro_checkout:"Erro no checkout",
+    cancelado:"Cancelado",
+    preparando:"Preparando pedido",
+    enviado:"Enviado",
+    entregue:"Entregue"
+  };
+
+  return labels[status] || status || "Em processamento";
+}
+
+async function carregarPedidos(){
+
+  const loading =
+    document.getElementById("ordersLoading");
+
+  const empty =
+    document.getElementById("ordersEmpty");
+
+  const list =
+    document.getElementById("ordersList");
+
+  loading.classList.remove("hidden");
+  empty.classList.add("hidden");
+  list.classList.add("hidden");
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth.getSession();
+
+  if(!session){
+    return;
+  }
+
+  const userId =
+    session.user.id;
+
+  const {
+    data: pedidos,
+    error: pedidosError
+  } =
+    await db
+      .from("pedidos")
+      .select(`
+        id,
+        created_at,
+        order_nsu,
+        status,
+        total,
+        forma_pagamento,
+        prazo_frete,
+        servico_frete,
+        transportadora,
+        frete_gratis,
+        valor_cobrado_frete,
+        pago_em,
+        receipt_url
+      `)
+      .eq("user_id",userId)
+      .order("created_at",{
+        ascending:false
+      });
+
+  if(pedidosError){
+
+    console.error(
+      "Erro ao carregar pedidos:",
+      pedidosError
+    );
+
+    loading.innerHTML =
+      `<strong>Não foi possível carregar seus pedidos.</strong>
+       Tente novamente em alguns instantes.`;
+
+    return;
+  }
+
+  if(
+    !Array.isArray(pedidos)
+    ||
+    pedidos.length === 0
+  ){
+    loading.classList.add("hidden");
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  const pedidoIds =
+    pedidos.map(
+      pedido => pedido.id
+    );
+
+  const {
+    data: itens,
+    error: itensError
+  } =
+    await db
+      .from("itens_pedido")
+      .select(`
+        pedido_id,
+        produto_id,
+        nome_produto,
+        marca,
+        imagem,
+        tamanho,
+        quantidade,
+        preco_unitario,
+        subtotal
+      `)
+      .in(
+        "pedido_id",
+        pedidoIds
+      );
+
+  if(itensError){
+
+    console.error(
+      "Erro ao carregar itens:",
+      itensError
+    );
+
+  }
+
+  const itensLista =
+    Array.isArray(itens)
+      ? itens
+      : [];
+
+  list.innerHTML =
+    pedidos.map(
+      pedido => {
+
+        const itensPedido =
+          itensLista.filter(
+            item =>
+              Number(item.pedido_id) ===
+              Number(pedido.id)
+          );
+
+        const itensHtml =
+          itensPedido.length
+          ?
+          itensPedido.map(
+            item => `
+              <div class="order-item">
+                <img
+                  src="${escapeHtml(item.imagem || "")}"
+                  alt="${escapeHtml(item.nome_produto || "Produto")}"
+                  onerror="this.style.visibility='hidden'"
+                >
+
+                <div>
+                  <div class="order-item-name">
+                    ${escapeHtml(item.nome_produto || "Produto")}
+                  </div>
+
+                  <div class="order-item-meta">
+                    ${item.marca ? escapeHtml(item.marca) + "<br>" : ""}
+                    Tamanho: ${escapeHtml(item.tamanho || "-")} ·
+                    ${Number(item.quantidade || 1)} un.
+                  </div>
+                </div>
+
+                <div class="order-item-total">
+                  ${money(item.subtotal || (Number(item.preco_unitario || 0) * Number(item.quantidade || 1)))}
+                </div>
+              </div>
+            `
+          ).join("")
+          :
+          `<div class="empty">
+             Os itens deste pedido ainda não puderam ser carregados.
+           </div>`;
+
+        const status =
+          String(
+            pedido.status || ""
+          );
+
+        const frete =
+          Number(
+            pedido.valor_cobrado_frete || 0
+          ) === 0
+          ? "GRÁTIS"
+          : money(
+              pedido.valor_cobrado_frete
+            );
+
+        return `
+          <article class="order-card">
+
+            <div class="order-head">
+              <div>
+                <div class="order-number">
+                  PEDIDO ${escapeHtml(pedido.order_nsu || "#" + pedido.id)}
+                </div>
+
+                <div class="order-date">
+                  Criado em ${formatDate(pedido.created_at)}
+                </div>
+              </div>
+
+              <div class="order-status ${escapeHtml(status)}">
+                ${escapeHtml(statusLabel(status))}
+              </div>
+            </div>
+
+            <div class="order-body">
+              ${itensHtml}
+            </div>
+
+            <div class="order-footer">
+
+              <div>
+                <div class="order-detail-label">Pagamento</div>
+                <div class="order-detail-value">
+                  ${escapeHtml(pedido.forma_pagamento || (status === "pago" ? "Confirmado" : "Aguardando"))}
+                </div>
+              </div>
+
+              <div>
+                <div class="order-detail-label">Frete</div>
+                <div class="order-detail-value">
+                  ${escapeHtml(pedido.servico_frete || pedido.transportadora || "Entrega")} · ${frete}
+                </div>
+              </div>
+
+              <div>
+                <div class="order-detail-label">Prazo informado</div>
+                <div class="order-detail-value">
+                  ${Number(pedido.prazo_frete || 0) > 0 ? `Até ${Number(pedido.prazo_frete)} dia(s) úteis` : "A informar"}
+                </div>
+              </div>
+
+              <div>
+                <div class="order-detail-label">Pagamento aprovado em</div>
+                <div class="order-detail-value">
+                  ${pedido.pago_em ? formatDate(pedido.pago_em) : "Ainda não confirmado"}
+                </div>
+              </div>
+
+              <div class="order-total-block">
+                <span>Total</span>
+                <span>${money(pedido.total)}</span>
+              </div>
+
+              ${
+                pedido.receipt_url
+                ? `
+                  <a
+                    class="btn btn-secondary"
+                    href="${escapeHtml(pedido.receipt_url)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="display:inline-flex;align-items:center;justify-content:center"
+                  >
+                    VER COMPROVANTE
+                  </a>
+                `
+                : ""
+              }
+
+            </div>
+
+          </article>
+        `;
+      }
+    ).join("");
+
+  loading.classList.add("hidden");
+  list.classList.remove("hidden");
+}
+
+
 document
 .getElementById("logoutButton")
 .addEventListener("click",async ()=>{
@@ -551,6 +1015,7 @@ db.auth.onAuthStateChange(
 );
 
 carregarConta();
+carregarPedidos();
 </script>
 
 </body>
