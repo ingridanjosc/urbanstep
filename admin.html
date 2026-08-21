@@ -1,4268 +1,1321 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | URBANSTEP.</title>
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<title>
-Admin | URBANSTEP
-</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
+:root{
+  --bg:#07080a;
+  --card:#0f1217;
+  --text:#f5f5f5;
+  --muted:#858b95;
+  --line:#242a32;
+  --blue:#234f87;
+  --blue-light:#3970b4;
+  --green:#27b86b;
+  --warning:#f1bf63;
+  --danger:#ff7373;
 }
-
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-font-family:Arial,Helvetica,sans-serif;
-background:#080808;
-color:#fff;
-min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Inter",sans-serif;
+  min-height:100vh;
 }
-
-button,
-input,
-textarea,
-select{
-font:inherit;
-}
-
-button{
-cursor:pointer;
-}
-
-.hidden{
-display:none!important;
-}
-
-/* =========================
-LOGIN
-========================= */
-
-#loginScreen{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:25px;
-}
-
-.login-box{
-width:100%;
-max-width:430px;
-background:#101010;
-border:1px solid #222;
-border-radius:24px;
-padding:40px;
-}
-
-.logo{
-font-size:28px;
-font-weight:900;
-margin-bottom:35px;
-}
-
-.logo span{
-color:#3970b4;
-}
-
-.login-box h1{
-font-size:25px;
-margin-bottom:8px;
-}
-
-.login-box p{
-color:#888;
-font-size:14px;
-margin-bottom:28px;
-}
-
-label{
-display:block;
-font-size:12px;
-text-transform:uppercase;
-letter-spacing:1px;
-color:#999;
-margin-bottom:8px;
-}
-
-input,
-textarea,
-select{
-width:100%;
-background:#151515;
-color:white;
-border:1px solid #292929;
-border-radius:12px;
-padding:14px 16px;
-outline:none;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-border-color:#3970b4;
-}
-
-textarea{
-resize:vertical;
-min-height:105px;
-}
-
-.field{
-margin-bottom:18px;
-}
-
-.btn-primary{
-border:0;
-width:100%;
-padding:15px;
-border-radius:999px;
-background:#234f87;
-color:#fff;
-font-weight:800;
-}
-
-/* =========================
-HEADER
-========================= */
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
 
 header{
-min-height:75px;
-border-bottom:1px solid #1d1d1d;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 5%;
-position:sticky;
-top:0;
-background:#080808;
-z-index:50;
+  min-height:76px;
+  padding:0 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+  background:rgba(7,8,10,.96);
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter:blur(14px);
 }
-
-.header-logo{
-font-size:26px;
-font-weight:900;
+.logo{
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:30px;
+  font-weight:900;
 }
-
-.header-logo span{
-color:#3970b4;
+.logo span{color:var(--blue-light)}
+.header-actions{display:flex;align-items:center;gap:10px}
+.header-link{font-size:11px;color:#aaa}
+.icon-btn{
+  width:42px;height:42px;
+  border-radius:50%;
+  border:1px solid #292e36;
+  background:#111419;
+  color:#fff;
 }
-
-.logout{
-background:#161616;
-color:white;
-border:1px solid #292929;
-border-radius:999px;
-padding:10px 18px;
-}
-
-/* =========================
-ABAS
-========================= */
-
-.tabs{
-width:min(1200px,92%);
-margin:35px auto 0;
-display:flex;
-gap:10px;
-overflow-x:auto;
-padding-bottom:5px;
-}
-
-.tab{
-border:1px solid #292929;
-background:#121212;
-color:#aaa;
-border-radius:999px;
-padding:12px 22px;
-font-weight:700;
-white-space:nowrap;
-}
-
-.tab.active{
-background:#234f87;
-color:white;
-border-color:#234f87;
-}
-
-/* =========================
-CONTEÚDO
-========================= */
 
 main{
-width:min(1200px,92%);
-margin:30px auto 100px;
+  width:min(1280px,94%);
+  margin:38px auto 90px;
 }
-
-.title-small{
-color:#3970b4;
-font-size:12px;
-text-transform:uppercase;
-letter-spacing:2px;
-font-weight:bold;
+.eyebrow{
+  color:var(--blue-light);
+  font-size:10px;
+  letter-spacing:2px;
+  font-weight:800;
 }
-
-h2{
-margin-top:7px;
-font-size:clamp(28px,5vw,44px);
+h1{
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:clamp(48px,7vw,78px);
+  line-height:.95;
+  margin:8px 0 10px;
 }
-
 .subtitle{
-color:#777;
-margin:8px 0 32px;
-line-height:1.6;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:28px;
 }
 
-.panel{
-background:#0e0e0e;
-border:1px solid #202020;
-border-radius:22px;
-padding:28px;
-margin-bottom:45px;
+.toolbar{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  margin-bottom:20px;
+}
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.filter-btn{
+  border:1px solid #2c323b;
+  background:#111419;
+  color:#8f97a2;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:9px;
+  font-weight:900;
+}
+.filter-btn.active{
+  color:#fff;
+  border-color:var(--blue-light);
+  background:rgba(57,112,180,.13);
+}
+.refresh-btn{
+  border:1px solid #30363f;
+  background:#15181e;
+  color:#fff;
+  border-radius:999px;
+  padding:10px 15px;
+  font-size:9px;
+  font-weight:900;
 }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:20px;
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:22px;
 }
-
-.full{
-grid-column:1/-1;
+.stat{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:14px;
+  padding:16px;
 }
-
-.actions{
-display:flex;
-gap:12px;
-margin-top:20px;
-flex-wrap:wrap;
+.stat-label{
+  color:#7f8791;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:6px;
 }
-
-.actions button{
-border-radius:999px;
-padding:13px 22px;
-font-weight:700;
+.stat-value{
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:28px;
+  font-weight:900;
 }
-
-.save{
-background:#234f87;
-color:white;
-border:none;
-}
-
-.cancel{
-background:#171717;
-color:white;
-border:1px solid #333;
-}
-
-.check-row{
-display:flex;
-gap:25px;
-flex-wrap:wrap;
-margin:10px 0 25px;
-}
-
-.check{
-display:flex;
-align-items:center;
-gap:9px;
-color:#ccc;
-}
-
-.check input{
-width:auto;
-}
-
-/* =========================
-IMAGENS
-========================= */
-
-.upload-area{
-border:1px dashed #333;
-padding:25px;
-border-radius:16px;
-}
-
-.preview{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-top:15px;
-}
-
-.preview img{
-width:90px;
-height:110px;
-object-fit:cover;
-border-radius:10px;
-}
-
-/* =========================
-PRODUTOS
-========================= */
-
-.products{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:18px;
-}
-
-.product{
-background:#0e0e0e;
-border:1px solid #202020;
-border-radius:17px;
-overflow:hidden;
-}
-
-.product-image{
-aspect-ratio:9/11;
-background:#151515;
-}
-
-.product-image img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-.product-info{
-padding:17px;
-}
-
-.product-info h3{
-margin:7px 0;
-font-size:16px;
-}
-
-.muted{
-color:#777;
-font-size:11px;
-}
-
-.price{
-font-weight:800;
-margin:8px 0 14px;
-}
-
-.card-buttons{
-display:flex;
-gap:7px;
-margin-top:13px;
-}
-
-.card-buttons button{
-flex:1;
-padding:9px;
-border-radius:9px;
-border:1px solid #292929;
-background:#161616;
-color:white;
-}
-
-.delete{
-color:#ff7070!important;
-}
-
-/* =========================
-FORNECEDORES
-========================= */
-
-.suppliers{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:18px;
-}
-
-.supplier{
-background:#0e0e0e;
-border:1px solid #202020;
-border-radius:17px;
-padding:20px;
-}
-
-.supplier h3{
-margin-bottom:10px;
-}
-
-.supplier p{
-color:#999;
-font-size:12px;
-line-height:1.7;
-}
-
-.empty{
-color:#777;
-}
-
-/* =========================
-PEDIDOS - FILTROS
-========================= */
-
-.orders-toolbar{
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-margin-bottom:25px;
-}
-
-.orders-toolbar input{
-flex:1;
-min-width:220px;
-}
-
-.orders-toolbar select{
-width:230px;
-}
-
-/* =========================
-PEDIDOS
-========================= */
 
 .orders{
-display:flex;
-flex-direction:column;
-gap:18px;
+  display:grid;
+  gap:16px;
 }
-
 .order-card{
-background:#0e0e0e;
-border:1px solid #202020;
-border-radius:20px;
-overflow:hidden;
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:16px;
+  overflow:hidden;
 }
-
-.order-header{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-gap:20px;
-padding:20px 22px;
-border-bottom:1px solid #202020;
+.order-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  padding:18px;
+  border-bottom:1px solid var(--line);
 }
-
 .order-number{
-font-size:13px;
-font-weight:800;
-word-break:break-all;
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:24px;
+  font-weight:900;
 }
-
 .order-date{
-font-size:10px;
-color:#777;
-margin-top:5px;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+.badges{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.badge{
+  border:1px solid #343b45;
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.badge.pago,.badge.entregue{
+  color:#63d997;
+  border-color:rgba(99,217,151,.35);
+}
+.badge.aguardando_pagamento{
+  color:var(--warning);
+  border-color:rgba(241,191,99,.35);
+}
+.badge.preparando,.badge.enviado,.badge.em_transporte{
+  color:#80b2ec;
+  border-color:rgba(128,178,236,.35);
+}
+.badge.erro_checkout,.badge.cancelado{
+  color:#ff8585;
+  border-color:rgba(255,133,133,.35);
 }
 
-.order-status{
-padding:7px 11px;
-border-radius:999px;
-font-size:9px;
-font-weight:800;
-text-transform:uppercase;
-white-space:nowrap;
-border:1px solid #333;
+.order-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:0;
+}
+.order-section{
+  padding:18px;
+}
+.order-section + .order-section{
+  border-left:1px solid var(--line);
+}
+.section-title{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.2px;
+  margin-bottom:14px;
+}
+.info-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.info{
+  border:1px solid #292f37;
+  border-radius:11px;
+  padding:12px;
+}
+.info-label{
+  color:#7f8791;
+  font-size:8px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+.info-value{
+  font-size:11px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
 }
 
-.status-aguardando_pagamento{
-color:#e4b760;
-background:rgba(228,183,96,.08);
-border-color:rgba(228,183,96,.25);
+.item{
+  display:grid;
+  grid-template-columns:55px 1fr auto;
+  gap:11px;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid #22272e;
 }
-
-.status-pago{
-color:#5bd590;
-background:rgba(91,213,144,.08);
-border-color:rgba(91,213,144,.25);
+.item:last-child{border-bottom:0}
+.item img{
+  width:55px;height:64px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#181c22;
 }
+.item-name{font-size:11px;font-weight:800}
+.item-meta{font-size:9px;color:var(--muted);margin-top:4px;line-height:1.5}
+.item-total{font-size:10px;font-weight:900;white-space:nowrap}
 
-.status-etiqueta_pendente{
-color:#7eaeff;
-background:rgba(126,174,255,.08);
-border-color:rgba(126,174,255,.25);
+.edit-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
 }
-
-.status-enviado{
-color:#8f8cff;
-background:rgba(143,140,255,.08);
-border-color:rgba(143,140,255,.25);
+.field label{
+  display:block;
+  color:#7f8791;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:6px;
 }
-
-.status-entregue{
-color:#5bd590;
-background:rgba(91,213,144,.08);
-border-color:rgba(91,213,144,.25);
+.field input,.field select{
+  width:100%;
+  height:45px;
+  border-radius:10px;
+  border:1px solid #2c323a;
+  background:#15181e;
+  color:#fff;
+  padding:0 12px;
+  outline:none;
 }
-
-.status-cancelado,
-.status-erro_checkout{
-color:#ff7777;
-background:rgba(255,119,119,.08);
-border-color:rgba(255,119,119,.25);
+.field input:focus,.field select:focus{
+  border-color:var(--blue-light);
 }
-
-.order-body{
-padding:22px;
-display:grid;
-grid-template-columns:1.2fr 1fr;
-gap:30px;
+.full{grid-column:1/-1}
+.actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:14px;
 }
-
-.order-section-title{
-font-size:10px;
-color:#3970b4;
-letter-spacing:1.5px;
-text-transform:uppercase;
-font-weight:800;
-margin-bottom:13px;
+.btn{
+  min-height:44px;
+  border-radius:999px;
+  padding:0 16px;
+  font-size:9px;
+  font-weight:900;
 }
-
-.order-product{
-display:flex;
-gap:14px;
+.primary{
+  border:0;
+  background:#fff;
+  color:#090b0e;
 }
-
-.order-product-image{
-width:75px;
-height:90px;
-border-radius:10px;
-object-fit:cover;
-background:#151515;
+.secondary{
+  border:1px solid #30363f;
+  background:#15181e;
+  color:#fff;
 }
-
-.order-product h3{
-font-size:15px;
-margin-bottom:7px;
+.save-message{
+  min-height:16px;
+  margin-top:9px;
+  font-size:10px;
+  color:var(--muted);
 }
+.save-message.success{color:#63d997}
+.save-message.error{color:#ff8080}
 
-.order-product p{
-font-size:11px;
-color:#888;
-margin-bottom:5px;
+.empty{
+  border:1px dashed #30363f;
+  border-radius:14px;
+  padding:36px 20px;
+  text-align:center;
+  color:#818995;
+  font-size:12px;
+  line-height:1.7;
 }
-
-.order-info-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
+.empty strong{
+  display:block;
+  color:#fff;
+  font-size:16px;
+  margin-bottom:8px;
 }
+.hidden{display:none!important}
 
-.order-info{
-background:#131313;
-border:1px solid #222;
-border-radius:12px;
-padding:13px;
+body.light-theme{
+  --bg:#f5f6f8;
+  --card:#fff;
+  --text:#111318;
+  --muted:#6d7480;
+  --line:#dfe3e8;
 }
-
-.order-info span{
-display:block;
-font-size:9px;
-color:#777;
-text-transform:uppercase;
-letter-spacing:.8px;
-margin-bottom:6px;
+body.light-theme header{background:rgba(255,255,255,.97)}
+body.light-theme .logo{color:#111318}
+body.light-theme .icon-btn,
+body.light-theme .filter-btn,
+body.light-theme .refresh-btn,
+body.light-theme .secondary{
+  background:#fff;
+  color:#111318;
+  border-color:#d7dce3;
 }
-
-.order-info strong{
-font-size:12px;
-word-break:break-word;
+body.light-theme .filter-btn.active{background:rgba(57,112,180,.08)}
+body.light-theme .field input,
+body.light-theme .field select{
+  background:#fff;
+  color:#111318;
+  border-color:#d7dce3;
 }
-
-.order-total-box{
-margin-top:18px;
-padding-top:15px;
-border-top:1px solid #222;
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
-.order-total-row{
-display:flex;
-justify-content:space-between;
-gap:20px;
-font-size:12px;
-color:#999;
-}
-
-.order-total-row.total{
-font-size:16px;
-font-weight:800;
-color:white;
-padding-top:8px;
-border-top:1px solid #222;
-}
-
-.order-actions{
-padding:18px 22px;
-border-top:1px solid #202020;
-display:flex;
-align-items:center;
-gap:10px;
-flex-wrap:wrap;
-}
-
-.order-actions select{
-width:220px;
-padding:10px 12px;
-font-size:11px;
-}
-
-.order-action-btn{
-border:1px solid #303030;
-background:#161616;
-color:white;
-border-radius:999px;
-padding:10px 15px;
-font-size:10px;
-font-weight:800;
-}
-
-.order-action-btn.primary{
-background:#234f87;
-border-color:#234f87;
-}
-
-.receipt-link{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-border:1px solid #303030;
-background:#161616;
-color:white;
-border-radius:999px;
-padding:10px 15px;
-font-size:10px;
-font-weight:800;
-text-decoration:none;
-}
-
-/* =========================
-RESUMO PEDIDOS
-========================= */
-
-.order-stats{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:14px;
-margin-bottom:30px;
-}
-
-.stat-card{
-background:#0e0e0e;
-border:1px solid #202020;
-border-radius:16px;
-padding:18px;
-}
-
-.stat-card span{
-display:block;
-color:#777;
-font-size:9px;
-text-transform:uppercase;
-letter-spacing:1px;
-margin-bottom:8px;
-}
-
-.stat-card strong{
-font-size:24px;
-}
-
-/* =========================
-MOBILE
-========================= */
+body.light-theme .info{border-color:#dfe3e8}
+body.light-theme .order-section + .order-section{border-left-color:#dfe3e8}
+body.light-theme .item{border-color:#e1e4e8}
+body.light-theme .item img{background:#eef0f3}
+body.light-theme .primary{background:#111318;color:#fff}
+body.light-theme .empty{border-color:#d7dce3}
+body.light-theme .empty strong{color:#111318}
 
 @media(max-width:900px){
-
-.products{
-grid-template-columns:repeat(2,1fr);
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .order-grid{grid-template-columns:1fr}
+  .order-section + .order-section{border-left:0;border-top:1px solid var(--line)}
 }
-
-.suppliers{
-grid-template-columns:repeat(2,1fr);
+@media(max-width:600px){
+  header{min-height:65px;padding:0 18px}
+  .logo{font-size:25px}
+  .header-link{display:none}
+  .toolbar{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .order-head{flex-direction:column}
+  .badges{justify-content:flex-start}
+  .info-grid,.edit-grid{grid-template-columns:1fr}
+  .full{grid-column:1}
+  .item{grid-template-columns:50px 1fr}
+  .item-total{grid-column:2}
 }
-
-.order-body{
-grid-template-columns:1fr;
-}
-
-.order-stats{
-grid-template-columns:repeat(2,1fr);
-}
-
-}
-
-@media(max-width:650px){
-
-.grid{
-grid-template-columns:1fr;
-}
-
-.full{
-grid-column:auto;
-}
-
-.products,
-.suppliers{
-grid-template-columns:1fr;
-}
-
-.order-header{
-flex-direction:column;
-}
-
-.order-info-grid{
-grid-template-columns:1fr;
-}
-
-.order-stats{
-grid-template-columns:1fr 1fr;
-}
-
-.orders-toolbar{
-flex-direction:column;
-}
-
-.orders-toolbar input,
-.orders-toolbar select{
-width:100%;
-}
-
-}
-
 </style>
-
 </head>
 
 <body>
 
-
-<!-- =========================
-LOGIN
-========================= -->
-
-<section id="loginScreen">
-
-<div class="login-box">
-
-<div class="logo">
-URBANSTEP<span>.</span>
-</div>
-
-<h1>
-Painel administrativo
-</h1>
-
-<p>
-Entre para administrar sua loja.
-</p>
-
-<form id="loginForm">
-
-<div class="field">
-
-<label>
-E-mail
-</label>
-
-<input
-id="email"
-type="email"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Senha
-</label>
-
-<input
-id="password"
-type="password"
-required
->
-
-</div>
-
-<button class="btn-primary">
-ENTRAR
-</button>
-
-<p id="loginMessage"></p>
-
-</form>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-ADMIN
-========================= -->
-
-<section
-id="adminScreen"
-class="hidden"
->
-
 <header>
+  <a href="index.html" class="logo">URBANSTEP<span>.</span></a>
 
-<div class="header-logo">
-URBANSTEP<span>.</span>
-</div>
-
-<button
-id="logoutBtn"
-class="logout"
->
-Sair
-</button>
-
+  <div class="header-actions">
+    <a href="minha-conta.html" class="header-link">MINHA CONTA</a>
+    <button class="icon-btn" id="themeToggle" type="button" aria-label="Alternar tema">
+      <span id="themeIcon">☾</span>
+    </button>
+  </div>
 </header>
 
-
-<div class="tabs">
-
-<button
-class="tab active"
-id="tabProdutos"
-onclick="mostrarAba('produtos')"
->
-PRODUTOS
-</button>
-
-<button
-class="tab"
-id="tabFornecedores"
-onclick="mostrarAba('fornecedores')"
->
-FORNECEDORES
-</button>
-
-<button
-class="tab"
-id="tabPedidos"
-onclick="mostrarAba('pedidos')"
->
-PEDIDOS
-</button>
-
-</div>
-
-
-<!-- =========================
-PRODUTOS
-========================= -->
-
-<main id="areaProdutos">
-
-<div class="title-small">
-Administração
-</div>
-
-<h2 id="productFormTitle">
-Cadastrar produto
-</h2>
-
-<p class="subtitle">
-Cadastre e gerencie os tênis da UrbanStep.
-</p>
-
-<form
-id="productForm"
-class="panel"
->
-
-<div class="grid">
-
-<div class="field">
-
-<label>
-Nome do produto *
-</label>
-
-<input
-id="nome"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Marca *
-</label>
-
-<input
-id="marca"
-required
->
-
-</div>
-
-<div class="field full">
-
-<label>
-Fornecedor *
-</label>
-
-<select
-id="fornecedorId"
-required
->
-
-<option value="">
-Selecione um fornecedor
-</option>
-
-</select>
-
-</div>
-
-<div class="field">
-
-<label>
-Preço *
-</label>
-
-<input
-id="preco"
-type="number"
-step="0.01"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Preço promocional
-</label>
-
-<input
-id="precoPromocional"
-type="number"
-step="0.01"
->
-
-</div>
-
-<div class="field">
-
-<label>
-Desconto (%)
-</label>
-
-<input
-id="desconto"
-type="number"
-min="0"
-max="100"
->
-
-</div>
-
-<div class="field">
-
-<label>
-Parcelamento
-</label>
-
-<input
-id="parcelamento"
-placeholder="Ex: 4x de R$ 49,98"
->
-
-</div>
-
-<div class="field full">
-
-<label>
-Tamanhos
-</label>
-
-<input
-id="tamanhos"
-placeholder="34, 35, 36, 37, 38, 39"
->
-
-</div>
-
-<div class="field full">
-
-<label>
-Descrição
-</label>
-
-<textarea id="descricao"></textarea>
-
-</div>
-
-<div class="field full upload-area">
-
-<label>
-Imagem principal *
-</label>
-
-<input
-id="imagemPrincipal"
-type="file"
-accept="image/*"
->
-
-<div
-id="principalPreview"
-class="preview"
-></div>
-
-</div>
-
-<div class="field full upload-area">
-
-<label>
-Outras imagens
-</label>
-
-<input
-id="outrasImagens"
-type="file"
-accept="image/*"
-multiple
->
-
-<div
-id="outrasPreview"
-class="preview"
-></div>
-
-</div>
-
-</div>
-
-<div class="check-row">
-
-<label class="check">
-
-<input
-id="lancamento"
-type="checkbox"
->
-
-Mostrar em lançamentos
-
-</label>
-
-<label class="check">
-
-<input
-id="ativo"
-type="checkbox"
-checked
->
-
-Produto ativo
-
-</label>
-
-</div>
-
-<div class="actions">
-
-<button
-class="save"
-id="productSaveBtn"
->
-CADASTRAR PRODUTO
-</button>
-
-<button
-type="button"
-id="cancelProductEdit"
-class="cancel hidden"
->
-CANCELAR
-</button>
-
-</div>
-
-<p id="productMessage"></p>
-
-</form>
-
-
-<div class="title-small">
-Catálogo
-</div>
-
-<h2
-style="
-font-size:30px;
-margin-bottom:25px;
-"
->
-Produtos cadastrados
-</h2>
-
-<div
-id="products"
-class="products"
-></div>
+<main>
+
+  <div class="eyebrow">URBANSTEP BACKOFFICE</div>
+  <h1>PAINEL ADMIN</h1>
+  <div class="subtitle">
+    Controle pedidos, status de envio, rastreio, previsão e entrega.
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total de pedidos</div>
+      <div class="stat-value" id="statTotal">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Aguardando pagamento</div>
+      <div class="stat-value" id="statPending">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Em preparação</div>
+      <div class="stat-value" id="statPreparing">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Entregues</div>
+      <div class="stat-value" id="statDelivered">0</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="filters">
+      <button class="filter-btn active" data-filter="todos">TODOS</button>
+      <button class="filter-btn" data-filter="aguardando_pagamento">AGUARDANDO</button>
+      <button class="filter-btn" data-filter="preparando">PREPARANDO</button>
+      <button class="filter-btn" data-filter="enviado">ENVIADOS</button>
+      <button class="filter-btn" data-filter="entregue">ENTREGUES</button>
+    </div>
+
+    <button class="refresh-btn" id="refreshButton">ATUALIZAR</button>
+  </div>
+
+  <div id="loading" class="empty">
+    <strong>Carregando pedidos...</strong>
+    Aguarde um instante.
+  </div>
+
+  <div id="notAdmin" class="empty hidden">
+    <strong>Acesso não autorizado.</strong>
+    Esta conta não possui permissão de administrador.
+  </div>
+
+  <div id="empty" class="empty hidden">
+    <strong>Nenhum pedido encontrado.</strong>
+    Não há pedidos neste filtro.
+  </div>
+
+  <section class="orders hidden" id="orders"></section>
 
 </main>
-
-
-<!-- =========================
-FORNECEDORES
-========================= -->
-
-<main
-id="areaFornecedores"
-class="hidden"
->
-
-<div class="title-small">
-Logística
-</div>
-
-<h2 id="supplierFormTitle">
-Cadastrar fornecedor
-</h2>
-
-<p class="subtitle">
-O endereço fica salvo para ser usado no cálculo do frete.
-</p>
-
-<form
-id="supplierForm"
-class="panel"
->
-
-<div class="grid">
-
-<div class="field full">
-
-<label>
-Nome do fornecedor *
-</label>
-
-<input
-id="supplierNome"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-CEP *
-</label>
-
-<input
-id="supplierCep"
-maxlength="9"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Estado *
-</label>
-
-<select
-id="supplierEstado"
-required
->
-
-<option value="">
-Selecione
-</option>
-
-<option>AC</option>
-<option>AL</option>
-<option>AP</option>
-<option>AM</option>
-<option>BA</option>
-<option>CE</option>
-<option>DF</option>
-<option>ES</option>
-<option>GO</option>
-<option>MA</option>
-<option>MT</option>
-<option>MS</option>
-<option>MG</option>
-<option>PA</option>
-<option>PB</option>
-<option>PR</option>
-<option>PE</option>
-<option>PI</option>
-<option>RJ</option>
-<option>RN</option>
-<option>RS</option>
-<option>RO</option>
-<option>RR</option>
-<option>SC</option>
-<option>SP</option>
-<option>SE</option>
-<option>TO</option>
-
-</select>
-
-</div>
-
-<div class="field full">
-
-<label>
-Rua *
-</label>
-
-<input
-id="supplierRua"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Número *
-</label>
-
-<input
-id="supplierNumero"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Bairro *
-</label>
-
-<input
-id="supplierBairro"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Cidade *
-</label>
-
-<input
-id="supplierCidade"
-required
->
-
-</div>
-
-<div class="field">
-
-<label>
-Complemento
-</label>
-
-<input
-id="supplierComplemento"
->
-
-</div>
-
-</div>
-
-<div class="actions">
-
-<button
-class="save"
-id="supplierSaveBtn"
->
-CADASTRAR FORNECEDOR
-</button>
-
-<button
-type="button"
-id="cancelSupplierEdit"
-class="cancel hidden"
->
-CANCELAR
-</button>
-
-</div>
-
-<p id="supplierMessage"></p>
-
-</form>
-
-<div class="title-small">
-Cadastrados
-</div>
-
-<h2
-style="
-font-size:30px;
-margin-bottom:25px;
-"
->
-Fornecedores
-</h2>
-
-<div
-id="suppliers"
-class="suppliers"
-></div>
-
-</main>
-
-
-<!-- =========================
-PEDIDOS
-========================= -->
-
-<main
-id="areaPedidos"
-class="hidden"
->
-
-<div class="title-small">
-Vendas
-</div>
-
-<h2>
-Pedidos
-</h2>
-
-<p class="subtitle">
-Acompanhe pagamentos, fretes e envio dos pedidos.
-</p>
-
-
-<div class="order-stats">
-
-<div class="stat-card">
-
-<span>
-Aguardando
-</span>
-
-<strong id="statAguardando">
-0
-</strong>
-
-</div>
-
-<div class="stat-card">
-
-<span>
-Pagos
-</span>
-
-<strong id="statPagos">
-0
-</strong>
-
-</div>
-
-<div class="stat-card">
-
-<span>
-Enviados
-</span>
-
-<strong id="statEnviados">
-0
-</strong>
-
-</div>
-
-<div class="stat-card">
-
-<span>
-Total pedidos
-</span>
-
-<strong id="statTotal">
-0
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="orders-toolbar">
-
-<input
-id="orderSearch"
-placeholder="Buscar por pedido, produto, marca ou CEP..."
->
-
-<select id="orderFilter">
-
-<option value="todos">
-Todos os status
-</option>
-
-<option value="aguardando_pagamento">
-Aguardando pagamento
-</option>
-
-<option value="pago">
-Pago
-</option>
-
-<option value="etiqueta_pendente">
-Etiqueta pendente
-</option>
-
-<option value="enviado">
-Enviado
-</option>
-
-<option value="entregue">
-Entregue
-</option>
-
-<option value="cancelado">
-Cancelado
-</option>
-
-<option value="erro_checkout">
-Erro no checkout
-</option>
-
-</select>
-
-</div>
-
-
-<div
-id="orders"
-class="orders"
->
-
-<p class="empty">
-Carregando pedidos...
-</p>
-
-</div>
-
-</main>
-
-</section>
-
 
 <script>
-
-/* =========================
-SUPABASE
-========================= */
-
 const SUPABASE_URL =
-"https://gpovidqzqgttitsgelzm.supabase.co";
+  "https://gpovidqzqgttitsgelzm.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
+  "sb_publishable_un59bD2cSYc9jWpOupBc-A_BBGvrWMS";
 
-const ADMIN_UID =
-"5b83bb0a-b41b-4a5f-af70-5937ad298ab2";
-
-const {
-createClient
-} = supabase;
+const { createClient } = supabase;
 
 const db =
-createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
+const THEME_KEY =
+  "urbanstep_theme";
 
-/* =========================
-VARIÁVEIS
-========================= */
+let pedidosCache = [];
+let itensCache = [];
+let filtroAtual = "todos";
 
-let editingProductId =
-null;
+function aplicarTema(tema){
+  const claro =
+    tema === "light";
 
-let editingSupplierId =
-null;
+  document.body.classList.toggle(
+    "light-theme",
+    claro
+  );
 
-let existingMainImage =
-"";
+  document.getElementById("themeIcon").textContent =
+    claro ? "☀" : "☾";
 
-let existingImages =
-[];
-
-let fornecedores =
-[];
-
-let pedidos =
-[];
-
-
-/* =========================
-LOGIN
-========================= */
-
-async function checkSession(){
-
-const {
-data:{
-session
-}
-} =
-await db.auth.getSession();
-
-if(
-session &&
-session.user.id ===
-ADMIN_UID
-){
-
-showAdmin();
-
-}else{
-
-showLogin();
-
+  localStorage.setItem(
+    THEME_KEY,
+    claro ? "light" : "dark"
+  );
 }
 
-}
-
-
-function showLogin(){
-
 document
-.getElementById(
-"adminScreen"
-)
-.classList
-.add(
-"hidden"
-);
-
-document
-.getElementById(
-"loginScreen"
-)
-.classList
-.remove(
-"hidden"
-);
-
-}
-
-
-function showAdmin(){
-
-document
-.getElementById(
-"loginScreen"
-)
-.classList
-.add(
-"hidden"
-);
-
-document
-.getElementById(
-"adminScreen"
-)
-.classList
-.remove(
-"hidden"
-);
-
-carregarFornecedores();
-
-carregarProdutos();
-
-}
-
-
-document
-.getElementById(
-"loginForm"
-)
-.addEventListener(
-"submit",
-async e=>{
-
-e.preventDefault();
-
-const email =
-document
-.getElementById(
-"email"
-)
-.value
-.trim();
-
-const password =
-document
-.getElementById(
-"password"
-)
-.value;
-
-const {
-data,
-error
-} =
-await db.auth
-.signInWithPassword({
-email,
-password
+.getElementById("themeToggle")
+.addEventListener("click",()=>{
+  aplicarTema(
+    document.body.classList.contains("light-theme")
+      ? "dark"
+      : "light"
+  );
 });
 
-if(error){
+aplicarTema(
+  localStorage.getItem(THEME_KEY)
+  ||
+  "dark"
+);
 
-document
-.getElementById(
-"loginMessage"
-)
-.textContent =
-"E-mail ou senha incorretos.";
-
-return;
-
+function money(value){
+  return Number(value || 0).toLocaleString(
+    "pt-BR",
+    {
+      style:"currency",
+      currency:"BRL"
+    }
+  );
 }
 
-if(
-data.user.id !==
-ADMIN_UID
-){
+function formatDate(value){
+  if(!value) return "—";
 
-await db.auth.signOut();
+  const d =
+    new Date(value);
 
-document
-.getElementById(
-"loginMessage"
-)
-.textContent =
-"Conta sem acesso administrativo.";
+  if(Number.isNaN(d.getTime())){
+    return "—";
+  }
 
-return;
-
+  return d.toLocaleString(
+    "pt-BR",
+    {
+      dateStyle:"short",
+      timeStyle:"short"
+    }
+  );
 }
 
-showAdmin();
-
-}
-);
-
-
-document
-.getElementById(
-"logoutBtn"
-)
-.addEventListener(
-"click",
-async ()=>{
-
-await db.auth.signOut();
-
-showLogin();
-
-}
-);
-
-
-/* =========================
-ABAS
-========================= */
-
-function mostrarAba(aba){
-
-const areas = {
-produtos:
-document.getElementById(
-"areaProdutos"
-),
-
-fornecedores:
-document.getElementById(
-"areaFornecedores"
-),
-
-pedidos:
-document.getElementById(
-"areaPedidos"
-)
-};
-
-const tabs = {
-produtos:
-document.getElementById(
-"tabProdutos"
-),
-
-fornecedores:
-document.getElementById(
-"tabFornecedores"
-),
-
-pedidos:
-document.getElementById(
-"tabPedidos"
-)
-};
-
-Object.values(
-areas
-)
-.forEach(
-area =>
-area.classList.add(
-"hidden"
-)
-);
-
-Object.values(
-tabs
-)
-.forEach(
-tab =>
-tab.classList.remove(
-"active"
-)
-);
-
-areas[aba]
-.classList
-.remove(
-"hidden"
-);
-
-tabs[aba]
-.classList
-.add(
-"active"
-);
-
-
-if(
-aba === "fornecedores"
-){
-
-carregarFornecedores();
-
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
+function statusLabel(status){
+  const labels = {
+    aguardando_pagamento:"Aguardando pagamento",
+    pago:"Pago",
+    erro_checkout:"Erro checkout",
+    cancelado:"Cancelado",
+    preparando:"Preparando",
+    enviado:"Enviado",
+    em_transporte:"Em transporte",
+    entregue:"Entregue"
+  };
 
-if(
-aba === "pedidos"
-){
-
-carregarPedidos();
-
+  return labels[status]
+    ||
+    status
+    ||
+    "Em processamento";
 }
 
+function shippingStatus(pedido){
+  if(
+    pedido.status !== "pago"
+    &&
+    pedido.status_envio === "aguardando_pagamento"
+  ){
+    return "aguardando_pagamento";
+  }
+
+  return pedido.status_envio
+    ||
+    (
+      pedido.status === "pago"
+        ? "preparando"
+        : "aguardando_pagamento"
+    );
 }
 
+async function verificarAdmin(){
 
-/* =========================
-FORNECEDORES
-========================= */
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth.getSession();
 
-async function carregarFornecedores(){
+  if(!session){
+    window.location.href =
+      "login.html";
+    return false;
+  }
 
-const {
-data,
-error
-} = await db
-.from(
-"fornecedores"
-)
-.select("*")
-.order(
-"nome",
-{
-ascending:true
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "is_admin"
+    );
+
+  if(error){
+    console.error(error);
+    return false;
+  }
+
+  return data === true;
 }
-);
-
-if(error){
-
-console.error(
-error
-);
-
-document
-.getElementById(
-"suppliers"
-)
-.innerHTML =
-"<p class='empty'>Erro ao carregar fornecedores.</p>";
-
-return;
-
-}
-
-fornecedores =
-data || [];
-
-montarSelectFornecedores();
-
-renderFornecedores();
-
-}
-
-
-function montarSelectFornecedores(){
-
-const select =
-document
-.getElementById(
-"fornecedorId"
-);
-
-const atual =
-select.value;
-
-select.innerHTML = `
-
-<option value="">
-Selecione um fornecedor
-</option>
-
-`;
-
-fornecedores
-.forEach(
-fornecedor=>{
-
-const option =
-document
-.createElement(
-"option"
-);
-
-option.value =
-fornecedor.id;
-
-option.textContent =
-fornecedor.nome;
-
-select.appendChild(
-option
-);
-
-}
-);
-
-select.value =
-atual;
-
-}
-
-
-function renderFornecedores(){
-
-const container =
-document
-.getElementById(
-"suppliers"
-);
-
-if(
-!fornecedores.length
-){
-
-container.innerHTML =
-"<p class='empty'>Nenhum fornecedor cadastrado.</p>";
-
-return;
-
-}
-
-container.innerHTML =
-fornecedores
-.map(
-f=>`
-
-<div class="supplier">
-
-<h3>
-${escapeHTML(f.nome)}
-</h3>
-
-<p>
-CEP:
-${escapeHTML(formatCep(f.cep))}
-</p>
-
-<p>
-${escapeHTML(f.rua)},
-${escapeHTML(f.numero)}
-</p>
-
-<p>
-${escapeHTML(f.bairro)}
-</p>
-
-<p>
-${escapeHTML(f.cidade)}
--
-${escapeHTML(f.estado)}
-</p>
-
-${
-f.complemento
-?
-`<p>${escapeHTML(f.complemento)}</p>`
-:
-""
-}
-
-<div class="card-buttons">
-
-<button
-onclick="editarFornecedor(${f.id})"
->
-Editar
-</button>
-
-<button
-class="delete"
-onclick="excluirFornecedor(${f.id})"
->
-Excluir
-</button>
-
-</div>
-
-</div>
-
-`
-)
-.join("");
-
-}
-
-
-document
-.getElementById(
-"supplierForm"
-)
-.addEventListener(
-"submit",
-async e=>{
-
-e.preventDefault();
-
-const supplier = {
-
-nome:
-document
-.getElementById(
-"supplierNome"
-)
-.value.trim(),
-
-cep:
-document
-.getElementById(
-"supplierCep"
-)
-.value
-.replace(/\D/g,""),
-
-rua:
-document
-.getElementById(
-"supplierRua"
-)
-.value.trim(),
-
-numero:
-document
-.getElementById(
-"supplierNumero"
-)
-.value.trim(),
-
-bairro:
-document
-.getElementById(
-"supplierBairro"
-)
-.value.trim(),
-
-cidade:
-document
-.getElementById(
-"supplierCidade"
-)
-.value.trim(),
-
-estado:
-document
-.getElementById(
-"supplierEstado"
-)
-.value,
-
-complemento:
-document
-.getElementById(
-"supplierComplemento"
-)
-.value.trim()
-
-};
-
-
-let result;
-
-
-if(
-editingSupplierId
-){
-
-result =
-await db
-.from(
-"fornecedores"
-)
-.update(
-supplier
-)
-.eq(
-"id",
-editingSupplierId
-);
-
-}else{
-
-result =
-await db
-.from(
-"fornecedores"
-)
-.insert(
-supplier
-);
-
-}
-
-
-if(
-result.error
-){
-
-document
-.getElementById(
-"supplierMessage"
-)
-.textContent =
-"Erro: " +
-result.error.message;
-
-return;
-
-}
-
-
-document
-.getElementById(
-"supplierMessage"
-)
-.textContent =
-editingSupplierId
-?
-"Fornecedor atualizado."
-:
-"Fornecedor cadastrado.";
-
-
-resetSupplierForm();
-
-await carregarFornecedores();
-
-}
-);
-
-
-window.editarFornecedor =
-function(id){
-
-const f =
-fornecedores.find(
-item =>
-item.id === id
-);
-
-if(!f){
-return;
-}
-
-editingSupplierId =
-f.id;
-
-document
-.getElementById(
-"supplierNome"
-)
-.value =
-f.nome || "";
-
-document
-.getElementById(
-"supplierCep"
-)
-.value =
-formatCep(
-f.cep || ""
-);
-
-document
-.getElementById(
-"supplierRua"
-)
-.value =
-f.rua || "";
-
-document
-.getElementById(
-"supplierNumero"
-)
-.value =
-f.numero || "";
-
-document
-.getElementById(
-"supplierBairro"
-)
-.value =
-f.bairro || "";
-
-document
-.getElementById(
-"supplierCidade"
-)
-.value =
-f.cidade || "";
-
-document
-.getElementById(
-"supplierEstado"
-)
-.value =
-f.estado || "";
-
-document
-.getElementById(
-"supplierComplemento"
-)
-.value =
-f.complemento || "";
-
-document
-.getElementById(
-"supplierFormTitle"
-)
-.textContent =
-"Editar fornecedor";
-
-document
-.getElementById(
-"supplierSaveBtn"
-)
-.textContent =
-"SALVAR ALTERAÇÕES";
-
-document
-.getElementById(
-"cancelSupplierEdit"
-)
-.classList
-.remove(
-"hidden"
-);
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-};
-
-
-window.excluirFornecedor =
-async function(id){
-
-const fornecedor =
-fornecedores.find(
-f => f.id === id
-);
-
-if(!fornecedor){
-return;
-}
-
-const {
-data:produtosLigados,
-error:checkError
-} = await db
-.from(
-"produtos"
-)
-.select(
-"id,nome"
-)
-.eq(
-"fornecedor_id",
-id
-)
-.limit(1);
-
-if(checkError){
-
-alert(
-"Não foi possível verificar os produtos deste fornecedor."
-);
-
-return;
-
-}
-
-if(
-produtosLigados &&
-produtosLigados.length
-){
-
-alert(
-`Não é possível excluir ${fornecedor.nome} porque existem produtos ligados a ele.`
-);
-
-return;
-
-}
-
-if(
-!confirm(
-`Excluir o fornecedor "${fornecedor.nome}"?`
-)
-){
-return;
-}
-
-const {
-error
-} = await db
-.from(
-"fornecedores"
-)
-.delete()
-.eq(
-"id",
-id
-);
-
-if(error){
-
-alert(
-"Erro ao excluir: " +
-error.message
-);
-
-return;
-
-}
-
-await carregarFornecedores();
-
-};
-
-
-document
-.getElementById(
-"cancelSupplierEdit"
-)
-.addEventListener(
-"click",
-resetSupplierForm
-);
-
-
-function resetSupplierForm(){
-
-document
-.getElementById(
-"supplierForm"
-)
-.reset();
-
-editingSupplierId =
-null;
-
-document
-.getElementById(
-"supplierFormTitle"
-)
-.textContent =
-"Cadastrar fornecedor";
-
-document
-.getElementById(
-"supplierSaveBtn"
-)
-.textContent =
-"CADASTRAR FORNECEDOR";
-
-document
-.getElementById(
-"cancelSupplierEdit"
-)
-.classList
-.add(
-"hidden"
-);
-
-}
-
-
-document
-.getElementById(
-"supplierCep"
-)
-.addEventListener(
-"input",
-e=>{
-
-let value =
-e.target.value
-.replace(/\D/g,"")
-.slice(0,8);
-
-if(
-value.length > 5
-){
-
-value =
-value.slice(0,5)
-+
-"-"
-+
-value.slice(5);
-
-}
-
-e.target.value =
-value;
-
-}
-);
-
-
-function formatCep(cep){
-
-const value =
-String(
-cep || ""
-)
-.replace(/\D/g,"");
-
-if(
-value.length !== 8
-){
-return value;
-}
-
-return (
-value.slice(0,5)
-+
-"-"
-+
-value.slice(5)
-);
-
-}
-
-
-/* =========================
-UPLOAD IMAGENS
-========================= */
-
-document
-.getElementById(
-"imagemPrincipal"
-)
-.addEventListener(
-"change",
-function(){
-
-const preview =
-document
-.getElementById(
-"principalPreview"
-);
-
-preview.innerHTML =
-"";
-
-if(
-!this.files[0]
-){
-return;
-}
-
-const img =
-document
-.createElement(
-"img"
-);
-
-img.src =
-URL.createObjectURL(
-this.files[0]
-);
-
-preview.appendChild(
-img
-);
-
-}
-);
-
-
-document
-.getElementById(
-"outrasImagens"
-)
-.addEventListener(
-"change",
-function(){
-
-const preview =
-document
-.getElementById(
-"outrasPreview"
-);
-
-preview.innerHTML =
-"";
-
-[
-...this.files
-]
-.forEach(
-file=>{
-
-const img =
-document
-.createElement(
-"img"
-);
-
-img.src =
-URL.createObjectURL(
-file
-);
-
-preview.appendChild(
-img
-);
-
-}
-);
-
-}
-);
-
-
-async function uploadImage(file){
-
-const extension =
-file.name
-.split(".")
-.pop();
-
-const filename =
-`${Date.now()}-${crypto.randomUUID()}.${extension}`;
-
-const {
-error
-} =
-await db.storage
-.from(
-"produtos"
-)
-.upload(
-filename,
-file
-);
-
-if(error){
-throw error;
-}
-
-const {
-data
-} =
-db.storage
-.from(
-"produtos"
-)
-.getPublicUrl(
-filename
-);
-
-return data.publicUrl;
-
-}
-
-
-/* =========================
-PRODUTOS
-========================= */
-
-document
-.getElementById(
-"productForm"
-)
-.addEventListener(
-"submit",
-async e=>{
-
-e.preventDefault();
-
-const message =
-document
-.getElementById(
-"productMessage"
-);
-
-message.textContent =
-"Salvando...";
-
-try{
-
-const mainFile =
-document
-.getElementById(
-"imagemPrincipal"
-)
-.files[0];
-
-const extraFiles =
-[
-...document
-.getElementById(
-"outrasImagens"
-)
-.files
-];
-
-let mainImage =
-existingMainImage;
-
-if(mainFile){
-
-mainImage =
-await uploadImage(
-mainFile
-);
-
-}
-
-if(!mainImage){
-
-throw new Error(
-"Escolha uma imagem principal."
-);
-
-}
-
-let extraImages =
-[
-...existingImages
-];
-
-for(
-const file of extraFiles
-){
-
-extraImages.push(
-await uploadImage(
-file
-)
-);
-
-}
-
-const product = {
-
-nome:
-document
-.getElementById(
-"nome"
-)
-.value.trim(),
-
-marca:
-document
-.getElementById(
-"marca"
-)
-.value.trim(),
-
-fornecedor_id:
-Number(
-document
-.getElementById(
-"fornecedorId"
-)
-.value
-),
-
-preco:
-Number(
-document
-.getElementById(
-"preco"
-)
-.value
-),
-
-preco_promocional:
-document
-.getElementById(
-"precoPromocional"
-)
-.value
-?
-Number(
-document
-.getElementById(
-"precoPromocional"
-)
-.value
-)
-:
-null,
-
-desconto:
-document
-.getElementById(
-"desconto"
-)
-.value
-?
-Number(
-document
-.getElementById(
-"desconto"
-)
-.value
-)
-:
-null,
-
-parcelamento:
-document
-.getElementById(
-"parcelamento"
-)
-.value.trim(),
-
-descricao:
-document
-.getElementById(
-"descricao"
-)
-.value.trim(),
-
-tamanhos:
-document
-.getElementById(
-"tamanhos"
-)
-.value.trim(),
-
-imagem_principal:
-mainImage,
-
-imagens:
-JSON.stringify(
-extraImages
-),
-
-lancamento:
-document
-.getElementById(
-"lancamento"
-)
-.checked,
-
-ativo:
-document
-.getElementById(
-"ativo"
-)
-.checked
-
-};
-
-
-let result;
-
-
-if(
-editingProductId
-){
-
-result =
-await db
-.from(
-"produtos"
-)
-.update(
-product
-)
-.eq(
-"id",
-editingProductId
-);
-
-}else{
-
-result =
-await db
-.from(
-"produtos"
-)
-.insert(
-product
-);
-
-}
-
-
-if(
-result.error
-){
-throw result.error;
-}
-
-
-message.textContent =
-editingProductId
-?
-"Produto atualizado!"
-:
-"Produto cadastrado!";
-
-
-resetProductForm();
-
-await carregarProdutos();
-
-
-}catch(error){
-
-console.error(
-error
-);
-
-message.textContent =
-"Erro: " +
-error.message;
-
-}
-
-}
-);
-
-
-async function carregarProdutos(){
-
-const {
-data,
-error
-} = await db
-.from(
-"produtos"
-)
-.select(`
-*,
-fornecedor:fornecedores(
-id,
-nome
-)
-`)
-.order(
-"created_at",
-{
-ascending:false
-}
-);
-
-
-if(error){
-
-console.error(
-error
-);
-
-document
-.getElementById(
-"products"
-)
-.innerHTML =
-"<p class='empty'>Erro ao carregar produtos.</p>";
-
-return;
-
-}
-
-
-const container =
-document
-.getElementById(
-"products"
-);
-
-
-if(
-!data ||
-!data.length
-){
-
-container.innerHTML =
-"<p class='empty'>Nenhum produto.</p>";
-
-return;
-
-}
-
-
-container.innerHTML =
-data.map(
-p=>`
-
-<div class="product">
-
-<div class="product-image">
-
-<img
-src="${escapeHTML(
-p.imagem_principal ||
-""
-)}"
->
-
-</div>
-
-<div class="product-info">
-
-<div class="muted">
-${escapeHTML(
-p.marca ||
-""
-)}
-</div>
-
-<h3>
-${escapeHTML(
-p.nome ||
-""
-)}
-</h3>
-
-<div class="muted">
-
-Fornecedor:
-${escapeHTML(
-p.fornecedor?.nome ||
-"Não definido"
-)}
-
-</div>
-
-<div class="price">
-
-${money(
-p.preco_promocional ||
-p.preco
-)}
-
-</div>
-
-<div class="card-buttons">
-
-<button
-onclick="editarProduto(${p.id})"
->
-Editar
-</button>
-
-<button
-class="delete"
-onclick="excluirProduto(${p.id})"
->
-Excluir
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`
-)
-.join("");
-
-}
-
-
-window.editarProduto =
-async function(id){
-
-const {
-data,
-error
-} = await db
-.from(
-"produtos"
-)
-.select("*")
-.eq(
-"id",
-id
-)
-.single();
-
-if(error){
-return;
-}
-
-editingProductId =
-data.id;
-
-existingMainImage =
-data.imagem_principal ||
-"";
-
-try{
-
-existingImages =
-data.imagens
-?
-JSON.parse(
-data.imagens
-)
-:
-[];
-
-}catch{
-
-existingImages =
-[];
-
-}
-
-document
-.getElementById(
-"nome"
-)
-.value =
-data.nome || "";
-
-document
-.getElementById(
-"marca"
-)
-.value =
-data.marca || "";
-
-document
-.getElementById(
-"fornecedorId"
-)
-.value =
-data.fornecedor_id || "";
-
-document
-.getElementById(
-"preco"
-)
-.value =
-data.preco ?? "";
-
-document
-.getElementById(
-"precoPromocional"
-)
-.value =
-data.preco_promocional ??
-"";
-
-document
-.getElementById(
-"desconto"
-)
-.value =
-data.desconto ??
-"";
-
-document
-.getElementById(
-"parcelamento"
-)
-.value =
-data.parcelamento ||
-"";
-
-document
-.getElementById(
-"descricao"
-)
-.value =
-data.descricao ||
-"";
-
-document
-.getElementById(
-"tamanhos"
-)
-.value =
-data.tamanhos ||
-"";
-
-document
-.getElementById(
-"lancamento"
-)
-.checked =
-!!data.lancamento;
-
-document
-.getElementById(
-"ativo"
-)
-.checked =
-!!data.ativo;
-
-document
-.getElementById(
-"principalPreview"
-)
-.innerHTML =
-existingMainImage
-?
-`<img src="${existingMainImage}">`
-:
-"";
-
-document
-.getElementById(
-"outrasPreview"
-)
-.innerHTML =
-existingImages
-.map(
-url =>
-`<img src="${url}">`
-)
-.join("");
-
-document
-.getElementById(
-"productFormTitle"
-)
-.textContent =
-"Editar produto";
-
-document
-.getElementById(
-"productSaveBtn"
-)
-.textContent =
-"SALVAR ALTERAÇÕES";
-
-document
-.getElementById(
-"cancelProductEdit"
-)
-.classList
-.remove(
-"hidden"
-);
-
-mostrarAba(
-"produtos"
-);
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-};
-
-
-window.excluirProduto =
-async function(id){
-
-if(
-!confirm(
-"Tem certeza que deseja excluir este produto?"
-)
-){
-return;
-}
-
-const {
-error
-} = await db
-.from(
-"produtos"
-)
-.delete()
-.eq(
-"id",
-id
-);
-
-if(error){
-
-alert(
-"Erro: " +
-error.message
-);
-
-return;
-
-}
-
-await carregarProdutos();
-
-};
-
-
-document
-.getElementById(
-"cancelProductEdit"
-)
-.addEventListener(
-"click",
-resetProductForm
-);
-
-
-function resetProductForm(){
-
-document
-.getElementById(
-"productForm"
-)
-.reset();
-
-document
-.getElementById(
-"ativo"
-)
-.checked =
-true;
-
-document
-.getElementById(
-"principalPreview"
-)
-.innerHTML =
-"";
-
-document
-.getElementById(
-"outrasPreview"
-)
-.innerHTML =
-"";
-
-editingProductId =
-null;
-
-existingMainImage =
-"";
-
-existingImages =
-[];
-
-document
-.getElementById(
-"productFormTitle"
-)
-.textContent =
-"Cadastrar produto";
-
-document
-.getElementById(
-"productSaveBtn"
-)
-.textContent =
-"CADASTRAR PRODUTO";
-
-document
-.getElementById(
-"cancelProductEdit"
-)
-.classList
-.add(
-"hidden"
-);
-
-}
-
-
-/* =========================
-PEDIDOS
-========================= */
 
 async function carregarPedidos(){
 
-const container =
-document
-.getElementById(
-"orders"
-);
+  const loading =
+    document.getElementById("loading");
 
-container.innerHTML =
-"<p class='empty'>Carregando pedidos...</p>";
+  const notAdmin =
+    document.getElementById("notAdmin");
 
+  const orders =
+    document.getElementById("orders");
 
-const {
-data,
-error
-} = await db
-.from(
-"pedidos"
-)
-.select(`
-*,
-produto:produtos(
-id,
-imagem_principal
-),
-fornecedor:fornecedores(
-id,
-nome,
-cep,
-rua,
-numero,
-bairro,
-cidade,
-estado,
-complemento
-)
-`)
-.order(
-"created_at",
-{
-ascending:false
+  const empty =
+    document.getElementById("empty");
+
+  loading.classList.remove("hidden");
+  notAdmin.classList.add("hidden");
+  orders.classList.add("hidden");
+  empty.classList.add("hidden");
+
+  const admin =
+    await verificarAdmin();
+
+  if(!admin){
+    loading.classList.add("hidden");
+    notAdmin.classList.remove("hidden");
+    return;
+  }
+
+  const {
+    data:pedidos,
+    error:pedidosError
+  } =
+    await db
+      .from("pedidos")
+      .select(`
+        id,
+        created_at,
+        order_nsu,
+        status,
+        status_envio,
+        total,
+        cliente_nome,
+        cliente_email,
+        cliente_telefone,
+        cep_cliente,
+        rua_cliente,
+        numero_cliente,
+        complemento_cliente,
+        bairro_cliente,
+        cidade_cliente,
+        estado_cliente,
+        servico_frete,
+        transportadora,
+        prazo_frete,
+        valor_real_frete,
+        valor_cobrado_frete,
+        frete_gratis,
+        codigo_rastreio,
+        enviado_em,
+        entregue_em,
+        previsao_entrega,
+        url_rastreio,
+        forma_pagamento,
+        pago_em,
+        receipt_url
+      `)
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+  if(pedidosError){
+    console.error(pedidosError);
+    loading.innerHTML =
+      `<strong>Erro ao carregar pedidos.</strong>${escapeHtml(pedidosError.message)}`;
+    return;
+  }
+
+  pedidosCache =
+    Array.isArray(pedidos)
+      ? pedidos
+      : [];
+
+  if(
+    pedidosCache.length
+  ){
+
+    const ids =
+      pedidosCache.map(
+        pedido => pedido.id
+      );
+
+    const {
+      data:itens,
+      error:itensError
+    } =
+      await db
+        .from("itens_pedido")
+        .select(`
+          pedido_id,
+          produto_id,
+          nome_produto,
+          marca,
+          imagem,
+          tamanho,
+          quantidade,
+          preco_unitario,
+          subtotal
+        `)
+        .in(
+          "pedido_id",
+          ids
+        );
+
+    if(itensError){
+      console.error(itensError);
+    }
+
+    itensCache =
+      Array.isArray(itens)
+        ? itens
+        : [];
+  }else{
+    itensCache = [];
+  }
+
+  atualizarEstatisticas();
+
+  loading.classList.add("hidden");
+
+  renderPedidos();
 }
-);
-
-
-if(error){
-
-console.error(
-error
-);
-
-container.innerHTML =
-"<p class='empty'>Erro ao carregar pedidos.</p>";
-
-return;
-
-}
-
-
-pedidos =
-data || [];
-
-
-atualizarEstatisticas();
-
-
-renderPedidos();
-
-}
-
 
 function atualizarEstatisticas(){
 
-const aguardando =
-pedidos.filter(
-p =>
-p.status ===
-"aguardando_pagamento"
-).length;
+  document.getElementById("statTotal").textContent =
+    pedidosCache.length;
 
+  document.getElementById("statPending").textContent =
+    pedidosCache.filter(
+      p =>
+        p.status === "aguardando_pagamento"
+    ).length;
 
-const pagos =
-pedidos.filter(
-p =>
-p.status ===
-"pago"
-||
-p.status ===
-"etiqueta_pendente"
-).length;
+  document.getElementById("statPreparing").textContent =
+    pedidosCache.filter(
+      p =>
+        shippingStatus(p) === "preparando"
+    ).length;
 
-
-const enviados =
-pedidos.filter(
-p =>
-p.status ===
-"enviado"
-||
-p.status ===
-"entregue"
-).length;
-
-
-document
-.getElementById(
-"statAguardando"
-)
-.textContent =
-aguardando;
-
-
-document
-.getElementById(
-"statPagos"
-)
-.textContent =
-pagos;
-
-
-document
-.getElementById(
-"statEnviados"
-)
-.textContent =
-enviados;
-
-
-document
-.getElementById(
-"statTotal"
-)
-.textContent =
-pedidos.length;
-
+  document.getElementById("statDelivered").textContent =
+    pedidosCache.filter(
+      p =>
+        shippingStatus(p) === "entregue"
+    ).length;
 }
 
+function filtrarPedido(pedido){
+
+  if(filtroAtual === "todos"){
+    return true;
+  }
+
+  if(filtroAtual === "aguardando_pagamento"){
+    return pedido.status === "aguardando_pagamento";
+  }
+
+  return shippingStatus(pedido) === filtroAtual;
+}
 
 function renderPedidos(){
 
-const container =
+  const container =
+    document.getElementById("orders");
+
+  const empty =
+    document.getElementById("empty");
+
+  const lista =
+    pedidosCache.filter(
+      filtrarPedido
+    );
+
+  if(!lista.length){
+    container.classList.add("hidden");
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  empty.classList.add("hidden");
+  container.classList.remove("hidden");
+
+  container.innerHTML =
+    lista.map(
+      pedido => {
+
+        const itens =
+          itensCache.filter(
+            item =>
+              Number(item.pedido_id) ===
+              Number(pedido.id)
+          );
+
+        const statusEnvio =
+          shippingStatus(pedido);
+
+        const itensHtml =
+          itens.length
+          ?
+          itens.map(
+            item => `
+              <div class="item">
+                <img
+                  src="${escapeHtml(item.imagem || "")}"
+                  alt="${escapeHtml(item.nome_produto || "Produto")}"
+                  onerror="this.style.visibility='hidden'"
+                >
+
+                <div>
+                  <div class="item-name">
+                    ${escapeHtml(item.nome_produto || "Produto")}
+                  </div>
+
+                  <div class="item-meta">
+                    ${item.marca ? escapeHtml(item.marca) + "<br>" : ""}
+                    Tamanho ${escapeHtml(item.tamanho || "-")} ·
+                    ${Number(item.quantidade || 1)} un.
+                  </div>
+                </div>
+
+                <div class="item-total">
+                  ${money(item.subtotal || 0)}
+                </div>
+              </div>
+            `
+          ).join("")
+          :
+          `<div class="info-value">Itens não encontrados.</div>`;
+
+        const endereco =
+          `${pedido.rua_cliente || ""}, ${pedido.numero_cliente || ""}`
+          +
+          (
+            pedido.complemento_cliente
+              ? ` - ${pedido.complemento_cliente}`
+              : ""
+          )
+          +
+          `<br>${pedido.bairro_cliente || ""} - ${pedido.cidade_cliente || ""}/${pedido.estado_cliente || ""}`
+          +
+          `<br>CEP ${pedido.cep_cliente || ""}`;
+
+        return `
+          <article class="order-card" id="pedido-${pedido.id}">
+
+            <div class="order-head">
+              <div>
+                <div class="order-number">
+                  ${escapeHtml(pedido.order_nsu || "Pedido #" + pedido.id)}
+                </div>
+
+                <div class="order-date">
+                  Criado em ${formatDate(pedido.created_at)}
+                </div>
+              </div>
+
+              <div class="badges">
+                <span class="badge ${escapeHtml(pedido.status || "")}">
+                  ${escapeHtml(statusLabel(pedido.status))}
+                </span>
+
+                <span class="badge ${escapeHtml(statusEnvio)}">
+                  ${escapeHtml(statusLabel(statusEnvio))}
+                </span>
+              </div>
+            </div>
+
+            <div class="order-grid">
+
+              <div class="order-section">
+
+                <div class="section-title">PEDIDO E CLIENTE</div>
+
+                <div class="info-grid">
+                  <div class="info">
+                    <div class="info-label">Cliente</div>
+                    <div class="info-value">${escapeHtml(pedido.cliente_nome || "—")}</div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Contato</div>
+                    <div class="info-value">
+                      ${escapeHtml(pedido.cliente_email || "—")}<br>
+                      ${escapeHtml(pedido.cliente_telefone || "—")}
+                    </div>
+                  </div>
+
+                  <div class="info full">
+                    <div class="info-label">Endereço</div>
+                    <div class="info-value">${endereco}</div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Pagamento</div>
+                    <div class="info-value">
+                      ${escapeHtml(pedido.forma_pagamento || "—")}<br>
+                      ${pedido.pago_em ? formatDate(pedido.pago_em) : "Ainda não confirmado"}
+                    </div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Total</div>
+                    <div class="info-value">${money(pedido.total)}</div>
+                  </div>
+                </div>
+
+                <div class="section-title" style="margin-top:18px">PRODUTOS</div>
+                ${itensHtml}
+
+              </div>
+
+              <div class="order-section">
+
+                <div class="section-title">ENVIO E RASTREAMENTO</div>
+
+                <div class="edit-grid">
+
+                  <div class="field">
+                    <label>Status do envio</label>
+                    <select id="status-${pedido.id}">
+                      <option value="aguardando_pagamento" ${statusEnvio === "aguardando_pagamento" ? "selected" : ""}>Aguardando pagamento</option>
+                      <option value="preparando" ${statusEnvio === "preparando" ? "selected" : ""}>Preparando</option>
+                      <option value="enviado" ${statusEnvio === "enviado" ? "selected" : ""}>Enviado</option>
+                      <option value="em_transporte" ${statusEnvio === "em_transporte" ? "selected" : ""}>Em transporte</option>
+                      <option value="entregue" ${statusEnvio === "entregue" ? "selected" : ""}>Entregue</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label>Previsão de entrega</label>
+                    <input
+                      id="previsao-${pedido.id}"
+                      type="date"
+                      value="${escapeHtml(pedido.previsao_entrega || "")}"
+                    >
+                  </div>
+
+                  <div class="field full">
+                    <label>Código de rastreio</label>
+                    <input
+                      id="codigo-${pedido.id}"
+                      value="${escapeHtml(pedido.codigo_rastreio || "")}"
+                      placeholder="Ex.: BR123456789BR"
+                    >
+                  </div>
+
+                  <div class="field full">
+                    <label>URL de rastreio</label>
+                    <input
+                      id="url-${pedido.id}"
+                      value="${escapeHtml(pedido.url_rastreio || "")}"
+                      placeholder="https://..."
+                    >
+                  </div>
+
+                </div>
+
+                <div class="info-grid" style="margin-top:14px">
+                  <div class="info">
+                    <div class="info-label">Enviado em</div>
+                    <div class="info-value">${formatDate(pedido.enviado_em)}</div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Entregue em</div>
+                    <div class="info-value">${formatDate(pedido.entregue_em)}</div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Frete</div>
+                    <div class="info-value">
+                      ${escapeHtml(pedido.servico_frete || pedido.transportadora || "—")}
+                    </div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Prazo original</div>
+                    <div class="info-value">
+                      ${Number(pedido.prazo_frete || 0) > 0 ? `Até ${Number(pedido.prazo_frete)} dia(s) úteis` : "—"}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="actions">
+                  <button
+                    class="btn primary"
+                    id="save-${pedido.id}"
+                    onclick="salvarPedido(${pedido.id})"
+                  >
+                    SALVAR ALTERAÇÕES
+                  </button>
+
+                  ${
+                    pedido.receipt_url
+                    ? `
+                      <a
+                        class="btn secondary"
+                        href="${escapeHtml(pedido.receipt_url)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="display:inline-flex;align-items:center;justify-content:center"
+                      >
+                        COMPROVANTE
+                      </a>
+                    `
+                    : ""
+                  }
+
+                  ${
+                    pedido.url_rastreio
+                    ? `
+                      <a
+                        class="btn secondary"
+                        href="${escapeHtml(pedido.url_rastreio)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="display:inline-flex;align-items:center;justify-content:center"
+                      >
+                        ABRIR RASTREIO
+                      </a>
+                    `
+                    : ""
+                  }
+                </div>
+
+                <div
+                  class="save-message"
+                  id="message-${pedido.id}"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </article>
+        `;
+      }
+    ).join("");
+}
+
+async function salvarPedido(id){
+
+  const pedido =
+    pedidosCache.find(
+      p =>
+        Number(p.id) ===
+        Number(id)
+    );
+
+  if(!pedido){
+    return;
+  }
+
+  const button =
+    document.getElementById(
+      `save-${id}`
+    );
+
+  const message =
+    document.getElementById(
+      `message-${id}`
+    );
+
+  const novoStatus =
+    document.getElementById(
+      `status-${id}`
+    ).value;
+
+  const codigo =
+    document.getElementById(
+      `codigo-${id}`
+    ).value.trim();
+
+  const url =
+    document.getElementById(
+      `url-${id}`
+    ).value.trim();
+
+  const previsao =
+    document.getElementById(
+      `previsao-${id}`
+    ).value
+    ||
+    null;
+
+  const update = {
+    status_envio:
+      novoStatus,
+
+    codigo_rastreio:
+      codigo || null,
+
+    url_rastreio:
+      url || null,
+
+    previsao_entrega:
+      previsao
+  };
+
+  const statusAnterior =
+    shippingStatus(
+      pedido
+    );
+
+  if(
+    novoStatus === "enviado"
+    ||
+    novoStatus === "em_transporte"
+    ||
+    novoStatus === "entregue"
+  ){
+
+    if(
+      !pedido.enviado_em
+    ){
+      update.enviado_em =
+        new Date().toISOString();
+    }
+
+  }
+
+  if(
+    novoStatus === "entregue"
+    &&
+    !pedido.entregue_em
+  ){
+
+    update.entregue_em =
+      new Date().toISOString();
+
+  }
+
+  if(
+    statusAnterior === "entregue"
+    &&
+    novoStatus !== "entregue"
+  ){
+
+    update.entregue_em =
+      null;
+
+  }
+
+  button.disabled = true;
+  button.textContent =
+    "SALVANDO...";
+
+  message.className =
+    "save-message";
+
+  message.textContent =
+    "Salvando alterações...";
+
+  const {
+    error
+  } =
+    await db
+      .from("pedidos")
+      .update(
+        update
+      )
+      .eq(
+        "id",
+        id
+      );
+
+  if(error){
+
+    console.error(error);
+
+    message.classList.add(
+      "error"
+    );
+
+    message.textContent =
+      error.message
+      ||
+      "Não foi possível salvar.";
+
+    button.disabled = false;
+    button.textContent =
+      "SALVAR ALTERAÇÕES";
+
+    return;
+  }
+
+  message.classList.add(
+    "success"
+  );
+
+  message.textContent =
+    "Alterações salvas.";
+
+  button.textContent =
+    "SALVO ✓";
+
+  setTimeout(
+    async ()=>{
+      await carregarPedidos();
+    },
+    700
+  );
+}
+
 document
-.getElementById(
-"orders"
+.querySelectorAll(
+  ".filter-btn"
+)
+.forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      ()=>{
+
+        document
+        .querySelectorAll(
+          ".filter-btn"
+        )
+        .forEach(
+          btn =>
+            btn.classList.remove(
+              "active"
+            )
+        );
+
+        button.classList.add(
+          "active"
+        );
+
+        filtroAtual =
+          button.dataset.filter;
+
+        renderPedidos();
+
+      }
+    );
+
+  }
 );
-
-
-const busca =
-document
-.getElementById(
-"orderSearch"
-)
-.value
-.trim()
-.toLowerCase();
-
-
-const filtro =
-document
-.getElementById(
-"orderFilter"
-)
-.value;
-
-
-const filtrados =
-pedidos.filter(
-pedido=>{
-
-
-const texto =
-`${pedido.order_nsu || ""} ` +
-`${pedido.nome_produto || ""} ` +
-`${pedido.marca || ""} ` +
-`${pedido.cep_cliente || ""} ` +
-`${pedido.transportadora || ""}`
-.toLowerCase();
-
-
-const passaBusca =
-texto.includes(
-busca
-);
-
-
-const passaStatus =
-filtro === "todos"
-||
-pedido.status === filtro;
-
-
-return (
-passaBusca &&
-passaStatus
-);
-
-}
-);
-
-
-if(
-!filtrados.length
-){
-
-container.innerHTML =
-"<p class='empty'>Nenhum pedido encontrado.</p>";
-
-return;
-
-}
-
-
-container.innerHTML =
-filtrados
-.map(
-pedido=>{
-
-
-const imagem =
-pedido.produto?.imagem_principal ||
-"";
-
-
-const freteGratis =
-pedido.frete_gratis ===
-true;
-
-
-const fornecedor =
-pedido.fornecedor;
-
-
-const enderecoFornecedor =
-fornecedor
-?
-`${fornecedor.rua || ""}, ${fornecedor.numero || ""} - ${fornecedor.bairro || ""}, ${fornecedor.cidade || ""}/${fornecedor.estado || ""}`
-:
-"Fornecedor não encontrado";
-
-
-return `
-
-<div class="order-card">
-
-
-<div class="order-header">
-
-
-<div>
-
-<div class="order-number">
-
-${escapeHTML(
-pedido.order_nsu ||
-"Sem número"
-)}
-
-</div>
-
-
-<div class="order-date">
-
-${formatDate(
-pedido.created_at
-)}
-
-</div>
-
-</div>
-
-
-<div
-class="
-order-status
-status-${escapeHTML(
-pedido.status ||
-"aguardando_pagamento"
-)}
-"
->
-
-${statusLabel(
-pedido.status
-)}
-
-</div>
-
-
-</div>
-
-
-<div class="order-body">
-
-
-<div>
-
-
-<div class="order-section-title">
-
-Produto
-
-</div>
-
-
-<div class="order-product">
-
-
-${
-imagem
-?
-`
-
-<img
-class="order-product-image"
-src="${escapeHTML(imagem)}"
->
-
-`
-:
-`
-<div class="order-product-image"></div>
-`
-}
-
-
-<div>
-
-<h3>
-
-${escapeHTML(
-pedido.marca ||
-""
-)}
-${escapeHTML(
-pedido.nome_produto ||
-""
-)}
-
-</h3>
-
-
-<p>
-
-Tamanho:
-<strong>
-${escapeHTML(
-pedido.tamanho ||
-"-"
-)}
-</strong>
-
-</p>
-
-
-<p>
-
-Quantidade:
-<strong>
-${pedido.quantidade || 1}
-</strong>
-
-</p>
-
-
-<p>
-
-Preço unitário:
-<strong>
-${money(
-pedido.preco_produto
-)}
-</strong>
-
-</p>
-
-</div>
-
-
-</div>
-
-
-<div
-class="order-total-box"
->
-
-
-<div class="order-total-row">
-
-<span>
-Produto(s)
-</span>
-
-<strong>
-
-${money(
-Number(
-pedido.preco_produto ||
-0
-)
-*
-Number(
-pedido.quantidade ||
-1
-)
-)}
-
-</strong>
-
-</div>
-
-
-<div class="order-total-row">
-
-<span>
-Custo real do frete
-</span>
-
-<strong>
-
-${money(
-pedido.valor_real_frete
-)}
-
-</strong>
-
-</div>
-
-
-<div class="order-total-row">
-
-<span>
-Frete cobrado
-</span>
-
-<strong>
-
-${
-freteGratis
-?
-"GRÁTIS"
-:
-money(
-pedido.valor_cobrado_frete
-)
-}
-
-</strong>
-
-</div>
-
-
-<div class="order-total-row total">
-
-<span>
-Total cobrado
-</span>
-
-<strong>
-
-${money(
-pedido.total
-)}
-
-</strong>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-<div>
-
-
-<div class="order-section-title">
-
-Entrega e pagamento
-
-</div>
-
-
-<div class="order-info-grid">
-
-
-<div class="order-info">
-
-<span>
-CEP cliente
-</span>
-
-<strong>
-
-${formatCep(
-pedido.cep_cliente ||
-""
-)}
-
-</strong>
-
-</div>
-
-
-<div class="order-info">
-
-<span>
-Transportadora
-</span>
-
-<strong>
-
-${escapeHTML(
-pedido.transportadora ||
-"-"
-)}
-
-</strong>
-
-</div>
-
-
-<div class="order-info">
-
-<span>
-Serviço
-</span>
-
-<strong>
-
-${escapeHTML(
-pedido.servico_frete ||
-"-"
-)}
-
-</strong>
-
-</div>
-
-
-<div class="order-info">
-
-<span>
-Prazo
-</span>
-
-<strong>
-
-${
-pedido.prazo_frete
-?
-pedido.prazo_frete +
-" dia(s) úteis"
-:
-"-"
-}
-
-</strong>
-
-</div>
-
-
-<div class="order-info">
-
-<span>
-Forma de pagamento
-</span>
-
-<strong>
-
-${formatPayment(
-pedido.forma_pagamento
-)}
-
-</strong>
-
-</div>
-
-
-<div class="order-info">
-
-<span>
-Pagamento confirmado
-</span>
-
-<strong>
-
-${
-pedido.pago_em
-?
-formatDate(
-pedido.pago_em
-)
-:
-"Não"
-}
-
-</strong>
-
-</div>
-
-
-</div>
-
-
-<div
-class="order-section-title"
-style="margin-top:22px;"
->
-
-Fornecedor
-
-</div>
-
-
-<div class="order-info-grid">
-
-
-<div class="order-info">
-
-<span>
-Fornecedor
-</span>
-
-<strong>
-
-${escapeHTML(
-fornecedor?.nome ||
-"-"
-)}
-
-</strong>
-
-</div>
-
-
-<div class="order-info">
-
-<span>
-CEP de origem
-</span>
-
-<strong>
-
-${formatCep(
-fornecedor?.cep ||
-""
-)}
-
-</strong>
-
-</div>
-
-
-<div
-class="order-info"
-style="grid-column:1/-1;"
->
-
-<span>
-Endereço de origem
-</span>
-
-<strong>
-
-${escapeHTML(
-enderecoFornecedor
-)}
-
-</strong>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-<div class="order-actions">
-
-
-<select
-id="status-${pedido.id}"
->
-
-<option
-value="aguardando_pagamento"
-${pedido.status === "aguardando_pagamento" ? "selected" : ""}
->
-Aguardando pagamento
-</option>
-
-<option
-value="pago"
-${pedido.status === "pago" ? "selected" : ""}
->
-Pago
-</option>
-
-<option
-value="etiqueta_pendente"
-${pedido.status === "etiqueta_pendente" ? "selected" : ""}
->
-Etiqueta pendente
-</option>
-
-<option
-value="enviado"
-${pedido.status === "enviado" ? "selected" : ""}
->
-Enviado
-</option>
-
-<option
-value="entregue"
-${pedido.status === "entregue" ? "selected" : ""}
->
-Entregue
-</option>
-
-<option
-value="cancelado"
-${pedido.status === "cancelado" ? "selected" : ""}
->
-Cancelado
-</option>
-
-<option
-value="erro_checkout"
-${pedido.status === "erro_checkout" ? "selected" : ""}
->
-Erro checkout
-</option>
-
-</select>
-
-
-<button
-class="order-action-btn primary"
-onclick="
-salvarStatusPedido(
-${pedido.id}
-)
-"
->
-
-SALVAR STATUS
-
-</button>
-
-
-${
-pedido.receipt_url
-?
-`
-
-<a
-class="receipt-link"
-href="${escapeHTML(
-pedido.receipt_url
-)}"
-target="_blank"
-rel="noopener noreferrer"
->
-
-VER COMPROVANTE
-
-</a>
-
-`
-:
-""
-}
-
-
-</div>
-
-
-</div>
-
-`;
-
-}
-)
-.join("");
-
-}
-
-
-async function salvarStatusPedido(
-id
-){
-
-const select =
-document
-.getElementById(
-`status-${id}`
-);
-
-
-const novoStatus =
-select.value;
-
-
-const {
-error
-} = await db
-.from(
-"pedidos"
-)
-.update({
-status:
-novoStatus
-})
-.eq(
-"id",
-id
-);
-
-
-if(error){
-
-alert(
-"Erro ao atualizar status: " +
-error.message
-);
-
-return;
-
-}
-
-
-await carregarPedidos();
-
-
-alert(
-"Status atualizado."
-);
-
-}
-
 
 document
 .getElementById(
-"orderSearch"
+  "refreshButton"
 )
 .addEventListener(
-"input",
-renderPedidos
+  "click",
+  carregarPedidos
 );
 
+db.auth.onAuthStateChange(
+  (
+    event,
+    session
+  ) => {
 
-document
-.getElementById(
-"orderFilter"
-)
-.addEventListener(
-"change",
-renderPedidos
+    if(
+      event === "SIGNED_OUT"
+      ||
+      !session
+    ){
+      window.location.href =
+        "login.html";
+    }
+
+  }
 );
 
-
-/* =========================
-UTILIDADES
-========================= */
-
-function money(value){
-
-return Number(
-value || 0
-)
-.toLocaleString(
-"pt-BR",
-{
-style:"currency",
-currency:"BRL"
-}
-);
-
-}
-
-
-function formatDate(value){
-
-if(!value){
-return "-";
-}
-
-
-const date =
-new Date(
-value
-);
-
-
-if(
-Number.isNaN(
-date.getTime()
-)
-){
-return "-";
-}
-
-
-return date
-.toLocaleString(
-"pt-BR"
-);
-
-}
-
-
-function statusLabel(status){
-
-const labels = {
-
-aguardando_pagamento:
-"Aguardando pagamento",
-
-pago:
-"Pago",
-
-etiqueta_pendente:
-"Etiqueta pendente",
-
-enviado:
-"Enviado",
-
-entregue:
-"Entregue",
-
-cancelado:
-"Cancelado",
-
-erro_checkout:
-"Erro checkout"
-
-};
-
-
-return labels[status]
-||
-status
-||
-"-";
-
-}
-
-
-function formatPayment(value){
-
-const labels = {
-
-pix:
-"Pix",
-
-credit_card:
-"Cartão de crédito",
-
-debit_card:
-"Cartão de débito"
-
-};
-
-
-return labels[value]
-||
-value
-||
-"-";
-
-}
-
-
-function escapeHTML(value){
-
-return String(
-value ?? ""
-)
-.replaceAll(
-"&",
-"&amp;"
-)
-.replaceAll(
-"<",
-"&lt;"
-)
-.replaceAll(
-">",
-"&gt;"
-)
-.replaceAll(
-'"',
-"&quot;"
-)
-.replaceAll(
-"'",
-"&#039;"
-);
-
-}
-
-
-/* =========================
-INICIAR
-========================= */
-
-checkSession();
-
+carregarPedidos();
 </script>
 
 </body>
-
 </html>
