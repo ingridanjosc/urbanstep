@@ -395,6 +395,161 @@ body.light-theme .empty strong{color:#111318}
   .item{grid-template-columns:50px 1fr}
   .item-total{grid-column:2}
 }
+
+/* ===== DEVOLUÇÕES ADMIN ===== */
+.admin-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.admin-tab{
+  border:1px solid #30363f;
+  background:#111419;
+  color:#8f97a2;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:9px;
+  font-weight:900;
+}
+.admin-tab.active{
+  color:#fff;
+  border-color:var(--blue-light);
+  background:rgba(57,112,180,.13);
+}
+.return-admin-card{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.return-admin-head{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:flex-start;
+  padding:18px;
+  border-bottom:1px solid var(--line);
+}
+.return-admin-title{
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:24px;
+  font-weight:900;
+}
+.return-admin-body{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+.return-admin-section{
+  padding:18px;
+}
+.return-admin-section + .return-admin-section{
+  border-left:1px solid var(--line);
+}
+.return-items-admin{
+  display:grid;
+  gap:9px;
+}
+.return-item-admin{
+  display:grid;
+  grid-template-columns:50px 1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border:1px solid #292f37;
+  border-radius:10px;
+}
+.return-item-admin img{
+  width:50px;
+  height:58px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#181c22;
+}
+.return-item-admin-name{
+  font-size:11px;
+  font-weight:800;
+}
+.return-item-admin-meta{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:4px;
+  line-height:1.5;
+}
+.return-status-badge{
+  border:1px solid #35404c;
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.return-status-badge.solicitado,
+.return-status-badge.em_analise,
+.return-status-badge.aprovado,
+.return-status-badge.aguardando_envio,
+.return-status-badge.produto_enviado,
+.return-status-badge.produto_recebido,
+.return-status-badge.reembolso_processando,
+.return-status-badge.troca_enviada{
+  color:#80b2ec;
+  border-color:rgba(128,178,236,.35);
+}
+.return-status-badge.reembolsado,
+.return-status-badge.concluido{
+  color:#63d997;
+  border-color:rgba(99,217,151,.35);
+}
+.return-status-badge.recusado,
+.return-status-badge.cancelado{
+  color:#ff8080;
+  border-color:rgba(255,128,128,.35);
+}
+.return-textarea{
+  width:100%;
+  min-height:110px;
+  border:1px solid #2c323a;
+  border-radius:10px;
+  background:#15181e;
+  color:#fff;
+  padding:12px;
+  resize:vertical;
+  outline:none;
+}
+.return-textarea:focus{border-color:var(--blue-light)}
+body.light-theme .admin-tab,
+body.light-theme .return-textarea{
+  background:#fff;
+  color:#111318;
+  border-color:#d7dce3;
+}
+body.light-theme .admin-tab.active{
+  background:rgba(57,112,180,.08);
+}
+body.light-theme .return-item-admin{
+  border-color:#dfe3e8;
+}
+body.light-theme .return-item-admin img{
+  background:#eef0f3;
+}
+body.light-theme .return-admin-section + .return-admin-section{
+  border-left-color:#dfe3e8;
+}
+@media(max-width:900px){
+  .return-admin-body{grid-template-columns:1fr}
+  .return-admin-section + .return-admin-section{
+    border-left:0;
+    border-top:1px solid var(--line);
+  }
+}
+@media(max-width:600px){
+  .return-admin-head{flex-direction:column}
+  .return-item-admin{grid-template-columns:46px 1fr}
+}
+
 </style>
 </head>
 
@@ -416,8 +571,15 @@ body.light-theme .empty strong{color:#111318}
   <div class="eyebrow">URBANSTEP BACKOFFICE</div>
   <h1>PAINEL ADMIN</h1>
   <div class="subtitle">
-    Controle pedidos, status de envio, rastreio, previsão e entrega.
+    Controle pedidos, status de envio, rastreio, previsão, entrega e devoluções.
   </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" id="tabPedidos" type="button">PEDIDOS</button>
+    <button class="admin-tab" id="tabDevolucoes" type="button">DEVOLUÇÕES</button>
+  </div>
+
+  <section id="pedidosAdminSection">
 
   <div class="stats">
     <div class="stat">
@@ -469,6 +631,24 @@ body.light-theme .empty strong{color:#111318}
   </div>
 
   <section class="orders hidden" id="orders"></section>
+
+  </section>
+
+  <section id="devolucoesAdminSection" class="hidden">
+
+    <div id="returnsAdminLoading" class="empty">
+      <strong>Carregando devoluções...</strong>
+      Aguarde um instante.
+    </div>
+
+    <div id="returnsAdminEmpty" class="empty hidden">
+      <strong>Nenhuma solicitação encontrada.</strong>
+      Quando clientes solicitarem troca ou devolução, elas aparecerão aqui.
+    </div>
+
+    <div id="returnsAdminList"></div>
+
+  </section>
 
 </main>
 
@@ -1249,6 +1429,540 @@ async function salvarPedido(id){
     700
   );
 }
+
+
+/* =========================================
+   ABAS ADMIN
+========================================= */
+
+const tabPedidos =
+  document.getElementById("tabPedidos");
+
+const tabDevolucoes =
+  document.getElementById("tabDevolucoes");
+
+const pedidosAdminSection =
+  document.getElementById("pedidosAdminSection");
+
+const devolucoesAdminSection =
+  document.getElementById("devolucoesAdminSection");
+
+function abrirPedidosAdmin(){
+  tabPedidos.classList.add("active");
+  tabDevolucoes.classList.remove("active");
+  pedidosAdminSection.classList.remove("hidden");
+  devolucoesAdminSection.classList.add("hidden");
+}
+
+function abrirDevolucoesAdmin(){
+  tabDevolucoes.classList.add("active");
+  tabPedidos.classList.remove("active");
+  pedidosAdminSection.classList.add("hidden");
+  devolucoesAdminSection.classList.remove("hidden");
+  carregarDevolucoesAdmin();
+}
+
+tabPedidos.addEventListener("click",abrirPedidosAdmin);
+tabDevolucoes.addEventListener("click",abrirDevolucoesAdmin);
+
+
+/* =========================================
+   DEVOLUÇÕES
+========================================= */
+
+function returnStatusLabel(status){
+  const labels = {
+    solicitado:"Solicitado",
+    em_analise:"Em análise",
+    aprovado:"Aprovado",
+    aguardando_envio:"Aguardando envio",
+    produto_enviado:"Produto enviado",
+    produto_recebido:"Produto recebido",
+    reembolso_processando:"Reembolso em processamento",
+    reembolsado:"Reembolsado",
+    troca_enviada:"Troca enviada",
+    concluido:"Concluído",
+    recusado:"Recusado",
+    cancelado:"Cancelado"
+  };
+
+  return labels[status] || status || "Em análise";
+}
+
+async function carregarDevolucoesAdmin(){
+
+  const loading =
+    document.getElementById("returnsAdminLoading");
+
+  const empty =
+    document.getElementById("returnsAdminEmpty");
+
+  const list =
+    document.getElementById("returnsAdminList");
+
+  loading.classList.remove("hidden");
+  empty.classList.add("hidden");
+  list.innerHTML = "";
+
+  const admin =
+    await verificarAdmin();
+
+  if(!admin){
+    loading.innerHTML =
+      `<strong>Acesso não autorizado.</strong>`;
+    return;
+  }
+
+  const {
+    data:solicitacoes,
+    error:solicitacoesError
+  } =
+    await db
+      .from("solicitacoes_devolucao")
+      .select(`
+        id,
+        pedido_id,
+        user_id,
+        tipo,
+        motivo,
+        observacao,
+        status,
+        solicitado_em,
+        atualizado_em,
+        resolvido_em,
+        observacao_admin
+      `)
+      .order("solicitado_em",{
+        ascending:false
+      });
+
+  if(solicitacoesError){
+    console.error(solicitacoesError);
+
+    loading.innerHTML =
+      `<strong>Erro ao carregar solicitações.</strong>
+       ${escapeHtml(solicitacoesError.message)}`;
+
+    return;
+  }
+
+  if(
+    !Array.isArray(solicitacoes)
+    ||
+    solicitacoes.length === 0
+  ){
+    loading.classList.add("hidden");
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  const solicitacaoIds =
+    solicitacoes.map(
+      s => s.id
+    );
+
+  const pedidoIds =
+    [...new Set(
+      solicitacoes.map(
+        s => s.pedido_id
+      )
+    )];
+
+  const {
+    data:itensSolicitados,
+    error:itensSolicitadosError
+  } =
+    await db
+      .from("itens_solicitacao_devolucao")
+      .select(`
+        solicitacao_id,
+        item_pedido_id,
+        quantidade
+      `)
+      .in(
+        "solicitacao_id",
+        solicitacaoIds
+      );
+
+  if(itensSolicitadosError){
+    console.error(itensSolicitadosError);
+  }
+
+  const {
+    data:pedidos,
+    error:pedidosError
+  } =
+    await db
+      .from("pedidos")
+      .select(`
+        id,
+        order_nsu,
+        cliente_nome,
+        cliente_email,
+        cliente_telefone,
+        total,
+        entregue_em
+      `)
+      .in(
+        "id",
+        pedidoIds
+      );
+
+  if(pedidosError){
+    console.error(pedidosError);
+  }
+
+  const itemPedidoIds =
+    [...new Set(
+      (itensSolicitados || [])
+        .map(i => i.item_pedido_id)
+    )];
+
+  let itensPedido = [];
+
+  if(itemPedidoIds.length){
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("itens_pedido")
+        .select(`
+          id,
+          nome_produto,
+          marca,
+          imagem,
+          tamanho,
+          quantidade,
+          preco_unitario,
+          subtotal
+        `)
+        .in(
+          "id",
+          itemPedidoIds
+        );
+
+    if(error){
+      console.error(error);
+    }
+
+    itensPedido =
+      Array.isArray(data)
+        ? data
+        : [];
+  }
+
+  const pedidosLista =
+    Array.isArray(pedidos)
+      ? pedidos
+      : [];
+
+  const itensSolicitadosLista =
+    Array.isArray(itensSolicitados)
+      ? itensSolicitados
+      : [];
+
+  list.innerHTML =
+    solicitacoes.map(
+      solicitacao => {
+
+        const pedido =
+          pedidosLista.find(
+            p =>
+              Number(p.id) ===
+              Number(solicitacao.pedido_id)
+          );
+
+        const refs =
+          itensSolicitadosLista.filter(
+            ref =>
+              Number(ref.solicitacao_id) ===
+              Number(solicitacao.id)
+          );
+
+        const itensHtml =
+          refs.map(
+            ref => {
+
+              const item =
+                itensPedido.find(
+                  i =>
+                    Number(i.id) ===
+                    Number(ref.item_pedido_id)
+                );
+
+              if(!item){
+                return "";
+              }
+
+              return `
+                <div class="return-item-admin">
+                  <img
+                    src="${escapeHtml(item.imagem || "")}"
+                    alt="${escapeHtml(item.nome_produto || "Produto")}"
+                    onerror="this.style.visibility='hidden'"
+                  >
+
+                  <div>
+                    <div class="return-item-admin-name">
+                      ${escapeHtml(item.nome_produto || "Produto")}
+                    </div>
+
+                    <div class="return-item-admin-meta">
+                      ${item.marca ? escapeHtml(item.marca) + "<br>" : ""}
+                      Tamanho ${escapeHtml(item.tamanho || "-")} ·
+                      quantidade solicitada: ${Number(ref.quantidade || 1)}
+                    </div>
+                  </div>
+
+                  <div class="item-total">
+                    ${money(Number(item.preco_unitario || 0) * Number(ref.quantidade || 1))}
+                  </div>
+                </div>
+              `;
+            }
+          ).join("");
+
+        return `
+          <article class="return-admin-card">
+
+            <div class="return-admin-head">
+              <div>
+                <div class="return-admin-title">
+                  ${solicitacao.tipo === "troca" ? "TROCA" : "DEVOLUÇÃO"} ·
+                  ${escapeHtml(pedido?.order_nsu || "#" + solicitacao.pedido_id)}
+                </div>
+
+                <div class="order-date">
+                  Solicitado em ${formatDate(solicitacao.solicitado_em)}
+                </div>
+              </div>
+
+              <div class="return-status-badge ${escapeHtml(solicitacao.status)}">
+                ${escapeHtml(returnStatusLabel(solicitacao.status))}
+              </div>
+            </div>
+
+            <div class="return-admin-body">
+
+              <div class="return-admin-section">
+
+                <div class="section-title">CLIENTE E SOLICITAÇÃO</div>
+
+                <div class="info-grid">
+
+                  <div class="info">
+                    <div class="info-label">Cliente</div>
+                    <div class="info-value">
+                      ${escapeHtml(pedido?.cliente_nome || "—")}
+                    </div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Contato</div>
+                    <div class="info-value">
+                      ${escapeHtml(pedido?.cliente_email || "—")}<br>
+                      ${escapeHtml(pedido?.cliente_telefone || "—")}
+                    </div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Motivo</div>
+                    <div class="info-value">
+                      ${escapeHtml(solicitacao.motivo || "—")}
+                    </div>
+                  </div>
+
+                  <div class="info">
+                    <div class="info-label">Pedido entregue em</div>
+                    <div class="info-value">
+                      ${pedido?.entregue_em ? formatDate(pedido.entregue_em) : "—"}
+                    </div>
+                  </div>
+
+                  <div class="info full">
+                    <div class="info-label">Observação do cliente</div>
+                    <div class="info-value">
+                      ${escapeHtml(solicitacao.observacao || "Sem observação")}
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="section-title" style="margin-top:18px">
+                  ITENS SOLICITADOS
+                </div>
+
+                <div class="return-items-admin">
+                  ${itensHtml || '<div class="info-value">Nenhum item encontrado.</div>'}
+                </div>
+
+              </div>
+
+              <div class="return-admin-section">
+
+                <div class="section-title">ATUALIZAR SOLICITAÇÃO</div>
+
+                <div class="edit-grid">
+
+                  <div class="field full">
+                    <label>Status</label>
+
+                    <select id="return-status-${solicitacao.id}">
+                      <option value="solicitado" ${solicitacao.status === "solicitado" ? "selected" : ""}>Solicitado</option>
+                      <option value="em_analise" ${solicitacao.status === "em_analise" ? "selected" : ""}>Em análise</option>
+                      <option value="aprovado" ${solicitacao.status === "aprovado" ? "selected" : ""}>Aprovado</option>
+                      <option value="aguardando_envio" ${solicitacao.status === "aguardando_envio" ? "selected" : ""}>Aguardando envio</option>
+                      <option value="produto_enviado" ${solicitacao.status === "produto_enviado" ? "selected" : ""}>Produto enviado</option>
+                      <option value="produto_recebido" ${solicitacao.status === "produto_recebido" ? "selected" : ""}>Produto recebido</option>
+                      <option value="reembolso_processando" ${solicitacao.status === "reembolso_processando" ? "selected" : ""}>Reembolso processando</option>
+                      <option value="reembolsado" ${solicitacao.status === "reembolsado" ? "selected" : ""}>Reembolsado</option>
+                      <option value="troca_enviada" ${solicitacao.status === "troca_enviada" ? "selected" : ""}>Troca enviada</option>
+                      <option value="concluido" ${solicitacao.status === "concluido" ? "selected" : ""}>Concluído</option>
+                      <option value="recusado" ${solicitacao.status === "recusado" ? "selected" : ""}>Recusado</option>
+                      <option value="cancelado" ${solicitacao.status === "cancelado" ? "selected" : ""}>Cancelado</option>
+                    </select>
+                  </div>
+
+                  <div class="field full">
+                    <label>Resposta para o cliente</label>
+
+                    <textarea
+                      class="return-textarea"
+                      id="return-note-${solicitacao.id}"
+                      placeholder="Ex.: Solicitação aprovada. Em breve enviaremos as instruções..."
+                    >${escapeHtml(solicitacao.observacao_admin || "")}</textarea>
+                  </div>
+
+                </div>
+
+                <div class="actions">
+
+                  <button
+                    class="btn primary"
+                    id="return-save-${solicitacao.id}"
+                    onclick="salvarDevolucao(${solicitacao.id})"
+                  >
+                    SALVAR ALTERAÇÕES
+                  </button>
+
+                </div>
+
+                <div
+                  class="save-message"
+                  id="return-message-${solicitacao.id}"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </article>
+        `;
+      }
+    ).join("");
+
+  loading.classList.add("hidden");
+}
+
+async function salvarDevolucao(id){
+
+  const status =
+    document.getElementById(
+      `return-status-${id}`
+    ).value;
+
+  const observacaoAdmin =
+    document.getElementById(
+      `return-note-${id}`
+    ).value.trim();
+
+  const button =
+    document.getElementById(
+      `return-save-${id}`
+    );
+
+  const message =
+    document.getElementById(
+      `return-message-${id}`
+    );
+
+  button.disabled = true;
+  button.textContent = "SALVANDO...";
+
+  message.className =
+    "save-message";
+
+  message.textContent =
+    "Salvando alterações...";
+
+  const finalStatus = [
+    "reembolsado",
+    "concluido",
+    "recusado",
+    "cancelado"
+  ].includes(status);
+
+  const update = {
+    status:
+      status,
+
+    observacao_admin:
+      observacaoAdmin || null,
+
+    atualizado_em:
+      new Date().toISOString(),
+
+    resolvido_em:
+      finalStatus
+        ? new Date().toISOString()
+        : null
+  };
+
+  const {
+    error
+  } =
+    await db
+      .from("solicitacoes_devolucao")
+      .update(update)
+      .eq(
+        "id",
+        id
+      );
+
+  if(error){
+
+    console.error(error);
+
+    message.classList.add("error");
+    message.textContent =
+      error.message
+      ||
+      "Não foi possível salvar.";
+
+    button.disabled = false;
+    button.textContent =
+      "SALVAR ALTERAÇÕES";
+
+    return;
+  }
+
+  message.classList.add("success");
+  message.textContent =
+    "Alterações salvas.";
+
+  button.textContent =
+    "SALVO ✓";
+
+  setTimeout(
+    ()=>{
+      carregarDevolucoesAdmin();
+    },
+    700
+  );
+}
+
 
 document
 .querySelectorAll(
